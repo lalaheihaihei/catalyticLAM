@@ -1,0 +1,8 @@
+Loading compiler version 2023.2.1
+Loading tbb version 2021.10.0
+Loading compiler-rt version 2023.2.1
+Loading oclfpga version 2023.2.1
+  Load "debugger" to debug DPC++ applications with the gdb-oneapi debugger.
+  Load "dpl" for additional DPC++ APIs: https://github.com/oneapi-src/oneDPL
+Loading mkl version 2023.2.0
+Loading mpi version 2021.9.0

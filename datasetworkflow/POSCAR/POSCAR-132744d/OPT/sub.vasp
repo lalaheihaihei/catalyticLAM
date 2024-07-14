@@ -1,0 +1,7 @@
+#!/bin/bash
+#SBATCH -n 8 
+#SBATCH -N 1
+#SBATCH -p gpu
+
+module load VASP/6.4.1-gzbuild-intel_8300
+mpirun vasp_gam > vasp.out 2>vasp.err

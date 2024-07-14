@@ -1,0 +1,23 @@
+SYSTEM =  QM9 
+
+ISMEAR =  0 
+SIGMA  =  0.1
+ENCUT  =  500
+EDIFF  =  1E-5
+NELM   =  150
+NELMIN =  6
+NELMDL = -20
+ISIF   =  2
+ALGO   =  V
+LREAL  =  Auto
+ISYM   =  0
+LORBIT =  11
+
+IBRION =  2
+POTIM  =  0.2
+EDIFFG = -0.02
+NSW    =  10
+
+LWAVE  =  .FALSE.
+LCHARG =  .FALSE.
+NPAR   =  4

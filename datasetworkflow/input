@@ -1,0 +1,13 @@
+work_path:        /home/gengzi/catalyticLAM/datasetworkflow/ 
+opt_INCAR_path:   /home/gengzi/catalyticLAM/datasetworkflow/utils/INCAR_OPT
+md_INCAR_path:    /home/gengzi/catalyticLAM/datasetworkflow/utils/INCAR_MD
+vasp_sub_path:    /home/gengzi/catalyticLAM/datasetworkflow/utils/sub.vasp
+structre_db_path: /home/gengzi/catalyticLAM/datasetworkflow/structure_db
+max_jobs:25
+sleep_time:20
+user_name:gengzi
+step_data:10
+test_size:0.1
+dataset_prefix:/home/gengzi/catalyticLAM/datasetworkflow/data_npy
+dataset_fmt:npy_mix
+plot_name:weight_with_lanthanides_and_details.png
