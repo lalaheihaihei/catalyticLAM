@@ -1,0 +1,1 @@
+/home/gengzi/catalyticLAM/datasetworkflow/POSCAR/POSCAR-132741d/MD/OUTCAR file not found in /home/gengzi/catalyticLAM/datasetworkflow/POSCAR/POSCAR-132741d/MD

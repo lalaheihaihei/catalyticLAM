@@ -1,0 +1,472 @@
+/home/gengzi/catalyticLAM/datasetworkflow/POSCAR/POSCAR-132742d/OPT
+ 
+            \\\///         
+           / _  _ \         Hey, you must know what you are doing.
+         (| (o)(o) |)       Otherwise you might get wrong results.
+ o-----.OOOo--()--oOOO.------------------------------------------o
+ |         VASPKIT Standard Edition 1.4.1 (26 Apr. 2023)         |
+ |         Core Developer: Vei WANG (wangvei@icloud.com)         |
+ |      Main Contributors: Gang TANG, Nan XU & Jin-Cheng LIU     |
+ |  Online Tutorials Available on Website: https://vaspkit.com   |
+ o-----.oooO-----------------------------------------------------o
+        (   )   Oooo.                          VASPKIT Made Simple
+         \ (    (   )     
+          \_)    ) /      
+                (_/       
+ ===================== Structural Utilities ======================
+ 1)  VASP Input-Files Generator    2)  Mechanical Properties      
+ 3)  K-Path for Band-Structure     4)  Structure Editor           
+ 5)  Catalysis-ElectroChem Kit     6)  Symmetry Analysis          
+ 7)  Materials Databases           8)  Advanced Structure Models  
+ ===================== Electronic Utilities ======================
+ 11) Density-of-States             21) Band-Structure             
+ 23) 3D Band-Structure             25) Hybrid-DFT Band-Structure  
+ 26) Fermi-Surface                 28) Band-Structure Unfolding   
+ 31) Charge-Density Analysis       42) Potential Analysis         
+ 51) Wave-Function Analysis        62) Magnetic Properties        
+ 65) Spin-Texture                  68) Transport Properties       
+ ======================== Misc Utilities =========================
+ 71) Optical Properties            72) Molecular-Dynamics Kit     
+ 74) User Interface                78) VASP2other Interface       
+ 91) Semiconductor Kit             92) 2D-Material Kit            
+ 0)  Quit                                                         
+ ------------>>
+ ======================== K-Mesh Scheme ==========================
+ 1) Monkhorst-Pack Scheme                                         
+ 2) Gamma Scheme                                                  
+ 3) Irreducible K-Points with Gamma Scheme                        
+                                                                  
+ 0)   Quit                                                        
+ 9)   Back                                                        
+ ------------->>
+ -->> (01) Reading Structure from POSCAR File...
+ +---------------------------- Tip ------------------------------+
+   * Accuracy Levels: Gamma-Only: 0;              
+                      Low: 0.06~0.04;             
+                      Medium: 0.04~0.03;          
+                      Fine: 0.02-0.01.            
+   * 0.03-0.04 is Generally Precise Enough!                
+ +---------------------------------------------------------------+
+ Input Kmesh-Resolved Value (in Units of 2*PI/Angstrom): 
+ ------------>>
+ +-------------------------- Summary ----------------------------+
+ Reciprocal Lattice Vectors (in Units of 1/Angstrom):
+       0.8099393249       0.0000000000       0.0000000000
+       0.0000000000       0.5367399589       0.0000000000
+       0.0000000000       0.0000000000       0.5546107606
+ Reciprocal Lattice Constants:   0.0000   0.0000   0.0000
+ Real-Space Lattice Constants:   7.7576  11.7062  11.3290
+ K-Mesh Size:    1    1    1
+ +---------------------------------------------------------------+
+ -->> (02) Written KPOINTS File!
+ -->> (03) Written INCAR file!
+ +-------------------------- Summary ----------------------------+
+ POTCAR Type: PBE
+ Number of Elements: 4
+ POTCAR File No.1: [ POTCAR_C ], Valence Electron: 4.0
+ POTCAR File No.2: [ POTCAR_F ], Valence Electron: 7.0
+ POTCAR File No.3: [ POTCAR_H ], Valence Electron: 1.0
+ POTCAR File No.4: [ POTCAR_N ], Valence Electron: 5.0
+ Total Atoms: 16
+ Total Valence Electrons: 48.0
+ +---------------------------------------------------------------+
+ -->> (04) Written POTCAR File with the Standard Potential!
+ o---------------------------------------------------------------o
+ |                       * ACKNOWLEDGMENTS *                     |
+ | Other Contributors (in no particular order): Peng-Fei LIU,    |
+ | Xue-Fei LIU, Dao-Xiong WU, Zhao-Fu ZHANG, Tian WANG, Qiang LI,|
+ | Ya-Chao LIU, Jiang-Shan ZHAO, Qi-Jing ZHENG, Yue QIU and You! |
+ | Advisors: Wen-Tong GENG, Yoshiyuki KAWAZOE                    |
+ :) Any Suggestions for Improvement are Welcome and Appreciated (:
+ |---------------------------------------------------------------|
+ |                          * CITATIONS *                        |
+ | When using VASPKIT in your research PLEASE cite the paper:    |
+ | [1] V. WANG, N. XU, J.-C. LIU, G. TANG, W.-T. GENG, VASPKIT: A|
+ | User-Friendly Interface Facilitating High-Throughput Computing|
+ | and Analysis Using VASP Code, Computer Physics Communications |
+ | 267, 108033, (2021), DOI: 10.1016/j.cpc.2021.108033           |
+ o---------------------------------------------------------------o
+Submitted batch job 305727
+/home/gengzi/catalyticLAM/datasetworkflow/POSCAR/POSCAR-132745d/OPT
+ 
+            \\\///         
+           / _  _ \         Hey, you must know what you are doing.
+         (| (o)(o) |)       Otherwise you might get wrong results.
+ o-----.OOOo--()--oOOO.------------------------------------------o
+ |         VASPKIT Standard Edition 1.4.1 (26 Apr. 2023)         |
+ |         Core Developer: Vei WANG (wangvei@icloud.com)         |
+ |      Main Contributors: Gang TANG, Nan XU & Jin-Cheng LIU     |
+ |  Online Tutorials Available on Website: https://vaspkit.com   |
+ o-----.oooO-----------------------------------------------------o
+        (   )   Oooo.                          VASPKIT Made Simple
+         \ (    (   )     
+          \_)    ) /      
+                (_/       
+ ===================== Structural Utilities ======================
+ 1)  VASP Input-Files Generator    2)  Mechanical Properties      
+ 3)  K-Path for Band-Structure     4)  Structure Editor           
+ 5)  Catalysis-ElectroChem Kit     6)  Symmetry Analysis          
+ 7)  Materials Databases           8)  Advanced Structure Models  
+ ===================== Electronic Utilities ======================
+ 11) Density-of-States             21) Band-Structure             
+ 23) 3D Band-Structure             25) Hybrid-DFT Band-Structure  
+ 26) Fermi-Surface                 28) Band-Structure Unfolding   
+ 31) Charge-Density Analysis       42) Potential Analysis         
+ 51) Wave-Function Analysis        62) Magnetic Properties        
+ 65) Spin-Texture                  68) Transport Properties       
+ ======================== Misc Utilities =========================
+ 71) Optical Properties            72) Molecular-Dynamics Kit     
+ 74) User Interface                78) VASP2other Interface       
+ 91) Semiconductor Kit             92) 2D-Material Kit            
+ 0)  Quit                                                         
+ ------------>>
+ ======================== K-Mesh Scheme ==========================
+ 1) Monkhorst-Pack Scheme                                         
+ 2) Gamma Scheme                                                  
+ 3) Irreducible K-Points with Gamma Scheme                        
+                                                                  
+ 0)   Quit                                                        
+ 9)   Back                                                        
+ ------------->>
+ -->> (01) Reading Structure from POSCAR File...
+ +---------------------------- Tip ------------------------------+
+   * Accuracy Levels: Gamma-Only: 0;              
+                      Low: 0.06~0.04;             
+                      Medium: 0.04~0.03;          
+                      Fine: 0.02-0.01.            
+   * 0.03-0.04 is Generally Precise Enough!                
+ +---------------------------------------------------------------+
+ Input Kmesh-Resolved Value (in Units of 2*PI/Angstrom): 
+ ------------>>
+ +-------------------------- Summary ----------------------------+
+ Reciprocal Lattice Vectors (in Units of 1/Angstrom):
+       0.8100959641       0.0000000000       0.0000000000
+       0.0000000000       0.5308492922       0.0000000000
+       0.0000000000       0.0000000000       0.5594900631
+ Reciprocal Lattice Constants:   0.0000   0.0000   0.0000
+ Real-Space Lattice Constants:   7.7561  11.8361  11.2302
+ K-Mesh Size:    1    1    1
+ +---------------------------------------------------------------+
+ -->> (02) Written KPOINTS File!
+ -->> (03) Written INCAR file!
+ +-------------------------- Summary ----------------------------+
+ POTCAR Type: PBE
+ Number of Elements: 4
+ POTCAR File No.1: [ POTCAR_C ], Valence Electron: 4.0
+ POTCAR File No.2: [ POTCAR_F ], Valence Electron: 7.0
+ POTCAR File No.3: [ POTCAR_H ], Valence Electron: 1.0
+ POTCAR File No.4: [ POTCAR_O ], Valence Electron: 6.0
+ Total Atoms: 16
+ Total Valence Electrons: 48.0
+ +---------------------------------------------------------------+
+ -->> (04) Written POTCAR File with the Standard Potential!
+ o---------------------------------------------------------------o
+ |                       * ACKNOWLEDGMENTS *                     |
+ | Other Contributors (in no particular order): Peng-Fei LIU,    |
+ | Xue-Fei LIU, Dao-Xiong WU, Zhao-Fu ZHANG, Tian WANG, Qiang LI,|
+ | Ya-Chao LIU, Jiang-Shan ZHAO, Qi-Jing ZHENG, Yue QIU and You! |
+ | Advisors: Wen-Tong GENG, Yoshiyuki KAWAZOE                    |
+ :) Any Suggestions for Improvement are Welcome and Appreciated (:
+ |---------------------------------------------------------------|
+ |                          * CITATIONS *                        |
+ | When using VASPKIT in your research PLEASE cite the paper:    |
+ | [1] V. WANG, N. XU, J.-C. LIU, G. TANG, W.-T. GENG, VASPKIT: A|
+ | User-Friendly Interface Facilitating High-Throughput Computing|
+ | and Analysis Using VASP Code, Computer Physics Communications |
+ | 267, 108033, (2021), DOI: 10.1016/j.cpc.2021.108033           |
+ o---------------------------------------------------------------o
+Submitted batch job 305728
+/home/gengzi/catalyticLAM/datasetworkflow/POSCAR/POSCAR-132741d/OPT
+ 
+            \\\///         
+           / _  _ \         Hey, you must know what you are doing.
+         (| (o)(o) |)       Otherwise you might get wrong results.
+ o-----.OOOo--()--oOOO.------------------------------------------o
+ |         VASPKIT Standard Edition 1.4.1 (26 Apr. 2023)         |
+ |         Core Developer: Vei WANG (wangvei@icloud.com)         |
+ |      Main Contributors: Gang TANG, Nan XU & Jin-Cheng LIU     |
+ |  Online Tutorials Available on Website: https://vaspkit.com   |
+ o-----.oooO-----------------------------------------------------o
+        (   )   Oooo.                          VASPKIT Made Simple
+         \ (    (   )     
+          \_)    ) /      
+                (_/       
+ ===================== Structural Utilities ======================
+ 1)  VASP Input-Files Generator    2)  Mechanical Properties      
+ 3)  K-Path for Band-Structure     4)  Structure Editor           
+ 5)  Catalysis-ElectroChem Kit     6)  Symmetry Analysis          
+ 7)  Materials Databases           8)  Advanced Structure Models  
+ ===================== Electronic Utilities ======================
+ 11) Density-of-States             21) Band-Structure             
+ 23) 3D Band-Structure             25) Hybrid-DFT Band-Structure  
+ 26) Fermi-Surface                 28) Band-Structure Unfolding   
+ 31) Charge-Density Analysis       42) Potential Analysis         
+ 51) Wave-Function Analysis        62) Magnetic Properties        
+ 65) Spin-Texture                  68) Transport Properties       
+ ======================== Misc Utilities =========================
+ 71) Optical Properties            72) Molecular-Dynamics Kit     
+ 74) User Interface                78) VASP2other Interface       
+ 91) Semiconductor Kit             92) 2D-Material Kit            
+ 0)  Quit                                                         
+ ------------>>
+ ======================== K-Mesh Scheme ==========================
+ 1) Monkhorst-Pack Scheme                                         
+ 2) Gamma Scheme                                                  
+ 3) Irreducible K-Points with Gamma Scheme                        
+                                                                  
+ 0)   Quit                                                        
+ 9)   Back                                                        
+ ------------->>
+ -->> (01) Reading Structure from POSCAR File...
+ +---------------------------- Tip ------------------------------+
+   * Accuracy Levels: Gamma-Only: 0;              
+                      Low: 0.06~0.04;             
+                      Medium: 0.04~0.03;          
+                      Fine: 0.02-0.01.            
+   * 0.03-0.04 is Generally Precise Enough!                
+ +---------------------------------------------------------------+
+ Input Kmesh-Resolved Value (in Units of 2*PI/Angstrom): 
+ ------------>>
+ +-------------------------- Summary ----------------------------+
+ Reciprocal Lattice Vectors (in Units of 1/Angstrom):
+       0.8097827463       0.0000000000       0.0000000000
+       0.0000000000       0.5354957052       0.0000000000
+       0.0000000000       0.0000000000       0.5552086550
+ Reciprocal Lattice Constants:   0.0000   0.0000   0.0000
+ Real-Space Lattice Constants:   7.7591  11.7334  11.3168
+ K-Mesh Size:    1    1    1
+ +---------------------------------------------------------------+
+ -->> (02) Written KPOINTS File!
+ -->> (03) Written INCAR file!
+ +-------------------------- Summary ----------------------------+
+ POTCAR Type: PBE
+ Number of Elements: 4
+ POTCAR File No.1: [ POTCAR_C ], Valence Electron: 4.0
+ POTCAR File No.2: [ POTCAR_F ], Valence Electron: 7.0
+ POTCAR File No.3: [ POTCAR_H ], Valence Electron: 1.0
+ POTCAR File No.4: [ POTCAR_N ], Valence Electron: 5.0
+ Total Atoms: 16
+ Total Valence Electrons: 48.0
+ +---------------------------------------------------------------+
+ -->> (04) Written POTCAR File with the Standard Potential!
+ o---------------------------------------------------------------o
+ |                       * ACKNOWLEDGMENTS *                     |
+ | Other Contributors (in no particular order): Peng-Fei LIU,    |
+ | Xue-Fei LIU, Dao-Xiong WU, Zhao-Fu ZHANG, Tian WANG, Qiang LI,|
+ | Ya-Chao LIU, Jiang-Shan ZHAO, Qi-Jing ZHENG, Yue QIU and You! |
+ | Advisors: Wen-Tong GENG, Yoshiyuki KAWAZOE                    |
+ :) Any Suggestions for Improvement are Welcome and Appreciated (:
+ |---------------------------------------------------------------|
+ |                          * CITATIONS *                        |
+ | When using VASPKIT in your research PLEASE cite the paper:    |
+ | [1] V. WANG, N. XU, J.-C. LIU, G. TANG, W.-T. GENG, VASPKIT: A|
+ | User-Friendly Interface Facilitating High-Throughput Computing|
+ | and Analysis Using VASP Code, Computer Physics Communications |
+ | 267, 108033, (2021), DOI: 10.1016/j.cpc.2021.108033           |
+ o---------------------------------------------------------------o
+Submitted batch job 305729
+/home/gengzi/catalyticLAM/datasetworkflow/POSCAR/POSCAR-132744d/OPT
+ 
+            \\\///         
+           / _  _ \         Hey, you must know what you are doing.
+         (| (o)(o) |)       Otherwise you might get wrong results.
+ o-----.OOOo--()--oOOO.------------------------------------------o
+ |         VASPKIT Standard Edition 1.4.1 (26 Apr. 2023)         |
+ |         Core Developer: Vei WANG (wangvei@icloud.com)         |
+ |      Main Contributors: Gang TANG, Nan XU & Jin-Cheng LIU     |
+ |  Online Tutorials Available on Website: https://vaspkit.com   |
+ o-----.oooO-----------------------------------------------------o
+        (   )   Oooo.                          VASPKIT Made Simple
+         \ (    (   )     
+          \_)    ) /      
+                (_/       
+ ===================== Structural Utilities ======================
+ 1)  VASP Input-Files Generator    2)  Mechanical Properties      
+ 3)  K-Path for Band-Structure     4)  Structure Editor           
+ 5)  Catalysis-ElectroChem Kit     6)  Symmetry Analysis          
+ 7)  Materials Databases           8)  Advanced Structure Models  
+ ===================== Electronic Utilities ======================
+ 11) Density-of-States             21) Band-Structure             
+ 23) 3D Band-Structure             25) Hybrid-DFT Band-Structure  
+ 26) Fermi-Surface                 28) Band-Structure Unfolding   
+ 31) Charge-Density Analysis       42) Potential Analysis         
+ 51) Wave-Function Analysis        62) Magnetic Properties        
+ 65) Spin-Texture                  68) Transport Properties       
+ ======================== Misc Utilities =========================
+ 71) Optical Properties            72) Molecular-Dynamics Kit     
+ 74) User Interface                78) VASP2other Interface       
+ 91) Semiconductor Kit             92) 2D-Material Kit            
+ 0)  Quit                                                         
+ ------------>>
+ ======================== K-Mesh Scheme ==========================
+ 1) Monkhorst-Pack Scheme                                         
+ 2) Gamma Scheme                                                  
+ 3) Irreducible K-Points with Gamma Scheme                        
+                                                                  
+ 0)   Quit                                                        
+ 9)   Back                                                        
+ ------------->>
+ -->> (01) Reading Structure from POSCAR File...
+ +---------------------------- Tip ------------------------------+
+   * Accuracy Levels: Gamma-Only: 0;              
+                      Low: 0.06~0.04;             
+                      Medium: 0.04~0.03;          
+                      Fine: 0.02-0.01.            
+   * 0.03-0.04 is Generally Precise Enough!                
+ +---------------------------------------------------------------+
+ Input Kmesh-Resolved Value (in Units of 2*PI/Angstrom): 
+ ------------>>
+ +-------------------------- Summary ----------------------------+
+ Reciprocal Lattice Vectors (in Units of 1/Angstrom):
+       0.8103885194       0.0000000000       0.0000000000
+       0.0000000000       0.5315813556       0.0000000000
+       0.0000000000       0.0000000000       0.5594601727
+ Reciprocal Lattice Constants:   0.0000   0.0000   0.0000
+ Real-Space Lattice Constants:   7.7533  11.8198  11.2308
+ K-Mesh Size:    1    1    1
+ +---------------------------------------------------------------+
+ -->> (02) Written KPOINTS File!
+ -->> (03) Written INCAR file!
+ +-------------------------- Summary ----------------------------+
+ POTCAR Type: PBE
+ Number of Elements: 4
+ POTCAR File No.1: [ POTCAR_C ], Valence Electron: 4.0
+ POTCAR File No.2: [ POTCAR_F ], Valence Electron: 7.0
+ POTCAR File No.3: [ POTCAR_H ], Valence Electron: 1.0
+ POTCAR File No.4: [ POTCAR_O ], Valence Electron: 6.0
+ Total Atoms: 16
+ Total Valence Electrons: 48.0
+ +---------------------------------------------------------------+
+ -->> (04) Written POTCAR File with the Standard Potential!
+ o---------------------------------------------------------------o
+ |                       * ACKNOWLEDGMENTS *                     |
+ | Other Contributors (in no particular order): Peng-Fei LIU,    |
+ | Xue-Fei LIU, Dao-Xiong WU, Zhao-Fu ZHANG, Tian WANG, Qiang LI,|
+ | Ya-Chao LIU, Jiang-Shan ZHAO, Qi-Jing ZHENG, Yue QIU and You! |
+ | Advisors: Wen-Tong GENG, Yoshiyuki KAWAZOE                    |
+ :) Any Suggestions for Improvement are Welcome and Appreciated (:
+ |---------------------------------------------------------------|
+ |                          * CITATIONS *                        |
+ | When using VASPKIT in your research PLEASE cite the paper:    |
+ | [1] V. WANG, N. XU, J.-C. LIU, G. TANG, W.-T. GENG, VASPKIT: A|
+ | User-Friendly Interface Facilitating High-Throughput Computing|
+ | and Analysis Using VASP Code, Computer Physics Communications |
+ | 267, 108033, (2021), DOI: 10.1016/j.cpc.2021.108033           |
+ o---------------------------------------------------------------o
+Submitted batch job 305730
+/home/gengzi/catalyticLAM/datasetworkflow/POSCAR/POSCAR-132743d/OPT
+ 
+            \\\///         
+           / _  _ \         Hey, you must know what you are doing.
+         (| (o)(o) |)       Otherwise you might get wrong results.
+ o-----.OOOo--()--oOOO.------------------------------------------o
+ |         VASPKIT Standard Edition 1.4.1 (26 Apr. 2023)         |
+ |         Core Developer: Vei WANG (wangvei@icloud.com)         |
+ |      Main Contributors: Gang TANG, Nan XU & Jin-Cheng LIU     |
+ |  Online Tutorials Available on Website: https://vaspkit.com   |
+ o-----.oooO-----------------------------------------------------o
+        (   )   Oooo.                          VASPKIT Made Simple
+         \ (    (   )     
+          \_)    ) /      
+                (_/       
+ ===================== Structural Utilities ======================
+ 1)  VASP Input-Files Generator    2)  Mechanical Properties      
+ 3)  K-Path for Band-Structure     4)  Structure Editor           
+ 5)  Catalysis-ElectroChem Kit     6)  Symmetry Analysis          
+ 7)  Materials Databases           8)  Advanced Structure Models  
+ ===================== Electronic Utilities ======================
+ 11) Density-of-States             21) Band-Structure             
+ 23) 3D Band-Structure             25) Hybrid-DFT Band-Structure  
+ 26) Fermi-Surface                 28) Band-Structure Unfolding   
+ 31) Charge-Density Analysis       42) Potential Analysis         
+ 51) Wave-Function Analysis        62) Magnetic Properties        
+ 65) Spin-Texture                  68) Transport Properties       
+ ======================== Misc Utilities =========================
+ 71) Optical Properties            72) Molecular-Dynamics Kit     
+ 74) User Interface                78) VASP2other Interface       
+ 91) Semiconductor Kit             92) 2D-Material Kit            
+ 0)  Quit                                                         
+ ------------>>
+ ======================== K-Mesh Scheme ==========================
+ 1) Monkhorst-Pack Scheme                                         
+ 2) Gamma Scheme                                                  
+ 3) Irreducible K-Points with Gamma Scheme                        
+                                                                  
+ 0)   Quit                                                        
+ 9)   Back                                                        
+ ------------->>
+ -->> (01) Reading Structure from POSCAR File...
+ +---------------------------- Tip ------------------------------+
+   * Accuracy Levels: Gamma-Only: 0;              
+                      Low: 0.06~0.04;             
+                      Medium: 0.04~0.03;          
+                      Fine: 0.02-0.01.            
+   * 0.03-0.04 is Generally Precise Enough!                
+ +---------------------------------------------------------------+
+ Input Kmesh-Resolved Value (in Units of 2*PI/Angstrom): 
+ ------------>>
+ +-------------------------- Summary ----------------------------+
+ Reciprocal Lattice Vectors (in Units of 1/Angstrom):
+       0.8112046101       0.0000000000       0.0000000000
+       0.0000000000       0.5344617099       0.0000000000
+       0.0000000000       0.0000000000       0.5620022636
+ Reciprocal Lattice Constants:   0.0000   0.0000   0.0000
+ Real-Space Lattice Constants:   7.7455  11.7561  11.1800
+ K-Mesh Size:    1    1    1
+ +---------------------------------------------------------------+
+ -->> (02) Written KPOINTS File!
+ -->> (03) Written INCAR file!
+ +-------------------------- Summary ----------------------------+
+ POTCAR Type: PBE
+ Number of Elements: 4
+ POTCAR File No.1: [ POTCAR_C ], Valence Electron: 4.0
+ POTCAR File No.2: [ POTCAR_F ], Valence Electron: 7.0
+ POTCAR File No.3: [ POTCAR_H ], Valence Electron: 1.0
+ POTCAR File No.4: [ POTCAR_N ], Valence Electron: 5.0
+ Total Atoms: 15
+ Total Valence Electrons: 48.0
+ +---------------------------------------------------------------+
+ -->> (04) Written POTCAR File with the Standard Potential!
+ o---------------------------------------------------------------o
+ |                       * ACKNOWLEDGMENTS *                     |
+ | Other Contributors (in no particular order): Peng-Fei LIU,    |
+ | Xue-Fei LIU, Dao-Xiong WU, Zhao-Fu ZHANG, Tian WANG, Qiang LI,|
+ | Ya-Chao LIU, Jiang-Shan ZHAO, Qi-Jing ZHENG, Yue QIU and You! |
+ | Advisors: Wen-Tong GENG, Yoshiyuki KAWAZOE                    |
+ :) Any Suggestions for Improvement are Welcome and Appreciated (:
+ |---------------------------------------------------------------|
+ |                          * CITATIONS *                        |
+ | When using VASPKIT in your research PLEASE cite the paper:    |
+ | [1] V. WANG, N. XU, J.-C. LIU, G. TANG, W.-T. GENG, VASPKIT: A|
+ | User-Friendly Interface Facilitating High-Throughput Computing|
+ | and Analysis Using VASP Code, Computer Physics Communications |
+ | 267, 108033, (2021), DOI: 10.1016/j.cpc.2021.108033           |
+ o---------------------------------------------------------------o
+Submitted batch job 305731
+Entered folder '/home/gengzi/catalyticLAM/datasetworkflow/POSCAR' and perform operations
+Job submitted in directory: /home/gengzi/catalyticLAM/datasetworkflow/POSCAR/POSCAR-132742d/OPT
+Job submitted in directory: /home/gengzi/catalyticLAM/datasetworkflow/POSCAR/POSCAR-132745d/OPT
+Job submitted in directory: /home/gengzi/catalyticLAM/datasetworkflow/POSCAR/POSCAR-132741d/OPT
+Job submitted in directory: /home/gengzi/catalyticLAM/datasetworkflow/POSCAR/POSCAR-132744d/OPT
+Job submitted in directory: /home/gengzi/catalyticLAM/datasetworkflow/POSCAR/POSCAR-132743d/OPT
+Submitted batch job 305732
+Submitted batch job 305733
+Submitted batch job 305734
+Submitted batch job 305735
+Submitted batch job 305736
+Entered folder '/home/gengzi/catalyticLAM/datasetworkflow/POSCAR' and perform operations
+SCF converged in /home/gengzi/catalyticLAM/datasetworkflow/POSCAR/POSCAR-132745d/OPT
+Removed zero velocities from /home/gengzi/catalyticLAM/datasetworkflow/POSCAR/POSCAR-132745d/MD/POSCAR
+Job submitted in directory: /home/gengzi/catalyticLAM/datasetworkflow/POSCAR/POSCAR-132745d/MD
+SCF converged in /home/gengzi/catalyticLAM/datasetworkflow/POSCAR/POSCAR-132742d/OPT
+Removed zero velocities from /home/gengzi/catalyticLAM/datasetworkflow/POSCAR/POSCAR-132742d/MD/POSCAR
+Job submitted in directory: /home/gengzi/catalyticLAM/datasetworkflow/POSCAR/POSCAR-132742d/MD
+SCF converged in /home/gengzi/catalyticLAM/datasetworkflow/POSCAR/POSCAR-132744d/OPT
+Removed zero velocities from /home/gengzi/catalyticLAM/datasetworkflow/POSCAR/POSCAR-132744d/MD/POSCAR
+Job submitted in directory: /home/gengzi/catalyticLAM/datasetworkflow/POSCAR/POSCAR-132744d/MD
+SCF converged in /home/gengzi/catalyticLAM/datasetworkflow/POSCAR/POSCAR-132743d/OPT
+Removed zero velocities from /home/gengzi/catalyticLAM/datasetworkflow/POSCAR/POSCAR-132743d/MD/POSCAR
+Job submitted in directory: /home/gengzi/catalyticLAM/datasetworkflow/POSCAR/POSCAR-132743d/MD
+SCF converged in /home/gengzi/catalyticLAM/datasetworkflow/POSCAR/POSCAR-132741d/OPT
+Removed zero velocities from /home/gengzi/catalyticLAM/datasetworkflow/POSCAR/POSCAR-132741d/MD/POSCAR
+Job submitted in directory: /home/gengzi/catalyticLAM/datasetworkflow/POSCAR/POSCAR-132741d/MD
