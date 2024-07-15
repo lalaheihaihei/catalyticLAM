@@ -12,8 +12,8 @@ Machine-Learning-Based Interatomic Potentials for Catalysis: an Universal Cataly
 │   └── utils
 ├── generation
 │   ├── alloy_db.py
-│   ├── gpt-bulk.py
-│   ├── gpt.py
+│   ├── make-bulk.py
+│   ├── make-slab.py
 │   ├── material_db.py
 │   ├── metal_db.py
 │   └── molecule_db.py
@@ -32,8 +32,8 @@ Machine-Learning-Based Interatomic Potentials for Catalysis: an Universal Cataly
 
 This section is responsible for generating structures, including bulk and slab structures for VASP calculation. Please read README.md in generation for details.
 
-- `gpt-bulk.py`: Generates bulk structures.
-- `gpt.py`: Generates slab structures.
+- `make-bulk.py`: Generates bulk structures.
+- `make-slab.py`: Generates slab structures.
 - `material_db.py`: Information for generation database.
 - `molecule_db.py`: Molecular structures database.
 
@@ -89,8 +89,8 @@ Navigate to the `generation` directory and run the appropriate script to generat
 
 ```
 cd generation
-python ./gpt-bulk.py --task search --ificsd --bulktype alloy --elementNumber 2
-python ./gpt.py --up-down UUUUDDDD --plot --element Ru --molecule-type all
+python ./make-bulk.py --task search --ificsd --bulktype alloy --elementNumber 2
+python ./make-slab.py --up-down UUUUDDDD --plot --element Ru --molecule-type all
 ```
 
 #### Run VASP Workflow
