@@ -2,12 +2,11 @@ import time
 import argparse
 import os
 import shutil
-import time
 from glob import glob
 import subprocess
 import dpdata as dp
-from ase.io import read
 from tqdm import tqdm
+
 
 class VASPManager:
     """
@@ -44,6 +43,7 @@ class VASPManager:
         os.chdir(target_folder)
         print(f"Entered folder '{target_folder}' and perform operations")
         return True
+
 
 class VASPJobManager:
     """
@@ -292,6 +292,7 @@ class AtomicStructureManager:
         except Exception as e:
             print(f"Error processing {poscar_path}: {e}")
 
+
 class ConvergenceChecker:
     """ Class for checking convergence of calculations."""
     def check_convergence(self, directory):
@@ -362,6 +363,7 @@ class ConvergenceChecker:
             with open(record_file_path, "a") as record_file:
                 record_file.write(f"{outcar_path} file not found in {md_folder}\n")
 
+
 class DPDataProcessor:
     """
     Class for processing DP data.
@@ -372,14 +374,15 @@ class DPDataProcessor:
         prefix (str): Prefix for data files.
         fmt (str): Format of data files.
     """
-    def __init__(self,step=1,test_size=0.1,prefix='./data',fmt='npy_single') -> None:
-        self.step=step
-        self.test_size=test_size
-        self.prefix=prefix
-        self.fmt=fmt
+    def __init__(self, step=1, test_size=0.1, prefix='./data', fmt='npy_single') -> None:
+        self.step = step
+        self.test_size = test_size
+        self.prefix = prefix
+        self.fmt = fmt
+
     def process(self):
         """ Process DP data."""
-        def find_folders_with_outcar(search_path='./POSCAR',label='OUTCAR'):
+        def find_folders_with_outcar(search_path='./POSCAR', label='OUTCAR'):
             """ Find folders containing 'OUTCAR' files. """
             seen_folders = []  
            # Traverse all 'OUTCAR' files under the specified search path.
@@ -393,6 +396,7 @@ class DPDataProcessor:
             return seen_folders
         
         import re
+
         def extract_nonzero_elements(compound_string):
             """ Extract non-zero elements from a compound string."""
             elements = re.findall(r'([A-Z][a-z]*)(\d+)', compound_string)
@@ -400,47 +404,48 @@ class DPDataProcessor:
             formula = ''.join(f"{element}{quantity}" if quantity != 1 else element for element, quantity in nonzero_elements)         
             return formula
         
-        d=find_folders_with_outcar()
-        ms=dp.MultiSystems()
-        for i in tqdm(d):
+        directory = find_folders_with_outcar()
+        ms = dp.MultiSystems()
+        for i in tqdm(directory):
             try:
-                data=dp.LabeledSystem(f'{i}/OUTCAR',fmt='vasp/outcar',step=int(self.step))
-            except Exception as e:
-                print(f"system {i} failed to load,please check the OUTCAR file")
+                data = dp.LabeledSystem(f'{i}/OUTCAR', fmt='vasp/outcar', step=int(self.step))
+            except Exception as error:
+                print(f"{error} system {i} failed to load, please check the OUTCAR file")
                 continue
             ms.append(data)
         # split data into train and validation
-        dataset=ms.train_test_split(test_size=float(self.test_size))
+        dataset = ms.train_test_split(test_size=float(self.test_size))
         if not os.path.exists(self.prefix):
             os.makedirs(self.prefix)
         else:
             pass
-        if not os.path.exists(os.path.join(self.prefix,'train')):
-            os.makedirs(os.path.join(self.prefix,'train'))
-        if not os.path.exists(os.path.join(self.prefix,'val')):
-            os.makedirs(os.path.join(self.prefix,'val'))
+        if not os.path.exists(os.path.join(self.prefix, 'train')):
+            os.makedirs(os.path.join(self.prefix, 'train'))
+        if not os.path.exists(os.path.join(self.prefix, 'val')):
+            os.makedirs(os.path.join(self.prefix, 'val'))
 
-        if self.fmt=='npy_single':
+        if self.fmt == 'npy_single':
             for i in dataset[0]:
-                name=extract_nonzero_elements(i.formula)
-                i.to_deepmd_npy(self.prefix + "/train"+f"/{name}")
+                name = extract_nonzero_elements(i.formula)
+                i.to_deepmd_npy(self.prefix + "/train" + f"/{name}")
                 
             for i in dataset[1]:
-                name=extract_nonzero_elements(i.formula)
-                i.to_deepmd_npy(self.prefix + "/val"+f"/{name}")
+                name = extract_nonzero_elements(i.formula)
+                i.to_deepmd_npy(self.prefix + "/val" + f"/{name}")
 
-        if self.fmt=='npy_mix':
+        if self.fmt == 'npy_mix':
             dataset[0].to_deepmd_npy_mixed(self.prefix + "/train")
             dataset[1].to_deepmd_npy_mixed(self.prefix + "/val")
 
-        elif self.fmt=='lmdb':
+        elif self.fmt == 'lmdb':
 
             from fairchem.core.preprocessing import AtomsToGraphs
             import lmdb
             import pickle
             import torch
             import numpy as np
-            def tolmdb(file,data):
+
+            def tolmdb(file, data):
                 """ Convert data to lmdb format. note: this format is justed for s2ef task with fairchem package."""
                 a2g = AtomsToGraphs(
                 max_neigh=50,
@@ -453,16 +458,16 @@ class DPDataProcessor:
                 # tags = raw_data[0].get_tags()
 
                 for i in data:
-                    name=extract_nonzero_elements(i.formula)
-                    ase_data=i.to_ase_structure()
+                    name = extract_nonzero_elements(i.formula)
+                    ase_data = i.to_ase_structure()
 
                 # simple devide atom according to z coordinate, 1 for subsurface, 2 for surface
-                    b=ase_data[0].positions[:,2]
+                    pos = ase_data[0].positions[:, 2]
                     # b=a[1]['pos'][:,2]
-                    c1= b<np.max(b)-2 
-                    c2= np.min(b)+2< b
-                    c=c1 & c2
-                    tag=np.where(c,1,2)
+                    cond1 = pos < np.max(pos) - 2 
+                    cond2 = np.min(pos) + 2 < pos
+                    cond = cond1 & cond2
+                    tag = np.where(cond, 1, 2)
 
 
                     # ase_data[0].set_tags(tag)
@@ -491,8 +496,8 @@ class DPDataProcessor:
 
                     db.sync()
                     db.close()
-            tolmdb(file='train',data=dataset[0])
-            tolmdb(file='val',data=dataset[1])
+            tolmdb(file='train', data=dataset[0])
+            tolmdb(file='val', data=dataset[1])
 
 
 def parse_arguments():
@@ -503,10 +508,11 @@ def parse_arguments():
     parser.add_argument("-r", "--restart", choices=["restart"], default=None, help="Restart tasks if needed.")
     return parser.parse_args()
 
+
 def read_parameters_from_file(file_path="input"):
     """ Read parameters from a file. """
     parameters = {}
-    with open(file_path, 'r') as file:
+    with open(file_path, 'r', encoding='utf-8') as file:
         for line in file:
             if line.strip():
                 key, value = line.strip().split(":")
@@ -527,6 +533,7 @@ def read_parameters_from_file(file_path="input"):
         parameters.get('plot_name',None)
 
     )
+
 
 def main():
     """ Main function. the entry for the program."""
@@ -556,13 +563,14 @@ def main():
             if os.path.exists(md_folder):
                 convergence_checker.md_check(md_folder)
     elif args.operation == "dpdata":
-        dpdata=DPDataProcessor(step=step,test_size=test_size,prefix=dataset_prefix,fmt=dataset_fmt)
+        dpdata = DPDataProcessor(step=step, test_size=test_size, prefix=dataset_prefix, fmt=dataset_fmt)
         dpdata.process()
     
-    elif args.operation == "plot" and os.path.isdir(os.path.join(dataset_prefix,'train')):
+    elif args.operation == "plot" and os.path.isdir(os.path.join(dataset_prefix, 'train')):
         from utils.plot_weight import PeriodicTableWeightsVisualizer
-        visualizer = PeriodicTableWeightsVisualizer(poscar_dir = os.path.join(dataset_prefix,'train'),fmt=dataset_fmt)
+        visualizer = PeriodicTableWeightsVisualizer(poscar_dir = os.path.join(dataset_prefix, 'train'), fmt=dataset_fmt)
         visualizer.plot_2d(name = plot_name)
+    
     
 if __name__ == "__main__":
     main()
