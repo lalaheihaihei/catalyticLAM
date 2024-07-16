@@ -10,7 +10,7 @@ from tqdm import tqdm
 
 class VASPManager:
     """
-    Class to manage VASP calculations
+    Class to manage VASP calculations.
 
     Args:
     work_path: path to the working directory
