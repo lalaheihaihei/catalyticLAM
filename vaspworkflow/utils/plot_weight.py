@@ -216,7 +216,6 @@ class PeriodicTableWeightsVisualizer:
         ax.view_init(elev=80, azim=270)
         plt.savefig("weight3d.png")
 
-# Example usage
 
 
 
