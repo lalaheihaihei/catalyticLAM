@@ -361,7 +361,6 @@ if __name__ == "__main__":
     up_down = args.up_down
 
     material_ids = getattr(material_db, args.type)
-
     slab_generator = SlabGenerator(api_key, enable_plotting)
     slab_generator.run(material_ids=material_ids, molecule_type=args.molecule_type, up_down=args.up_down,
                        max_index=args.max_index, min_slab_size=args.min_slab_size,
