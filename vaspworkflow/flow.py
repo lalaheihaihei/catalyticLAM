@@ -445,6 +445,7 @@ class DPDataProcessor:
             import torch
             import numpy as np
 
+
             def tolmdb(file, data):
                 """ Convert data to lmdb format. note: this format is justed for s2ef task with fairchem package."""
                 a2g = AtomsToGraphs(
@@ -454,48 +455,48 @@ class DPDataProcessor:
                 r_forces=True,    # False for test data
                 r_distances=False,
                 r_fixed=True,
-            )
+                )
                 # tags = raw_data[0].get_tags()
 
+                all_data_objects = []
                 for i in data:
-                    name = extract_nonzero_elements(i.formula)
                     ase_data = i.to_ase_structure()
-
                 # simple devide atom according to z coordinate, 1 for subsurface, 2 for surface
                     pos = ase_data[0].positions[:, 2]
-                    # b=a[1]['pos'][:,2]
                     cond1 = pos < np.max(pos) - 2 
                     cond2 = np.min(pos) + 2 < pos
                     cond = cond1 & cond2
                     tag = np.where(cond, 1, 2)
 
-
-                    # ase_data[0].set_tags(tag)
                     data_objects = a2g.convert_all(ase_data, disable_tqdm=True)
+                    all_data_objects.extend(data_objects)
+                # return all_data_objects
+            
                     # tags = ase_data[0].get_tags()
-                    db = lmdb.open(
-                    f'{self.prefix}/{file}/{name}.lmdb',
-                    map_size=1099511627776 * 2,
-                    subdir=False,
-                    meminit=False,
-                    map_async=True,
-                    )
-                    for fid, data1 in tqdm(enumerate(data_objects), total=len(data_objects)):
-                    #assign fid
-                        data1.fid = torch.LongTensor([fid])
-                        data1.sid = torch.LongTensor([0])
-                        data1.tags = torch.LongTensor(tag)
+                db = lmdb.open(
+                f'{self.prefix}/{file}.lmdb',
+                map_size=1099511627776 * 2,
+                subdir=False,
+                meminit=False,
+                map_async=True,
+                )
+                for fid, data1 in tqdm(enumerate(all_data_objects), total=len(all_data_objects)):
+                #assign fid
+                    data1.fid = torch.LongTensor([fid])
+                    data1.sid = torch.LongTensor([0])
+                    data1.tags = torch.LongTensor(tag)
 
-                        txn = db.begin(write=True)
-                        txn.put(f"{fid}".encode("ascii"), pickle.dumps(data1, protocol=-1))
-                        txn.commit()
+                    txn = db.begin(write=True)
+                    txn.put(f"{fid}".encode("ascii"), pickle.dumps(data1, protocol=-1))
+                    txn.commit()
 
-                        txn = db.begin(write=True)
-                        txn.put(f"length".encode("ascii"), pickle.dumps(len(data_objects), protocol=-1))
-                        txn.commit()
+                    txn = db.begin(write=True)
+                    txn.put(f"length".encode("ascii"), pickle.dumps(len(all_data_objects), protocol=-1))
+                    txn.commit()
 
-                    db.sync()
-                    db.close()
+                db.sync()
+                db.close()
+
             tolmdb(file='train', data=dataset[0])
             tolmdb(file='val', data=dataset[1])
 
