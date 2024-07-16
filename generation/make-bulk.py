@@ -32,7 +32,6 @@ class BulkGenerator:
             print(f"Fetching and scaling structure for {material_id['name']} with ID {material_id['mp_id']}...")
             structure = self.mpr.get_structure_by_material_id(material_id['mp_id'])
             magmom = structure.site_properties.get('magmom', 'N/A')  # Default to 'N/A' if magmom is not available
-            # print(self.mpr.magnetism.search(material_ids=[material_id['mp_id']]))
             structure = SpacegroupAnalyzer(structure).get_conventional_standard_structure()
             
             # Calculate scaling factors for each lattice parameter
