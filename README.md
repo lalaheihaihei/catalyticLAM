@@ -23,6 +23,13 @@ Machine-Learning-Based Interatomic Potentials for Catalysis: an Universal Cataly
 │   ├── flowts.py
 │   ├── POSCAR
 │   └── utils
+├── train
+│   ├── finetune.json
+│   ├── input.json
+│   ├── model.ckpt-10000000.pt
+│   ├── lcurve
+│   └── dataset
+│       ├── LiGePS
 └── README.md
 ```
 
@@ -57,6 +64,13 @@ This section is responsible for model-accelerated structure optimization, transi
 - `utils`: Contains configuration files and scripts for optimization and transition state search.
 
 ### 4. Pretrained Catalytic Large Atomic Model for PostWorkflow
+This section contains the pretrained CLAM model for postworkflow and its training, finetune, checkpoint files.
+
+- `finetune.json`: input file for fine-tuning the CLAM model.
+- `input.json`: input file for training the CLAM model.
+- `model.ckpt-10000000.pt`: The checkpoint of pretrained CLAM model.
+- `lcurve`: output file containing learning curves.
+- `dataset`: Directory containing the dataset for finetune operation.
 
 ## Installation and Usage
 
@@ -116,6 +130,15 @@ cd postworkflow
 python flowopt.py
 ```
 
+#### Construct Pretrained Catalytic Large Atomic Model for PostWorkflow
+
+Navigate to the `train` directory, edit the input files, and run the relevant scripts:
+more information please refer to Deepmd-kit official website(below).
+
+```
+dp --pt train input.json > out
+dp --pt train --finetune model.ckpt.10000000.pt --model-branch <head> finetune.json > out (At present, the head name is only supported for oc22 and metal)
+```
 ## License
 
 This project is licensed under the GNU General Public License v3.0. See the [LICENSE](LICENSE) file for details.
