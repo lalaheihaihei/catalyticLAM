@@ -1,0 +1,28 @@
+SYSTEM =  Molecule
+
+ISMEAR =  0 
+SIGMA  =  0.1
+ENCUT  =  500
+EDIFF  =  1E-5
+NELM   =  150
+NELMIN =  6
+ISIF   =  2
+ALGO   =  N
+LREAL  =  Auto
+ISYM   =  0
+LORBIT =  11
+
+EDIFFG = -0.02
+
+LWAVE  =  .FALSE.
+LCHARG =  .FALSE.
+NPAR   =  4
+
+NSW = 100
+IBRION = 0
+POTIM = 1
+SMASS = 0
+MDALGO = 2
+TEBEG = 500
+TEEND = 500
+NBLOCK = 1

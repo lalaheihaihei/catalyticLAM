@@ -1,0 +1,6 @@
+#!/bin/bash
+#SBATCH -n 64
+#SBATCH -N 1
+
+module load VASP/6.4.1-gzbuild-intel_8300
+mpirun vasp_std > vasp.out 2>vasp.err

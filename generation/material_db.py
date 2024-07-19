@@ -1,21 +1,55 @@
-COoxidation_CO2reduction=['C', 'O','CO','CO2','COOH','H']
-CxHyEpoxidation_Hydrogenation=['C2H4','CH2CH2O', 'O', 'C2H2', 'H']
+CO_Oxidation=['O2','O','CO','CO2']
+CO2_Reduction=['CO2','H2','H','COOH','HCOO']
+C2H4_Epoxidation=['C2H4','CH2CH2O','O','C2H2','H']
+C2H2_Hydrogenation=['C2H2','C2H3','C2H4','H2','H']
+C3H8_Dehydrogenation=['C3H8','C3H6','H2','H2','H']
 AmmoniaSynthesis=['NH3','N','H','NH','NH2','NNH']
-ORR_OER=['OOH','OH','H2O','O']
+ORR_OER=['OOH','OH','H2O','O','O2']
+HER_HOR=['OH','H2O','H','H2']
+CO2_Electroreduction=['CO2','CO','H2O','H','O']
+NOx_Oxidation=['NO','NO2','NO3','N','O']
+CH4_Activation=['CH4','C','H','CH3','CH2','CH']
+Fischer_Tropsch=['CO','O','H','HCO','COH','CH2']
 Waterinterface=['H2O','H2O','H2O','H2O']
-NOxOxidation=['NO','NO2','NO3','N','O']
 type3=[
         {'name': 'Ru', 'mp_id': 'mp-33', 'ads': AmmoniaSynthesis},
-        {'name': 'Ag', 'mp_id': 'mp-124', 'ads': CxHyEpoxidation_Hydrogenation},
-        {'name': 'Ag', 'mp_id': 'mp-124', 'ads': COoxidation_CO2reduction},
+        {'name': 'Ru', 'mp_id': 'mp-33', 'ads': Waterinterface},
+        {'name': 'Rh', 'mp_id': 'mp-74', 'ads': AmmoniaSynthesis},
+        {'name': 'Rh', 'mp_id': 'mp-74', 'ads': CO2_Reduction},
+        {'name': 'Rh', 'mp_id': 'mp-74', 'ads': CH4_Activation},
+        {'name': 'Ag', 'mp_id': 'mp-124', 'ads': C2H4_Epoxidation},
+        {'name': 'Ag', 'mp_id': 'mp-124', 'ads': CO_Oxidation},
         {'name': 'Ag', 'mp_id': 'mp-124', 'ads': ORR_OER},
         {'name': 'Ag', 'mp_id': 'mp-124', 'ads': Waterinterface},
-        {'name': 'Pt', 'mp_id': 'mp-126', 'ads': NOxOxidation},
+        {'name': 'Pt', 'mp_id': 'mp-126', 'ads': NOx_Oxidation},
         {'name': 'Pt', 'mp_id': 'mp-126', 'ads': Waterinterface},
-        {'name': 'Pt', 'mp_id': 'mp-126', 'ads': ORR_OER},
+        {'name': 'Pt', 'mp_id': 'mp-126', 'ads': HER_HOR},
         {'name': 'Pt', 'mp_id': 'mp-126', 'ads': AmmoniaSynthesis},
-        {'name': 'Pt', 'mp_id': 'mp-126', 'ads': CxHyEpoxidation_Hydrogenation},
-        {'name': 'Pt', 'mp_id': 'mp-126', 'ads': COoxidation_CO2reduction},
+        {'name': 'Pt', 'mp_id': 'mp-126', 'ads': C3H8_Dehydrogenation},
+        {'name': 'Pt', 'mp_id': 'mp-126', 'ads': CO2_Reduction},
+        {'name': 'Cu', 'mp_id': 'mp-30', 'ads': CO_Oxidation},
+        {'name': 'Cu', 'mp_id': 'mp-30', 'ads': CO2_Reduction},
+        {'name': 'Cu', 'mp_id': 'mp-30', 'ads': CO2_Electroreduction},
+        {'name': 'Cu', 'mp_id': 'mp-30', 'ads': ORR_OER},
+        {'name': 'Cu', 'mp_id': 'mp-30', 'ads': CH4_Activation},
+        {'name': 'Cu', 'mp_id': 'mp-30', 'ads': Fischer_Tropsch},
+        {'name': 'Cu', 'mp_id': 'mp-30', 'ads': Waterinterface},
+        {'name': 'Au', 'mp_id': 'mp-81', 'ads': CO_Oxidation},
+        {'name': 'Au', 'mp_id': 'mp-81', 'ads': Waterinterface},
+        {'name': 'Fe', 'mp_id': 'mp-13', 'ads': AmmoniaSynthesis},
+        {'name': 'Fe', 'mp_id': 'mp-13', 'ads': Fischer_Tropsch},
+        {'name': 'Co', 'mp_id': 'mp-54', 'ads': AmmoniaSynthesis},
+        {'name': 'Co', 'mp_id': 'mp-54', 'ads': Fischer_Tropsch},
+        {'name': 'Ni', 'mp_id': 'mp-23', 'ads': CO2_Reduction},
+        {'name': 'Ni', 'mp_id': 'mp-23', 'ads': CH4_Activation},
+        {'name': 'Pd', 'mp_id': 'mp-2', 'ads': C2H2_Hydrogenation},
+        {'name': 'Pd', 'mp_id': 'mp-2', 'ads': ORR_OER},
+        {'name': 'Pd', 'mp_id': 'mp-2', 'ads': HER_HOR},
+        {'name': 'Pd', 'mp_id': 'mp-2', 'ads': Waterinterface},
+        {'name': 'Ir', 'mp_id': 'mp-101', 'ads': CO2_Reduction},
+        {'name': 'Ir', 'mp_id': 'mp-101', 'ads': CH4_Activation},
+        {'name': 'Ir', 'mp_id': 'mp-101', 'ads': Waterinterface},
+        {'name': 'Zn', 'mp_id': 'mp-79', 'ads': CO2_Reduction},
         ]
 
 alloy_element_list = [
