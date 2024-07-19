@@ -1,0 +1,7 @@
+work_path:        /home/gengzi/workflow/
+opt_INCAR_path:   /home/gengzi/workflow/utils/INCAR_OPT
+md_INCAR_path:    /home/gengzi/workflow/utils/INCAR_MD-None
+vasp_sub_path:    /home/gengzi/workflow/utils/vasp.sub
+structre_db_path: /home/gengzi/workflow/structure_db
+max_jobs:15
+sleep_time:20
