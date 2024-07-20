@@ -1,0 +1,27 @@
+SYSTEM =  Bulk
+
+ISMEAR =  1
+SIGMA  =  0.1
+ENCUT  =  500
+EDIFF  =  1E-7
+NELM   =  150
+NELMIN =  6
+ISIF   =  2
+ALGO   =  Normal 
+LREAL  =  Auto
+ISYM   =  0
+
+EDIFFG = -0.1
+NSW    =  5 
+
+LWAVE  =  .FALSE.
+LCHARG =  .FALSE.
+NPAR   =  4
+
+IMAGES = 4 
+LCLIMB = .TRUE.
+IOPT = 0 
+SPRING = -5
+IBRION = 1 
+POTIM = 0.1
+ICHAIN = 0

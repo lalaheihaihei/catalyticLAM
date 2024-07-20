@@ -22,27 +22,31 @@ flowopt.py script performs an iterative optimization and fine-tuning workflow us
 ├── utils
 │ ├── INCAR # VASP input file, with NSW = 3
 │ ├── KPOINTS # VASP k-points file
-│ ├── sub.vasp # VASP submission script
+│ ├── sub.vasp # VASP submission script, slurm
 │ ├── finetune1.json # Fine-tuning configuration template
 │ └── sub.dp # DeepMD-kit submission script
-└── record.txt # File to record the progress of the workflow
+└── record.txt # File to record the progress of the workflow for restart
 
 ## Usage
 
 1. Ensure all prerequisites are installed and configured correctly.
 2. Prepare the necessary input files (`INCAR`, `KPOINTS`, `sub.vasp`, `finetune1.json`, `sub.dp`) in the `utils` directory.
+
 3. Place the initial atomic structure file (`POSCAR`) in the working directory.
 4. Run the script with the desired parameters.
 
 ### Command-Line Arguments
 
-- `--num_iterations`: Number of iterations to run (default: 5).
-- `--steps_per_iteration`: Number of steps per iteration (default: 100).
 
 ### Example Command
 
+To run the script, use the following command:
+```sh
+python script_name.py [--num_iterations NUM] [--steps_per_iteration NUM] [--fixed_atoms NUM] [--iffinal BOOL] [--skip_first_opt BOOL]
+```
 ```bash
 python flowopt.py --num_iterations 5 --steps_per_iteration 100
+nohup python ./flowopt.py --num_iterations 3 --fixed_atoms 30 --skip_first_opt True &
 ```
 
 ## Workflow Description
@@ -80,7 +84,8 @@ The script follows these main steps:
 The script records the progress of each step in `record.txt`. If the script is interrupted, it can resume from the last completed step by reading the `record.txt` file.
 examples of `record.txt`
 
-```aseopt1
+```
+aseopt1
 vaspopt1
 dpdata1
 finetune1
