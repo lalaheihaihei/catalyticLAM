@@ -1,8 +1,12 @@
-# catalyticLAM
-Machine-Learning-Based Interatomic Potentials for Catalysis: an Universal Catalytic Large Atomic Model
+# postworkflow
+Aims of flowopt.py and flowts.py are reducing the ionic steps of optimization and transition state calculations, to avoid computational cost of SCF step,
 
-# flowopt.py
-flowopt.py script performs an iterative optimization and fine-tuning workflow using ASE (Atomic Simulation Environment) and VASP (Vienna Ab initio Simulation Package) with DeepMD-kit. The workflow involves optimizing atomic structures, running VASP calculations, generating new datasets, and fine-tuning machine learning models iteratively. After completing the specified number of iterations, a final optimization step is performed.
+## flowopt.py
+flowopt.py script performs an iterative optimization and fine-tuning workflow using ASE (Atomic Simulation Environment) and VASP (Vienna Ab initio Simulation Package) with DeepMD-kit. The workflow involves optimizing atomic structures, running VASP calculations, generating new datasets for finetune, and fine-tuning machine learning models iteratively. After completing the specified number of iterations, a final VASP optimization step is performed to get accurate configuration and energy.
+
+## flowts.py
+
+flowts.py script performs an iterative NEB calculation and fine-tuning workflow using ASE (Atomic Simulation Environment) and VASP (Vienna Ab initio Simulation Package) with DeepMD-kit. The workflow involves ase-CINEB calculations, running VASP-CINEB calculations, generating new datasets for finetune, and fine-tuning machine learning models iteratively. After completing the specified number of iterations, a final VASP-CINEB step is performed to get accurate transition states configuration and energy.
 
 ## Prerequisites
 
@@ -14,8 +18,7 @@ flowopt.py script performs an iterative optimization and fine-tuning workflow us
 - VASPkit
 - SLURM (for job scheduling)
 
-## File Structure
-
+## flowopt.py File Structure
 .
 ├── flowopt.py # Main script for the workflow
 ├── POSCAR # initial structure for opt
@@ -27,7 +30,7 @@ flowopt.py script performs an iterative optimization and fine-tuning workflow us
 │ └── sub.dp # DeepMD-kit submission script
 └── record.txt # File to record the progress of the workflow for restart
 
-## Usage
+## flowopt.py Usage
 
 1. Ensure all prerequisites are installed and configured correctly.
 2. Prepare the necessary input files (`INCAR`, `KPOINTS`, `sub.vasp`, `finetune1.json`, `sub.dp`) in the `utils` directory.
