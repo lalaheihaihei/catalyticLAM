@@ -6,7 +6,8 @@ from pymatgen.io.vasp.inputs import Poscar
 from plotter import BulkPlotter
 from pymatgen.symmetry.analyzer import SpacegroupAnalyzer
 from mp_api.client import MPRester
-from material_db import metal_element_list,alloy_element_list,type1,type4  # Replace 'some_library' with the actual library name
+from element_list import metal_element_list,alloy_element_list
+from material_db import type1,type4  # Replace 'some_library' with the actual library name
 
 class BulkGenerator:
     def __init__(self, api_key):
