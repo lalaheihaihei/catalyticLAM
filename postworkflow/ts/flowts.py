@@ -228,7 +228,7 @@ def main():
     parser.add_argument('--spring_constant', type=float, default=1.0, help='Spring constant for NEB calculations.')
     parser.add_argument('--steps_per_iteration', type=int, default=1000, help='Number of steps per iteration.')
     parser.add_argument('--apply_constraint', type=bool, default=False, help='Whether to apply constraints during interpolation.')
-    parser.add_argument('--skip_first_neb', action='store_true', help='Skip the first ASE NEB optimization.')
+    parser.add_argument('--skip_first_neb', type=bool, default=True, help='Whether to skip the first ase cineb step.')
 
     args = parser.parse_args()
 

@@ -100,11 +100,17 @@ class SlabGenerator:
             ads_structs = [reorient_z(asf.add_adsorbate(adsorbate, min_z_atom.coords))]  # Add adsorbate
             if self.enable_plotting:
                 self.plotter.plot_slabs_with_side_view_ase(ads_structs,material_id)
+            self.save_structures(ads_structs, mp_id, struct, slab.miller_index, molecule_type)  # Save the structure
+       
+        
         elif up_down == "U":  # Adsorb on the top surface
             max_z_atom.z += distance
             ads_structs = [reorient_z(asf.add_adsorbate(adsorbate, max_z_atom.coords))]  # Add adsorbate
             if self.enable_plotting:
                 self.plotter.plot_slabs_with_side_view_ase(ads_structs,material_id)
+
+            self.save_structures(ads_structs, mp_id, struct, slab.miller_index, molecule_type)  # Save the structure
+
 
         elif up_down == "UD":  # Adsorb on both surfaces
             # For both surfaces, first flip and adsorb on bottom, then adsorb on top
@@ -122,6 +128,9 @@ class SlabGenerator:
             
             if self.enable_plotting:
                 self.plotter.plot_slabs_with_side_view_ase(ads_structs,material_id)
+
+            self.save_structures(ads_structs, mp_id, struct, slab.miller_index, molecule_type)  # Save the structure
+
 
         elif up_down == "UUD":  # Adsorb on both surfaces
             # For both surfaces, first flip and adsorb on bottom, then adsorb on 2 top
@@ -155,6 +164,7 @@ class SlabGenerator:
                 #self.plotter.plot_slabs(slab, [min_z_atom.coords, max_z_atom.coords, max_new])
                 self.plotter.plot_slabs_with_side_view_ase(ads_structs, material_id, miller_index=miller_index)
 
+            self.save_structures(ads_structs, mp_id, struct, slab.miller_index, molecule_type)  # Save the structure
 
         elif up_down == "UUUUDDDD":  # Adsorb four molecules, two on each surface
             # Ensure that there are enough molecule types to form combinations
@@ -361,6 +371,7 @@ if __name__ == "__main__":
     up_down = args.up_down
 
     material_ids = getattr(material_db, args.type)
+
     slab_generator = SlabGenerator(api_key, enable_plotting)
     slab_generator.run(material_ids=material_ids, molecule_type=args.molecule_type, up_down=args.up_down,
                        max_index=args.max_index, min_slab_size=args.min_slab_size,

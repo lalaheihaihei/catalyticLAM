@@ -48,6 +48,7 @@ flowopt.py script performs an iterative optimization and fine-tuning workflow us
 .
 ├── flowopt.py # Main script for the workflow
 ├── POSCAR # initial structure for opt
+├── frozen_model.pth # pretrained model needed when --skip_first_opt false 
 ├── utils
 │ ├── INCAR # VASP input file for OPT `NSW = 3`
 │ ├── POTCAR # VASP pseudopotentials file
@@ -96,16 +97,17 @@ nohup python script.py --num_iterations 5 --steps_per_iteration 200 --fixed_atom
 graph TD
 A[start] -->|skip_first_opt?| X{skip first?}
 X -.no.-> B[ase optimization with DP potential]
-X -.yes.-> C[VASP optimization by NSW=3 step]
+X -.yes.-> C[VASP optimization, NSW=3]
 B --get CONTCAR--- C[VASP optimization by NSW=3 step]
 C  -->D[collect data by dpdata]
 D --> E[finetune with new data by DeePMD-kit]
-E --> F{if num_iterations}
-F -.yes.-> G{if final}
+E --> F{num_steps?}
+F -.yes.-> H[final ASE optimization with DP]
 F -.no.-> B
-G-.yes.-> H(final VASP optimization with DFT)
-G-.no.-> I(end)
-H --> I
+H --get CONTCAR--> I(if final?)
+I -.yes.-> K[final VASP optimization with DFT]
+I -.no.-> J(END)
+K --> J
 ```
 
 The script follows these main steps:
@@ -176,6 +178,7 @@ flowts.py script performs an iterative NEB calculation and fine-tuning workflow 
 ├── POSCARfs # final structure for NEB calculation (POSCAR format)
 ├── OUTCARis # initial structure's opt OUTCAR
 ├── OUTCARfs # final structure's opt OUTCAR
+├── frozen_model.pth # pretrained model
 ├── utils
 │ ├── INCAR # VASP input file for CINEB NSW = 3
 │ ├── POTCAR # VASP pseudopotentials file
@@ -200,41 +203,41 @@ This script supports the following command-line arguments:
 
 - `initial_structure` (type: `str`): Path to the initial structure (POSCAR format).
 - `final_structure` (type: `str`): Path to the final structure (POSCAR format).
-- `model_path` (type: `str`): Path to the DeepMD model.
+- `model_path` (type: `str`): Path to the DeepMD model, ex: frozen_model.pth_.
 - `initial_outcar` (type: `str`): Path to the initial OUTCAR file.
 - `final_outcar` (type: `str`): Path to the final OUTCAR file.
-- `--num_steps` (type: `int`, default: `1`): Number of steps to run.
+- `--num_steps` (type: `int`, default: `1`): Number of loop steps to run.
 - `--n_images` (type: `int`, default: `4`): Number of intermediate images.
-- `--fmax` (type: `float`, default: `0.5`): Maximum force criteria for optimization.
-- `--interpolation` (choices: `['linear', 'idpp']`, default: `linear`): Interpolation method for generating intermediate images.
-- `--spring_constant` (type: `float`, default: `1.0`): Spring constant for NEB calculations.
-- `--steps_per_iteration` (type: `int`, default: `1000`): Number of steps per iteration.
+- `--fmax` (type: `float`, default: `0.5`): Maximum force criteria for optimization by ase.
+- `--interpolation` (choices: `['linear', 'idpp']`, default: `linear`): Interpolation method for generating intermediate images by ase.
+- `--spring_constant` (type: `float`, default: `1.0`): Spring constant for ase ci-neb calculations.
+- `--steps_per_iteration` (type: `int`, default: `1000`): The number of training, i.e. "numb_steps" parameter in finetune1.json, steps to perform during each finetuning iteration. This value will be multiplied by the iteration number to determine the total number of training steps for each iteration. for example: if --steps_per_iteration 1000, numb_steps will be 1000, 2000, 3000, 4000 in finetune1, finetune2, finetune3, finetune4, respectively.
 - `--apply_constraint` (type: `bool`, default: `False`): Whether to apply constraints during interpolation.
-- `--skip_first_neb` (action: `store_true`): Skip the first ASE NEB optimization.
+- `--skip_first_opt` (type: `bool`, default: `True`): Whether to skip the first ase ci-neb step. If set to `True`, the script will still to do first ase ci-neb step based on DP potential, but the obtained CONTCARs will not be used to the initial VASP ci-neb calculation. If set to `True`, the `POSCARis` and `POSCARfs` files will be used to generate first VASP calculation. Usually, it recommands to keep --skip_first_opt true to do VASP calculation of first step to get some dataset for finetune.
 
 ### 2.2.2 Example Command
 
 To run the script, use the following command:
 
 ```sh
-python script_name.py initial_structure final_structure model_path initial_outcar final_outcar [--num_steps NUM] [--n_images NUM] [--fmax NUM] [--interpolation METHOD] [--spring_constant NUM] [--steps_per_iteration NUM] [--apply_constraint BOOL] [--skip_first_neb]
+python script_name.py initial_structure final_structure model_path initial_outcar final_outcar [--num_steps NUM] [--n_images NUM] [--fmax NUM] [--interpolation METHOD] [--spring_constant NUM] [--steps_per_iteration NUM] [--apply_constraint BOOL] [--skip_first_neb BOOL]
 ```
 ```sh
 nohup python ./flowts.py POSCARis POSCARfs ./frozen_model.pth OUTCARis OUTCARfs &
 ```
 
 
-## 2.3 Workflow Description for flowopt.py 
+## 2.3 Workflow Description for flowts.py 
 ```mermaid
 graph TD
 A[start] -->|skip_first_neb?| X{skip first?}
 X -.no.-> B[ASE CINEB optimization]
-X -.yes.-> C[VASP NEB optimization]
+X -.yes.-> C[VASP CINEB, NSW=3]
 B -->|get CONTCAR0*| C
-C --> D[collect data]
-D --> E[finetune with new data]
+C --> D[collect data by dpdata]
+D --> E[finetune with new data by DeePMD-kit]
 E --> F{num_steps?}
-F -.yes.-> H[final VASP NEB optimization]
+F -.yes.-> H[final VASP CINEB optimization]
 F -.no.-> B
 H --> I[end]
 ```
