@@ -73,21 +73,20 @@ def prepare_vasp_calculation(iteration, final=False):
     shutil.copy('./utils/INCAR', f'{opt_dir}/INCAR')
     shutil.copy('./utils/KPOINTS', f'{opt_dir}/KPOINTS')
     shutil.copy('./utils/sub.vasp', f'{opt_dir}/sub.vasp')
-    shutil.copy('./utils/POTCAR', f'{opt_dir}/POTCAR')
-    
+
     # If this is not the first iteration, copy WAVECAR and CHGCAR from the previous iteration
     if iteration > 1 and not final:
         prev_opt_dir = f'opt{iteration-1}'
         shutil.copy(f'{prev_opt_dir}/WAVECAR', f'{opt_dir}/WAVECAR')
         shutil.copy(f'{prev_opt_dir}/CHGCAR', f'{opt_dir}/CHGCAR')
-        
+    
     # Modify INCAR file for the final calculation
     if final:
         incar_path = f'{opt_dir}/INCAR'
         prev_opt_dir = f'opt{iteration-1}'
         shutil.copy(f'{prev_opt_dir}/WAVECAR', f'{opt_dir}/WAVECAR')
         shutil.copy(f'{prev_opt_dir}/CHGCAR', f'{opt_dir}/CHGCAR')
-        
+
         with open(incar_path, 'r') as file:
             lines = file.readlines()
         with open(incar_path, 'w') as file:
@@ -98,7 +97,7 @@ def prepare_vasp_calculation(iteration, final=False):
     
     # Change to the new directory and generate the POTCAR file using vaspkit
     os.chdir(opt_dir)
-    # os.system('echo -e "103\n" | vaspkit')
+    os.system('echo -e "103\n" | vaspkit')
 
     # Submit the VASP job and retrieve the job ID
     result = subprocess.run(['sbatch', 'sub.vasp'], stdout=subprocess.PIPE)
@@ -192,7 +191,7 @@ def main():
     parser = argparse.ArgumentParser(description="Run iterative optimization and finetuning.")
     parser.add_argument('--num_iterations', type=int, default=4, help='Number of iterations to run.')
     parser.add_argument('--steps_per_iteration', type=int, default=100, help='Number of steps per iteration.')
-    parser.add_argument('--fixed_atoms', type=int, default=30, help='Number of atoms to fix in position.')
+    parser.add_argument('--fixed_atoms', type=int, default=0, help='Number of atoms to fix in position.')
     parser.add_argument('--iffinal', type=bool, default=True, help='Whether to perform the final optimization step.')
     parser.add_argument('--skip_first_opt', type=bool, default=False, help='Whether to skip the first optimization step.')
     parser.add_argument('--fmax', type=float, default=0.2, help='Maximum force criteria for optimization.')
@@ -203,7 +202,6 @@ def main():
     steps_per_iteration = args.steps_per_iteration
     fixed_atoms = args.fixed_atoms
     fmax = args.fmax
-    model_path = "./frozen_model.pth"
 
     last_step = read_last_step(record_file)
     print(f"Last step in record file: {last_step}")
@@ -212,10 +210,13 @@ def main():
         # Determine which iteration to start from based on the last completed step
         try:
             start_iteration = int(''.join(filter(str.isdigit, last_step))) + 1
+            model_path = f'finetune{int(start_iteration-1)}/frozen_model.pth'
         except (ValueError, IndexError):
             print(f"Error parsing the last step: {last_step}")
             return
-    
+    else:
+        model_path = "./frozen_model.pth"
+
     for i in range(start_iteration, num_iterations + 1):
         if not (i == 1 and args.skip_first_opt):
             # model_path = f'finetune{i-1}/frozen_model.pth'
@@ -225,7 +226,6 @@ def main():
             os.makedirs(f'opt{i}', exist_ok=True)
             shutil.copy('POSCAR', f'opt{i}/POSCAR')
             shutil.copy('POSCAR', f'./CONTCAR-ase-1')
-
         job_id = prepare_vasp_calculation(i)
         wait_for_job_completion(job_id, record_file, f'vaspopt{i}')
         

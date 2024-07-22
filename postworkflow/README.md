@@ -2,21 +2,8 @@
 
 Aims of flowopt.py and flowts.py are reducing the ionic steps of optimization and transition state calculations, to avoid computational cost of SCF step,
 
-## flowopt.py
 
-flowopt.py script performs an iterative optimization and fine-tuning workflow using ASE (Atomic Simulation Environment) and VASP (Vienna Ab initio Simulation Package) with DeepMD-kit. The workflow involves optimizing atomic structures, running VASP calculations, generating new datasets for finetune, and fine-tuning machine learning models iteratively. After completing the specified number of iterations, a final VASP optimization step is performed to get accurate configuration and energy.
-
-![Energy per ionic steps calculated by VASP and CLAM+VASP for OPT calulation](../docs/opt_energy_change_comparison.png)
-![Force per ionic steps calculated by VASP and CLAM+VASP for CI-NEB calulation](../docs/opt_force_change_comparison.png)
-
-## flowts.py
-
-flowts.py script performs an iterative NEB calculation and fine-tuning workflow using ASE (Atomic Simulation Environment) and VASP (Vienna Ab initio Simulation Package) with DeepMD-kit. The workflow involves ase-CINEB calculations, running VASP-CINEB calculations, generating new datasets for finetune, and fine-tuning machine learning models iteratively. After completing the specified number of iterations, a final VASP-CINEB step is performed to get accurate transition states configuration and energy.
-
-![Energy per ionic steps calculated by VASP and CLAM+VASP for CI-NEB calulation](../docs/ts_energy_change_comparison.png)
-![Force per ionic steps calculated by VASP and CLAM+VASP for CI-NEB calulation](../docs/ts_force_change_comparison.png)
-
-## Prerequisites
+## 0. Prerequisites
 
 - Python 3 (version > 3.10)
 - ASE (Atomic Simulation Environment, version > 3.22)
@@ -26,12 +13,20 @@ flowts.py script performs an iterative NEB calculation and fine-tuning workflow 
 - VASPkit
 - SLURM (for job scheduling)
 
-## flowopt.py File Structure
+
+## 1. flowopt.py
+
+flowopt.py script performs an iterative optimization and fine-tuning workflow using ASE (Atomic Simulation Environment) and VASP (Vienna Ab initio Simulation Package) with DeepMD-kit. The workflow involves optimizing atomic structures, running VASP calculations, generating new datasets for finetune, and fine-tuning machine learning models iteratively. After completing the specified number of iterations, a final VASP optimization step is performed to get accurate configuration and energy.
+
+![Energy per ionic steps calculated by VASP and CLAM+VASP for OPT calulation](../docs/opt_energy_change_comparison.png)
+![Force per ionic steps calculated by VASP and CLAM+VASP for CI-NEB calulation](../docs/opt_force_change_comparison.png)
+
+## 1.1 flowopt.py File Structure
 .
 ├── flowopt.py # Main script for the workflow
 ├── POSCAR # initial structure for opt
 ├── utils
-│ ├── INCAR # VASP input file, with NSW = 3
+│ ├── INCAR # VASP input file for OPT `NSW = 3`
 │ ├── POTCAR # VASP pseudopotentials file
 │ ├── KPOINTS # VASP k-points file
 │ ├── sub.vasp # VASP submission script, slurm
@@ -39,14 +34,14 @@ flowts.py script performs an iterative NEB calculation and fine-tuning workflow 
 │ └── sub.dp # DeepMD-kit submission script, slurm
 └── record.txt # File to record the progress of the workflow for restart
 
-## flowopt.py Usage
+## 1.2 flowopt.py Usage
 
 1. Ensure all prerequisites are installed and configured correctly.
 2. Prepare the necessary input files (`INCAR`, `KPOINTS`, `sub.vasp`, `finetune1.json`, `sub.dp`, `POTCAR`) in the `utils` directory.
 3. Place the initial atomic structure file (`POSCAR`) in the working directory.
 4. Run the script with the desired parameters.
 
-### Command-Line Arguments
+### 1.2.1 Command-Line Arguments
 
 This script supports the following command-line arguments:
 
@@ -57,7 +52,7 @@ This script supports the following command-line arguments:
 - `--skip_first_opt` (type: `bool`, default: `False`): Whether to skip the first optimization step. If set to `True`, the script will directly use the initial `POSCAR` file for the first VASP calculation without performing the initial structure optimization by ASE with DP potential. Usually, if the training set of large atomic model include similar structureof POSCAR, it recommand to use --skip_first_opt false to get faster result. if the POSCAR is a new system, it recommand to use --skip_first_opt true to do VASP optimization of several step to get some dataset for finetune.
 - `--fmax` (type: `float`, default: `0.2`): The maximum force criterion for structure optimization by ase with DP potential. The optimization will stop when the forces on all atoms are below this threshold.
 
-### Example Command
+### 1.2.2 Example Command
 
 To run the script, use the following command:
 
@@ -72,7 +67,7 @@ for out-of-domain system:
 nohup python script.py --num_iterations 5 --steps_per_iteration 200 --fixed_atoms 0 --iffinal true --skip_first_opt true --fmax 0.2 &
 ```
 
-## Workflow Description
+## 1.3 Workflow Description for flowopt.py
 
 ```mermaid
 graph 
@@ -118,7 +113,7 @@ The script follows these main steps:
    * Modifies the `INCAR` file to set `NSW = 300`.
    * Submits the final VASP job and waits for its completion.
 
-## Resuming from Checkpoints
+## 1.4 Resuming from Checkpoints
 
 The script records the progress of each step in `record.txt`. If the script is interrupted, it can resume from the last completed step by reading the `record.txt` file.
 examples of `record.txt`
@@ -136,11 +131,118 @@ finetune2
 freeze2
 ```
 
-## Notes
+## 1.5 Notes for flowopt.ts
 
 * Ensure the VASP and DeepMD-kit executables are accessible in your environment.
 * Customize the `INCAR`, `KPOINTS`, `POTCAR`, and submission scripts (`sub.vasp`, `sub.dp`) as needed for your specific system and requirements.
 * Adjust the polling interval in `wait_for_job_completion` if necessary.
+
+
+## 2. flowts.py
+
+flowts.py script performs an iterative NEB calculation and fine-tuning workflow using ASE (Atomic Simulation Environment) and VASP (Vienna Ab initio Simulation Package) with DeepMD-kit. The workflow involves ase-CINEB calculations, running VASP-CINEB calculations, generating new datasets for finetune, and fine-tuning machine learning models iteratively. After completing the specified number of iterations, a final VASP-CINEB step is performed to get accurate transition states configuration and energy.
+
+![Energy per ionic steps calculated by VASP and CLAM+VASP for CI-NEB calulation](../docs/ts_energy_change_comparison.png)
+![Force per ionic steps calculated by VASP and CLAM+VASP for CI-NEB calulation](../docs/ts_force_change_comparison.png)
+
+
+## 2.1 flowts.py File Structure
+.
+├── flowts.py # Main script for the workflow
+├── POSCARis # initial structure for NEB calculation (POSCAR format)
+├── POSCARfs # final structure for NEB calculation (POSCAR format)
+├── OUTCARis # initial structure's opt OUTCAR
+├── OUTCARfs # final structure's opt OUTCAR 
+├── utils
+│ ├── INCAR # VASP input file for CINEB `NSW = 3`
+│ ├── POTCAR # VASP pseudopotentials file
+│ ├── KPOINTS # VASP k-points file
+│ ├── sub.vasp # VASP submission script, slurm
+│ ├── finetune1.json # Fine-tuning configuration template
+│ └── sub.dp # DeepMD-kit submission script, slurm
+└── record.txt # File to record the progress of the workflow for restart
+
+## 2.2 flowts.py Usage
+
+1. Ensure all prerequisites are installed and configured correctly.
+2. Prepare the necessary input files (`INCAR`, `KPOINTS`, `sub.vasp`, `finetune1.json`, `sub.dp`, `POTCAR`) in the `utils` directory.
+3. Place the initial and final atomic structure files (`initial_structure`, `final_structure`) in the working directory.
+4. Place the initial and final opt OUTCAR (`initial_opt_OUTCAR`, `final_opt_OUTCAR`) in the working directory.
+5. Run the script with the desired parameters.
+
+### 2.2.1 Command-Line Arguments
+
+This script supports the following command-line arguments:
+
+- `initial_structure` (type: `str`): Path to the initial structure (POSCAR format).
+- `final_structure` (type: `str`): Path to the final structure (POSCAR format).
+- `model_path` (type: `str`): Path to the DeepMD model.
+- `initial_outcar` (type: `str`): Path to the initial OUTCAR file.
+- `final_outcar` (type: `str`): Path to the final OUTCAR file.
+- `--num_steps` (type: `int`, default: `1`): Number of steps to run.
+- `--n_images` (type: `int`, default: `4`): Number of intermediate images.
+- `--fmax` (type: `float`, default: `0.5`): Maximum force criteria for optimization.
+- `--interpolation` (choices: `['linear', 'idpp']`, default: `linear`): Interpolation method for generating intermediate images.
+- `--spring_constant` (type: `float`, default: `1.0`): Spring constant for NEB calculations.
+- `--steps_per_iteration` (type: `int`, default: `1000`): Number of steps per iteration.
+- `--apply_constraint` (type: `bool`, default: `False`): Whether to apply constraints during interpolation.
+- `--skip_first_neb` (action: `store_true`): Skip the first ASE NEB optimization.
+
+### 2.2.2 Example Command
+
+To run the script, use the following command:
+
+```sh
+python script_name.py initial_structure final_structure model_path initial_outcar final_outcar [--num_steps NUM] [--n_images NUM] [--fmax NUM] [--interpolation METHOD] [--spring_constant NUM] [--steps_per_iteration NUM] [--apply_constraint BOOL] [--skip_first_neb]
+```
+```sh
+nohup python ./flowts.py POSCARis POSCARfs ./frozen_model.pth OUTCARis OUTCARfs &
+```
+
+
+## 2.3 Workflow Description for flowopt.py 
+```mermaid
+graph
+A(start) --> X{if skip_first_neb}
+X -.no.-> B[ASE CINEB optimization with DP potential]
+X -.yes.-> C[VASP NEB optimization]
+B --get CONTCAR0*--- C[VASP CINEB optimization]
+C  -->D[collect data by dpdata]
+D --> E[finetune with new data by DeePMD-kit]
+E --> F{if num_steps}
+F -.yes.->  H[final VASP NEB optimization] 
+I(end)
+H --> I
+
+```
+The script follows these main steps:
+
+1. **NEB Calculation (ASE)** :
+   * Generates intermediate images using the initial and final structures.
+   * Optimizes the NEB path using DeepMD-kit models.
+   * Saves the optimized structures as `CONTCAR{n}`.
+2. **Preparation for VASP Calculation** :
+   * Creates a new directory for each step (`ts{step}`).
+   * Copies the optimized structures and necessary VASP input files to the new directory.
+3. **Run VASP NEB Calculation** :
+   * Generates the `POTCAR` file using VASPkit.
+   * Submits the VASP job and retrieves the job ID.
+   * Waits for the VASP job to complete.
+4. **Generate New Dataset** :
+   * Generates a new dataset from the VASP output files `OUTCAR`.
+   * Saves the dataset in the specified directory.
+5. **Fine-Tuning of Models** :
+   * Updates the fine-tuning configuration (`finetune1.json`) with new data paths and iteration-specific parameters.
+   * Submits the fine-tuning job and retrieves the job ID.
+   * Waits for the fine-tuning job to complete.
+6. **Freezing the Model** :
+   * Freezes the fine-tuned model using DeepMD-kit.
+7. **Final NEB Calculation** :
+   * After completing all steps, runs a final NEB calculation.
+   * Creates a new directory (`tsfinal`) and copies the final optimized structures.
+   * Modifies the `INCAR` file to set `NSW = 300`.
+   * Submits the final VASP job and waits for its completion.
+
 
 ## License
 

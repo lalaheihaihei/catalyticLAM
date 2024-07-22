@@ -62,52 +62,26 @@ def main():
 
     # Plotting the energy change
     plt.figure()
-    plt.plot(range(len(all_energies)), all_energies, marker='o', linestyle='-', color='b', label='opt iterations')
-    plt.plot(all_comparison_steps, all_comparison_energies, marker='x', linestyle='--', color='g', label='optall')
+    plt.plot(range(len(all_energies)), all_energies, marker='o', linestyle='-', color='b', label='opt DP+DFT iterations')
+    plt.plot(all_comparison_steps, all_comparison_energies, marker='x', linestyle='--', color='g', label='opt DFT')
     plt.xlabel('Step')
     plt.ylabel('Energy (eV)')
     plt.title('Energy Change Over Steps')
     plt.legend()
     plt.grid(True)
-    plt.savefig('energy_change_comparison.png')
+    plt.savefig('opt_energy_change_comparison.png')
     plt.show()
 
     # Plotting the max force change
     plt.figure()
-    plt.plot(range(len(all_forces)), all_forces, marker='o', linestyle='-', color='r', label='opt iterations')
-    plt.plot(all_comparison_steps, all_comparison_forces, marker='x', linestyle='--', color='m', label='optall')
+    plt.plot(range(len(all_forces)), all_forces, marker='o', linestyle='-', color='r', label='opt DP+DFT iterations')
+    plt.plot(all_comparison_steps, all_comparison_forces, marker='x', linestyle='--', color='m', label='opt DFT')
     plt.xlabel('Step')
     plt.ylabel('Max Force (eV/Å)')
     plt.title('Max Force Change Over Steps')
     plt.legend()
     plt.grid(True)
-    plt.savefig('force_change_comparison.png')
-    plt.show()
-
-    # Plotting energy change with x-axis from 0 to 75
-    plt.figure()
-    plt.plot(range(len(all_energies)), all_energies, marker='o', linestyle='-', color='b', label='opt iterations')
-    plt.plot(all_comparison_steps, all_comparison_energies, marker='x', linestyle='--', color='g', label='optall')
-    plt.xlabel('Step')
-    plt.ylabel('Energy (eV)')
-    plt.title('Energy Change Over Steps (0-75)')
-    plt.legend()
-    plt.grid(True)
-    plt.xlim(0, 75)
-    plt.savefig('energy_change_0_75.png')
-    plt.show()
-
-    # Plotting max force change with x-axis from 0 to 75
-    plt.figure()
-    plt.plot(range(len(all_forces)), all_forces, marker='o', linestyle='-', color='r', label='opt iterations')
-    plt.plot(all_comparison_steps, all_comparison_forces, marker='x', linestyle='--', color='m', label='optall')
-    plt.xlabel('Step')
-    plt.ylabel('Max Force (eV/Å)')
-    plt.title('Max Force Change Over Steps (0-75)')
-    plt.legend()
-    plt.grid(True)
-    plt.xlim(0, 75)
-    plt.savefig('force_change_0_75.png')
+    plt.savefig('opt_force_change_comparison.png')
     plt.show()
 
 if __name__ == '__main__':
