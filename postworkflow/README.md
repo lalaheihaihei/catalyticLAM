@@ -5,20 +5,20 @@ Aims of flowopt.py and flowts.py are reducing the ionic steps of optimization an
 ## Table of Contents
 
 - [0. Prerequisites](#0-prerequisites)
-- [1. flowopt.py](#1-flowopypy)
-  - [1.1 flowopt.py File Structure](#11-flowopypy-file-structure)
-  - [1.2 flowopt.py Usage](#12-flowopypy-usage)
+- [1. flowopt.py](#1-flowoptpy)
+  - [1.1 flowopt.py File Structure](#11-flowoptpy-file-structure)
+  - [1.2 flowopt.py Usage](#12-flowoptpy-usage)
     - [1.2.1 Command-Line Arguments](#121-command-line-arguments)
     - [1.2.2 Example Command](#122-example-command)
-  - [1.3 Workflow Description for flowopt.py](#13-workflow-description-for-flowopypy)
+  - [1.3 Workflow Description for flowopt.py](#13-workflow-description-for-flowoptpy)
   - [1.4 Resuming from Checkpoints](#14-resuming-from-checkpoints)
   - [1.5 Notes for flowopt.ts](#15-notes-for-flowoptts)
-- [2. flowts.py](#2-flowts.py)
-  - [2.1 flowts.py File Structure](#21-flowts.py-file-structure)
-  - [2.2 flowts.py Usage](#22-flowts.py-usage)
+- [2. flowts.py](#2-flowtspy)
+  - [2.1 flowts.py File Structure](#21-flowtspy-file-structure)
+  - [2.2 flowts.py Usage](#22-flowtspy-usage)
     - [2.2.1 Command-Line Arguments](#221-command-line-arguments)
     - [2.2.2 Example Command](#222-example-command)
-  - [2.3 Workflow Description for flowts.py](#23-workflow-description-for-flowts.py)
+  - [2.3 Workflow Description for flowts.py](#23-workflow-description-for-flowtspy)
   - [2.4 Resuming from Checkpoints](#24-resuming-from-checkpoints)
 - [3. License](#3-license)
 - [4. Acknowledgements](#4-acknowledgements)
@@ -92,23 +92,23 @@ nohup python script.py --num_iterations 5 --steps_per_iteration 200 --fixed_atom
 ```
 
 ## 1.3 Workflow Description for flowopt.py
-
 ```mermaid
-graph 
-A(start) --> X{if skip_first}
-X -.no.-> B[ase optimization with DP potential]
-X -.yes.-> C[VASP optimization by NSW=3 step]
-B --get CONTCAR--- C[VASP optimization by NSW=3 step]
-C  -->D[collect data by dpdata]
-D --> E[finetune with new data by DeePMD-kit]
-E --> F{if num_iterations}
-F -.yes.-> G{if final}
-F -.no.-> B
-G-.yes.-> H(final VASP optimization with DFT)
-G-.no.-> I(end)
+graph TD
+classDef compact fill:#f9f,stroke:#333,stroke-width:1px,font-size:10px;
+
+A[start]:::compact -->|skip_first?| X{skip?}:::compact
+X -.no.-> B[ASE opt with DP]:::compact
+X -.yes.-> C[VASP opt NSW=3]:::compact
+B -->|get CONTCAR| C:::compact
+C --> D[collect data]:::compact
+D --> E[finetune]:::compact
+E --> F{iterations?}:::compact
+F -.yes.-> G{final?}:::compact
+F -.no.-> B:::compact
+G -.yes.-> H[VASP opt DFT]:::compact
+G -.no.-> I[end]:::compact
 H --> I
 ```
-
 
 The script follows these main steps:
 
@@ -228,19 +228,19 @@ nohup python ./flowts.py POSCARis POSCARfs ./frozen_model.pth OUTCARis OUTCARfs 
 
 ## 2.3 Workflow Description for flowopt.py 
 ```mermaid
-graph
-A(start) --> X{if skip_first_neb}
-X -.no.-> B[ASE CINEB optimization with DP potential]
+graph TD
+A[start] -->|skip_first_neb?| X{skip first?}
+X -.no.-> B[ASE CINEB optimization]
 X -.yes.-> C[VASP NEB optimization]
-B --get CONTCAR0*--- C[VASP CINEB optimization]
-C  -->D[collect data by dpdata]
-D --> E[finetune with new data by DeePMD-kit]
-E --> F{if num_steps}
-F -.yes.->  H[final VASP NEB optimization] 
-I(end)
-H --> I
-
+B -->|get CONTCAR0*| C
+C --> D[collect data]
+D --> E[finetune with new data]
+E --> F{num_steps?}
+F -.yes.-> H[final VASP NEB optimization]
+F -.no.-> B
+H --> I[end]
 ```
+
 The script follows these main steps:
 
 1. **NEB Calculation (ASE)** :
