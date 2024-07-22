@@ -94,19 +94,17 @@ nohup python script.py --num_iterations 5 --steps_per_iteration 200 --fixed_atom
 ## 1.3 Workflow Description for flowopt.py
 ```mermaid
 graph TD
-classDef compact fill:#f9f,stroke:#333,stroke-width:1px,font-size:10px;
-
-A[start]:::compact -->|skip_first?| X{skip?}:::compact
-X -.no.-> B[ASE opt with DP]:::compact
-X -.yes.-> C[VASP opt NSW=3]:::compact
-B -->|get CONTCAR| C:::compact
-C --> D[collect data]:::compact
-D --> E[finetune]:::compact
-E --> F{iterations?}:::compact
-F -.yes.-> G{final?}:::compact
-F -.no.-> B:::compact
-G -.yes.-> H[VASP opt DFT]:::compact
-G -.no.-> I[end]:::compact
+A[start] -->|skip_first_opt?| X{skip first?}
+X -.no.-> B[ase optimization with DP potential]
+X -.yes.-> C[VASP optimization by NSW=3 step]
+B --get CONTCAR--- C[VASP optimization by NSW=3 step]
+C  -->D[collect data by dpdata]
+D --> E[finetune with new data by DeePMD-kit]
+E --> F{if num_iterations}
+F -.yes.-> G{if final}
+F -.no.-> B
+G-.yes.-> H(final VASP optimization with DFT)
+G-.no.-> I(end)
 H --> I
 ```
 
