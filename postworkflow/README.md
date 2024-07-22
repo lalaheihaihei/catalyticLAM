@@ -2,6 +2,27 @@
 
 Aims of flowopt.py and flowts.py are reducing the ionic steps of optimization and transition state calculations, to avoid computational cost of SCF step,
 
+## Table of Contents
+
+- [0. Prerequisites](#0-prerequisites)
+- [1. flowopt.py](#1-flowopypy)
+  - [1.1 flowopt.py File Structure](#11-flowopypy-file-structure)
+  - [1.2 flowopt.py Usage](#12-flowopypy-usage)
+    - [1.2.1 Command-Line Arguments](#121-command-line-arguments)
+    - [1.2.2 Example Command](#122-example-command)
+  - [1.3 Workflow Description for flowopt.py](#13-workflow-description-for-flowopypy)
+  - [1.4 Resuming from Checkpoints](#14-resuming-from-checkpoints)
+  - [1.5 Notes for flowopt.ts](#15-notes-for-flowoptts)
+- [2. flowts.py](#2-flowts.py)
+  - [2.1 flowts.py File Structure](#21-flowts.py-file-structure)
+  - [2.2 flowts.py Usage](#22-flowts.py-usage)
+    - [2.2.1 Command-Line Arguments](#221-command-line-arguments)
+    - [2.2.2 Example Command](#222-example-command)
+  - [2.3 Workflow Description for flowts.py](#23-workflow-description-for-flowts.py)
+  - [2.4 Resuming from Checkpoints](#24-resuming-from-checkpoints)
+- [3. License](#3-license)
+- [4. Acknowledgements](#4-acknowledgements)
+
 
 ## 0. Prerequisites
 
@@ -22,6 +43,8 @@ flowopt.py script performs an iterative optimization and fine-tuning workflow us
 ![Force per ionic steps calculated by VASP and CLAM+VASP for CI-NEB calulation](../docs/opt_force_change_comparison.png)
 
 ## 1.1 flowopt.py File Structure
+
+```
 .
 ├── flowopt.py # Main script for the workflow
 ├── POSCAR # initial structure for opt
@@ -33,6 +56,7 @@ flowopt.py script performs an iterative optimization and fine-tuning workflow us
 │ ├── finetune1.json # Fine-tuning configuration template
 │ └── sub.dp # DeepMD-kit submission script, slurm
 └── record.txt # File to record the progress of the workflow for restart
+```
 
 ## 1.2 flowopt.py Usage
 
@@ -147,20 +171,22 @@ flowts.py script performs an iterative NEB calculation and fine-tuning workflow 
 
 
 ## 2.1 flowts.py File Structure
+```
 .
 ├── flowts.py # Main script for the workflow
 ├── POSCARis # initial structure for NEB calculation (POSCAR format)
 ├── POSCARfs # final structure for NEB calculation (POSCAR format)
 ├── OUTCARis # initial structure's opt OUTCAR
-├── OUTCARfs # final structure's opt OUTCAR 
+├── OUTCARfs # final structure's opt OUTCAR
 ├── utils
-│ ├── INCAR # VASP input file for CINEB `NSW = 3`
+│ ├── INCAR # VASP input file for CINEB NSW = 3
 │ ├── POTCAR # VASP pseudopotentials file
 │ ├── KPOINTS # VASP k-points file
 │ ├── sub.vasp # VASP submission script, slurm
 │ ├── finetune1.json # Fine-tuning configuration template
 │ └── sub.dp # DeepMD-kit submission script, slurm
 └── record.txt # File to record the progress of the workflow for restart
+```
 
 ## 2.2 flowts.py Usage
 
@@ -243,12 +269,23 @@ The script follows these main steps:
    * Modifies the `INCAR` file to set `NSW = 300`.
    * Submits the final VASP job and waits for its completion.
 
+## 2.4 Resuming from Checkpoints
 
-## License
+The script records the progress of each step in `record.txt`. If the script is interrupted, it can resume from the last completed step by reading the `record.txt` file.
+examples of `record.txt`
+```
+vaspopt1
+finetune1
+freeze1
+vaspopt-final
+
+```
+
+## 3. License
 
 This project is licensed under the LGPL-3.0 License.
 
-## Acknowledgements
+## 4. Acknowledgements
 
 * ASE: [https://wiki.fysik.dtu.dk/ase/]()
 * VASP: [https://www.vasp.at/](https://www.vasp.at/)
