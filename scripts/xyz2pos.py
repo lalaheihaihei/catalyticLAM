@@ -1,5 +1,6 @@
 import os
 import numpy as np
+import argparse
 
 def read_xyz(file_path):
     with open(file_path, 'r') as file:
@@ -56,6 +57,15 @@ def convert_xyz_to_poscar(input_dir, output_dir, padding=5.0):
             min_coords, cell_vectors = construct_unit_cell(coordinates, padding)
             write_poscar(output_file_path, atomic_symbols, coordinates, min_coords, cell_vectors)
 
-input_directory = './'
-output_directory = './'
-convert_xyz_to_poscar(input_directory, output_directory)
+def main():
+    parser = argparse.ArgumentParser(description='Convert XYZ files to POSCAR files.')
+    parser.add_argument('--input_dir', type=str, required=True, help='Path to the directory containing XYZ files.')
+    parser.add_argument('--output_dir', type=str, default='POSCAR', help='Directory to save POSCAR files.')
+    parser.add_argument('--padding', type=float, default=5.0, help='Padding around the atomic coordinates.')
+    
+    args = parser.parse_args()
+    
+    convert_xyz_to_poscar(args.input_dir, args.output_dir, args.padding)
+
+if __name__ == '__main__':
+    main()

@@ -356,7 +356,7 @@ def parse_command_line_arguments():
     parser.add_argument("--distance", type=float, default=2.0, help="Distance between adsorbate and slab, default: 2.0")
     parser.add_argument("--element", type=str, default="Au", help="Chemical formula of the materials to process, ex: Pt3Ni or Pt")
     parser.add_argument("--max-slabs", type=int, default=None, help="Maximum number of slabs to process per material")
-    parser.add_argument("--type", type=str, default="type2", help="select which type of materials group in materials_db.py, default: type2")
+    parser.add_argument("--type", type=str, default="type1", help="select which type of materials group in materials_db.py, default: type1")
     
     return parser.parse_args()
 

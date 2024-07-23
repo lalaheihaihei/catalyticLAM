@@ -1,4 +1,5 @@
 # catalyticLAM
+
 Machine-Learning-Based Interatomic Potentials for Catalysis: an Universal Catalytic Large Atomic Model
 
 ## Directory Structure
@@ -11,18 +12,32 @@ Machine-Learning-Based Interatomic Potentials for Catalysis: an Universal Cataly
 │   ├── structure_db
 │   └── utils
 ├── generation
-│   ├── alloy_db.py
-│   ├── make-bulk.py
-│   ├── make-slab.py
-│   ├── material_db.py
-│   ├── metal_db.py
-│   └── molecule_db.py
+│   ├── element_list.json
+│   ├── get-bulk.py
+│   ├── get-slab.py
+│   ├── material.json
+│   ├── molecule.json
+│   └── plotter.py
 ├── LICENSE
 ├── postworkflow
 │   ├── flowopt.py
 │   ├── flowts.py
 │   ├── POSCAR
 │   └── utils
+├── scripts
+│   ├── cif2pos.py
+│   ├── get-cluster.py
+│   ├── json2cif.py
+│   └── xyz2pos.py
+├── structure_db
+│   ├── 2D.tgz
+│   ├── 2D-raw.tgz
+│   ├── bulk.tgz
+│   ├── cluster.tgz
+│   ├── cluster-raw.tgz
+│   ├── molecule.tgz
+│   ├── molecule-raw.tgz
+│   └── slab.tgz
 ├── train
 │   ├── finetune.json
 │   ├── input.json
@@ -39,10 +54,11 @@ Machine-Learning-Based Interatomic Potentials for Catalysis: an Universal Cataly
 
 This section is responsible for generating structures, including bulk and slab structures for VASP calculation. Please read README.md in generation for details.
 
-- `make-bulk.py`: Generates bulk structures.
-- `make-slab.py`: Generates slab structures.
-- `material_db.py`: Information for generation database.
-- `molecule_db.py`: Molecular structures database.
+- `get-bulk.py`: Generates bulk structures.
+- `get-slab.py`: Generates slab structures.
+- `element_list.json`: Metal and alloy elements for bulk generation.
+- `material.json`: Information for database generation.
+- `molecule.json`: Molecular structures database.
 
 ### 2. DataSetWorkflow
 
@@ -64,6 +80,7 @@ This section is responsible for model-accelerated structure optimization, transi
 - `utils`: Contains configuration files and scripts for optimization and transition state search.
 
 ### 4. Pretrained Catalytic Large Atomic Model for PostWorkflow
+
 This section contains the pretrained CLAM model for postworkflow and its training, finetune, checkpoint files.
 
 - `finetune.json`: input file for fine-tuning the CLAM model.
@@ -71,6 +88,28 @@ This section contains the pretrained CLAM model for postworkflow and its trainin
 - `model.ckpt-10000000.pt`: The checkpoint of pretrained CLAM model.
 - `lcurve`: output file containing learning curves.
 - `dataset`: Directory containing the dataset for finetune operation.
+
+### 5. Scripts
+
+This section contains some useful scripts to generate cluster structures and convert the format of files.
+
+- `cif2pos.py`: Convert CIF file to POSCAR.
+- `get-cluster.py`: Generate the structures of metal clusters in xyz format.
+- `json2cif.py`: Convert JSON file to CIF file.
+- `xyz2pos.py`: Convert XYZ file to POSCAR.
+
+### 6. Structure_db
+
+This section contains the initial structure files and POSCAR files for VASP calculation.
+
+- `2D.tgz`: The total 6351 POSCAR files of 2D materials for VASP calculation.
+- `2D-raw.tgz`: The initial json file containing the information of 2D materials and the corresponding cif files.
+- `bulk.tgz`: The POSCAR files of metals and alloys for VASP calculation.
+- `cluster.tgz`: The POSCAR files of clusters for VASP calculation.
+- `cluster-raw.tgz`: The initial xyz files of clusters.
+- `molecule.tgz`: The total POSCAR files of molecules for VASP calculation.
+- `molecule-raw.tgz`: The initial xyz files of molecules.
+- `slab.tgz`: The POSCAR files of slabs for VASP calculation.
 
 ## Installation and Usage
 
@@ -132,13 +171,59 @@ python flowopt.py
 
 #### Construct Pretrained Catalytic Large Atomic Model for PostWorkflow
 
-Navigate to the `train` directory, edit the input files, and run the relevant scripts:
+Navigate to the `script` directory, edit the input files, and run the relevant scripts:
 more information please refer to Deepmd-kit official website(below).
 
 ```
 dp --pt train input.json > out
 dp --pt train --finetune model.ckpt.10000000.pt --model-branch <head> finetune.json > out (At present, the head name is only supported for oc22 and metal)
 ```
+
+#### Run script in Scripts folder
+
+Navigate to the `train` directory and run the appropriate script to generate the cluster structures or convert file formats.
+
+1. cif2pos.py:
+
+```
+python cif2pos.py --input_dir CIF --output_dir POSCAR   # Convert the cif files in the CIF folder to corresponding POSCAR files in the POSCAR folder
+python cif2pos.py --input_dir CIF
+# --input_dir represents the path to the input directory containing CIF files
+# --output_dir represents the path to the output directory for POSCAR files, default is 'POSCAR'
+```
+
+2. get-cluster.py:
+
+```
+python get-cluster.py   # generate all cluster structures in xyz format
+python get-cluster.py --type all --element all   # generate all cluster structures in xyz format
+python get-cluster.py --type all --element Cu   # generate all Cu-related clusters
+python get-cluster.py --type s_fcc --element all   # generate all supported metal clusters
+python get-cluster.py --type fcc --element Au   # generate Cu-related clusters in FCC lattice
+python get-cluster.py --type hcp --element Zn   # generate Zn-related clusters in HCP lattice
+# --type represents which type of structure to generate, including 's_fcc', 'fcc', 'bcc', 'hcp', and 'all', default is 'all', where 's_fcc' reprents the supported cluster
+# --type represents which element or metal to use, default is 'all'
+```
+
+3. json2cif.py:
+
+```
+python json2cif.py --file input.json --outdir CIF   # Convert the json file to corresponding cif files in the CIF folder
+python json2cif.py --file input.json
+# --file represents the path to the JSON file
+# --outdir represents the path to the output directory for CIF files, default is 'CIF'
+```
+
+4. xyz2pos.py:
+
+```
+python xyz2pos.py --input_dir XYZ --output_dir POSCAR --padding 5.0
+python xyz2cif.py --input_dir XYZ
+# --input_dir represents the path to the input directory containing XYZ files
+# --output_dir represents the path to the output directory for POSCAR files, default is 'POSCAR'
+# --padding reprensts the distance of the atoms from the box boundary in three directions, default is '5.0'
+```
+
 ## License
 
 This project is licensed under the GNU General Public License v3.0. See the [LICENSE](LICENSE) file for details.
@@ -152,4 +237,3 @@ This project is licensed under the GNU General Public License v3.0. See the [LIC
 * VASPkit: [https://vaspkit.com/](https://vaspkit.com/)
 * fairchem: [https://github.com/FAIR-Chem/fairchem](https://github.com/FAIR-Chem/fairchem)
 * SLURM: [https://slurm.schedmd.com/](https://markdown.lovejade.cn/)
-
