@@ -142,8 +142,9 @@ Navigate to the `generation` directory and run the appropriate script to generat
 
 ```
 cd generation
-python ./make-bulk.py --task search --ificsd --bulktype alloy --elementNumber 2
-python ./make-slab.py --up-down UUUUDDDD --plot --element Ru --molecule-type all
+python get-bulk.py --task search --ificsd --bulktype alloy --elementNumber 2
+python get-slab.py --up-down UUD --plot --element Au --molecule-type CO --type type1
+python get-slab.py --up-down UUUUDDDD --plot --element Ru --molecule-type all --type type3
 ```
 
 #### Run VASP Workflow
@@ -218,7 +219,7 @@ python json2cif.py --file input.json
 
 ```
 python xyz2pos.py --input_dir XYZ --output_dir POSCAR --padding 5.0
-python xyz2cif.py --input_dir XYZ
+python xyz2pos.py --input_dir XYZ
 # --input_dir represents the path to the input directory containing XYZ files
 # --output_dir represents the path to the output directory for POSCAR files, default is 'POSCAR'
 # --padding reprensts the distance of the atoms from the box boundary in three directions, default is '5.0'
