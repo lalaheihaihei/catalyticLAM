@@ -490,9 +490,9 @@ class DPDataProcessor:
                     txn.put(f"{fid}".encode("ascii"), pickle.dumps(data1, protocol=-1))
                     txn.commit()
 
-                    txn = db.begin(write=True)
-                    txn.put(f"length".encode("ascii"), pickle.dumps(len(all_data_objects), protocol=-1))
-                    txn.commit()
+                txn = db.begin(write=True)
+                txn.put(f"length".encode("ascii"), pickle.dumps(len(all_data_objects), protocol=-1))
+                txn.commit()
 
                 db.sync()
                 db.close()
