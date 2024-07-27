@@ -20,8 +20,9 @@ Aims of flowopt.py and flowts.py are reducing the ionic steps of optimization an
     - [2.2.2 Example Command](#222-example-command)
   - [2.3 Workflow Description for flowts.py](#23-workflow-description-for-flowtspy)
   - [2.4 Resuming from Checkpoints](#24-resuming-from-checkpoints)
-- [3. License](#3-license)
-- [4. Acknowledgements](#4-acknowledgements)
+- [3. flowopt.py based on gemnet-oc pretrain model](#3-flowoptpy based on gemnet-oc pretrain model)
+- [4. License](#4-license)
+- [5. Acknowledgements](#5-acknowledgements)
 
 
 ## 0. Prerequisites
@@ -282,11 +283,17 @@ vaspopt-final
 
 ```
 
-## 3. License
+## 3. flowopt.py based on GemNet-OC Pretrained Model
+
+This section describes how to use `flowopt.py` based on the GemNet-OC pretrained model.
+
+You can find more details and download the model checkpoints from the [FairChem model checkpoints page](https://fair-chem.github.io/core/model_checkpoints.html).
+
+## 4. License
 
 This project is licensed under the LGPL-3.0 License.
 
-## 4. Acknowledgements
+## 5. Acknowledgements
 
 * ASE: [https://wiki.fysik.dtu.dk/ase/]()
 * VASP: [https://www.vasp.at/](https://www.vasp.at/)

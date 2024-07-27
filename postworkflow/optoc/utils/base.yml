@@ -1,0 +1,64 @@
+trainer: ocp
+dataset:
+  train:
+    format: ase_db
+    normalize_labels: True
+    src: ../output_database.db   # 训练集路径，必须放在一个文件夹里面
+    a2g_args:
+      r_energy: true
+      r_forces: true
+    key_mapping:
+      y: energy
+      force: forces
+    transforms:
+      normalizer:
+        energy:
+          mean: 0
+          stdev: 1
+        forces:
+          mean: 0
+          stdev: 1
+  val:
+    src: ../output_database.db  # 测试集路径，必须放在一个文件夹里面
+    format: ase_db
+    a2g_args:
+      r_energy: true
+      r_forces: true
+  test:
+    src: ../output_database.db  # 测试集路径，必须放在一个文件夹里面
+    format: ase_db
+    a2g_args:
+      r_energy: false
+      r_forces: false
+
+logger: wandb  # 必须自己注册账户
+
+outputs:
+  energy:
+    shape: 1
+    level: system
+    prediction_dtype: float32
+  forces:
+    irrep_dim: 1
+    level: atom
+    train_on_free_atoms: True
+    eval_on_free_atoms: True
+    prediction_dtype: float32
+
+loss_functions:
+  - energy:
+      fn: mae
+      coefficient: 1
+  - forces:
+      fn: l2mae
+      coefficient: 100
+
+evaluation_metrics:
+  metrics:
+    energy:
+      - mse     # 这里写 mse，目前不支持rmse ，后处理加个sqrt即可
+    forces:
+      - mse     # 这里写 mse，目前不支持rmse ，后处理加个sqrt即可
+    misc:
+      - energy_forces_within_threshold
+  primary_metric: forces_mse   # 这里写 mse，目前不支持rmse ，后处理加个sqrt即可
