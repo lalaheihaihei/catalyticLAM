@@ -20,7 +20,7 @@ Aims of flowopt.py and flowts.py are reducing the ionic steps of optimization an
     - [2.2.2 Example Command](#222-example-command)
   - [2.3 Workflow Description for flowts.py](#23-workflow-description-for-flowtspy)
   - [2.4 Resuming from Checkpoints](#24-resuming-from-checkpoints)
-- [3. flowopt.py based on gemnet-oc pretrain model](#3-flowoptpy based on gemnet-oc pretrain model)
+- [3. flowopt.py based on GemNet-OC Pretrained Model](#3-flowoptpy-based-on-gemnet-oc-pretrained-model)
 - [4. License](#4-license)
 - [5. Acknowledgements](#5-acknowledgements)
 
