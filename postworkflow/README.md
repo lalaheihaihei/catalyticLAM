@@ -289,6 +289,8 @@ This section describes how to use `flowopt.py` based on the GemNet-OC pretrained
 
 You can find more details and download the model checkpoints from the [FairChem model checkpoints page](https://fair-chem.github.io/core/model_checkpoints.html).
 
+when you use optoc/flowopt.py, please download the FairChem model checkpoints, such as:[gnoc_oc22_oc20_all_s2ef.pt](https://dl.fbaipublicfiles.com/opencatalystproject/models/2022_09/oc22/s2ef/gnoc_oc22_oc20_all_s2ef.pt), and put it into utils/ directory.
+
 ## 4. License
 
 This project is licensed under the LGPL-3.0 License.
