@@ -46,22 +46,23 @@ class PeriodicTableWeightsVisualizer:
 
         # Convert frequencies to proportions
         total_count = sum(element_frequencies.values())
-        return {symbol: freq / total_count for symbol, freq in element_frequencies.items()}
+        return {symbol: freq for symbol, freq in element_frequencies.items()}
 
-    def calculate_element_weights_npy(self):
+    '''
+def calculate_element_weights_npy(self):
         """ Calculate the element weights from npy files deduced by dpdata with the most common data format."""
         element_frequencies = {}
 
         # Iterate over POSCAR files to calculate frequencies
         for poscar_file in glob.glob(pathname=os.path.join(self.poscar_dir, '**/type.raw'), recursive=True):
 
-            with open(os.path.join(os.path.dirname(poscar_file), 'type_map.raw'), encoding='utf-8') as f:
+            with open(os.path.join(os.path.dirname(poscar_file), 'type.raw'), encoding='utf-8') as f:
                 atom_type = [line.strip('\n') for line in f.readlines()]
 
-            with open(os.path.join(os.path.dirname(poscar_file), 'type.raw'),encoding='utf-8') as f:
+            with open(os.path.join(os.path.dirname(poscar_file), 'type_map.raw'),encoding='utf-8') as f:
                 typemap = [line.strip('\n') for line in f.readlines()]
 
-            structure = set([atom_type[int(itype)] for itype in typemap])
+            structure = set([typemap[int(itype)] for itype in atom_type])
 
             for element in structure:
                 # symbol = element.symbol
@@ -69,7 +70,48 @@ class PeriodicTableWeightsVisualizer:
 
         # Convert frequencies to proportions
         total_count = sum(element_frequencies.values())
-        return {symbol: freq / total_count for symbol, freq in element_frequencies.items()}
+        
+        return {symbol: freq for symbol, freq in element_frequencies.items()}
+        # return {symbol: freq / total_count for symbol, freq in element_frequencies.items()}
+    '''
+
+    def calculate_element_weights_npy(self):
+        """ Calculate the element weights from npy files deduced by dpdata with the most common data format."""
+        element_frequencies = {}
+    
+        # Iterate over POSCAR files to calculate frequencies
+        for poscar_file in glob.glob(pathname=os.path.join(self.poscar_dir, '**/type.raw'), recursive=True):
+            folder_path = os.path.dirname(poscar_file)
+            
+            # Check if set.000/energy.npy exists in the directory
+            energy_file = os.path.join(folder_path, 'set.000', 'energy.npy')
+            if os.path.exists(energy_file):
+                # Load the energy data
+                energy_data = np.load(energy_file)
+                num_energies = len(energy_data)
+    
+                # Read atom types
+                with open(os.path.join(folder_path, 'type.raw'), encoding='utf-8') as f:
+                    atom_type = [line.strip('\n') for line in f.readlines()]
+    
+                # Read type map
+                with open(os.path.join(folder_path, 'type_map.raw'), encoding='utf-8') as f:
+                    typemap = [line.strip('\n') for line in f.readlines()]
+    
+                # Determine the unique elements in the structure
+                structure = set([typemap[int(itype)] for itype in atom_type])
+    
+                # Update frequencies based on the number of energy data points
+                for element in structure:
+                    if element in element_frequencies:
+                        element_frequencies[element] += num_energies
+                    else:
+                        element_frequencies[element] = num_energies
+    
+        # Convert frequencies to proportions
+        total_count = sum(element_frequencies.values())
+    
+        return {symbol: freq for symbol, freq in element_frequencies.items()}
 
     def calculate_element_weights_npy_mul(self):
         """ Calculate the element weights from npy files. the mix_format deduced by dpdata, please refer to the doc of dpdata"""
@@ -79,18 +121,18 @@ class PeriodicTableWeightsVisualizer:
         for poscar_file in tqdm(glob.glob(pathname=os.path.join(self.poscar_dir, '**/type_map.raw'), recursive=True)):
             # ther may raise error for the older dataset deduced by dpdata ,the direction should be set.000/real_atom_types.npy
             atom_type = np.load(os.path.join(os.path.dirname(poscar_file), 'set.000000/real_atom_types.npy'))
-            with open(os.path.join(os.path.dirname(poscar_file), 'type.raw'), encoding='utf-8') as f:
+            with open(os.path.join(os.path.dirname(poscar_file), 'type_map.raw'), encoding='utf-8') as f:
                 typemap = [line.strip('\n') for line in f.readlines()]
             all_stru = []
             for itype in atom_type:
                 structure = [typemap[i] for i in set(itype)]
                 structure = sorted(structure)
-                if structure not in all_stru:
-                    all_stru.append(structure)
-                    for element in structure:
-                        element_frequencies[element] = element_frequencies.get(element, 0) + 1 # structure.composition[element]
-                else:
-                    pass
+                # if structure not in all_stru:
+                #     all_stru.append(structure)
+                #     for element in structure:
+                #         element_frequencies[element] = element_frequencies.get(element, 0) + 1 # structure.composition[element]
+                # else:
+                #     pass
 
                 for element in structure:
                 # symbol = element.symbol
@@ -98,7 +140,7 @@ class PeriodicTableWeightsVisualizer:
 
         # Convert frequencies to proportions
         total_count = sum(element_frequencies.values())
-        return {symbol: freq / total_count for symbol, freq in element_frequencies.items()}
+        return {symbol: freq for symbol, freq in element_frequencies.items()}
     
     def calculate_atoms_element_weights(self):
         """ Calculate the element weights from POSCAR files."""
@@ -123,7 +165,7 @@ class PeriodicTableWeightsVisualizer:
         total_files = len(glob.glob(os.path.join(self.poscar_dir, "POSCAR-*")))
 
         # transform to proportions
-        element_weights = {symbol: occurrences / total_files for symbol, occurrences in element_occurrences.items()}
+        element_weights = {symbol: occurrences for symbol, occurrences in element_occurrences.items()}
 
         return element_weights
 
@@ -137,50 +179,50 @@ class PeriodicTableWeightsVisualizer:
             return 'black'
 
     def plot_2d(self, name):
-        """ Plot the element weights as a 2D heatmap."""
-        fig, ax = plt.subplots(figsize=(18, 8))  # set the figure size
-        cmap = plt.get_cmap('YlGnBu')  # use the YlGnBu colormap
-        norm = Normalize(vmin=-0.005, vmax=0.05)
-        sm = ScalarMappable(norm=norm, cmap=cmap)
-
-        max_row = max(el.row for el in Element if el.Z <= 86)
-
+        fig, ax = plt.subplots(figsize=(18, 8))
+        cmap = plt.get_cmap('YlGnBu')
+    
+        # Define min and max for color mapping
+        min_weight = min(self.element_weights.values())
+        max_weight = max(self.element_weights.values())
+        # Determine the maximum row number
+        max_row = max(el.row for el in Element if el.Z <= 86)    
+        
         for el in Element:
-            if el.Z > 86 or el.Z in range(57, 72):  # exclude lanthanides and actinides
+            if el.Z > 86 or el.Z in range(57, 72):
                 continue
             weight = self.element_weights.get(el.symbol, 0)
-            color = sm.to_rgba(weight)
+            color = cmap((weight - min_weight) / (max_weight - min_weight))
             x, y = el.group - 1, max_row - el.row
-            text_color = self.get_text_color(color)  
-
+            text_color = self.get_text_color(color)
+    
             ax.add_patch(plt.Rectangle((x + 0.05, y + 0.05), 0.9, 0.9, color=color, edgecolor=text_color, linewidth=0.5))
-            # text element name and position
-            ax.text(x + 0.5, y + 0.5, el.symbol, ha='center', va='center', color=text_color, fontsize=15)  
-            ax.text(x + 0.1, y + 0.9, f'{el.Z}', ha='left', va='top', color=text_color, fontsize=10)  
-            ax.text(x + 0.5, y + 0.05, f'{weight:.3f}', ha='center', va='bottom', color=text_color, fontsize=8)  
-
-        # special treatment for lanthanides
+            ax.text(x + 0.5, y + 0.5, el.symbol, ha='center', va='center', color=text_color, fontsize=15)
+            ax.text(x + 0.1, y + 0.9, f'{el.Z}', ha='left', va='top', color=text_color, fontsize=10)
+            ax.text(x + 0.5, y + 0.05, f'{weight:.3f}', ha='center', va='bottom', color=text_color, fontsize=8)
+    
         lanthanides = [el for el in Element if 57 <= el.Z <= 71]
         for i, el in enumerate(lanthanides):
             weight = self.element_weights.get(el.symbol, 0)
-            color = sm.to_rgba(weight)
+            color = cmap((weight - min_weight) / (max_weight - min_weight))
             x = i + 2
-            y = -1  
-            text_color = self.get_text_color(color) 
+            y = -1
+            text_color = self.get_text_color(color)
             ax.add_patch(plt.Rectangle((x + 0.05, y + 0.05), 0.9, 0.9, color=color, edgecolor=text_color, linewidth=0.5))
-            ax.text(x + 0.5, y + 0.5, el.symbol, ha='center', va='center', color=text_color, fontsize=12)  
-            ax.text(x + 0.1, y + 0.9, f'{el.Z}', ha='left', va='top', color=text_color, fontsize=8)  
-            ax.text(x + 0.5, y + 0.05, f'{weight:.3f}', ha='center', va='bottom', color=text_color, fontsize=8) 
-
+            ax.text(x + 0.5, y + 0.5, el.symbol, ha='center', va='center', color=text_color, fontsize=12)
+            ax.text(x + 0.1, y + 0.9, f'{el.Z}', ha='left', va='top', color=text_color, fontsize=8)
+            ax.text(x + 0.5, y + 0.05, f'{weight:.3f}', ha='center', va='bottom', color=text_color, fontsize=8)
+    
         ax.set_xlim(0, max(18, len(lanthanides)))
         ax.set_ylim(-2, max_row)
         ax.set_aspect('equal')
         ax.axis('off')
-
-        cbar = plt.colorbar(sm, ax=ax, orientation='vertical', fraction=0.02, pad=0.04)
+    
+        cbar = plt.colorbar(ScalarMappable(cmap=cmap), ax=ax, orientation='vertical', fraction=0.02, pad=0.04)
         cbar.set_label('Weight')
     
-        plt.savefig(name)
+        plt.savefig(name,dpi=300)
+    
     
     def plot_3d(self):
         """ Plot the element weights as a 3D bar chart."""

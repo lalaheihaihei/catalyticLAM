@@ -569,7 +569,7 @@ def main():
     
     elif args.operation == "plot" and os.path.isdir(os.path.join(dataset_prefix, 'train')):
         from utils.plot_weight import PeriodicTableWeightsVisualizer
-        visualizer = PeriodicTableWeightsVisualizer(poscar_dir = os.path.join(dataset_prefix, 'train'), fmt=dataset_fmt)
+        visualizer = PeriodicTableWeightsVisualizer(dataset_prefix, fmt=dataset_fmt)
         visualizer.plot_2d(name = plot_name)
     
     
