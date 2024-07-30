@@ -1,16 +1,12 @@
-# catalyticLAM
+# CatalyticLAM
 
 Machine-Learning-Based Interatomic Potentials for Catalysis: an Universal Catalytic Large Atomic Model
 
 ## Directory Structure
 
 ```
-├── pretrainedCLAM 
-├── datasetworkflow
-│   ├── flow.py
-│   ├── input
-│   ├── structure_db
-│   └── utils
+├── docs
+├── examples
 ├── generation
 │   ├── element_list.json
 │   ├── get-bulk.py
@@ -18,12 +14,11 @@ Machine-Learning-Based Interatomic Potentials for Catalysis: an Universal Cataly
 │   ├── material.json
 │   ├── molecule.json
 │   └── plotter.py
-├── LICENSE
 ├── postworkflow
-│   ├── flowopt.py
-│   ├── flowts.py
-│   ├── POSCAR
-│   └── utils
+│   ├── RNET
+│   ├── optdp
+│   ├── optoc
+│   └── ts
 ├── scripts
 │   ├── cif2pos.py
 │   ├── get-cluster.py
@@ -39,12 +34,22 @@ Machine-Learning-Based Interatomic Potentials for Catalysis: an Universal Cataly
 │   ├── molecule-raw.tgz
 │   └── slab.tgz
 ├── train
+│   ├── checkpoint
 │   ├── finetune.json
+│   ├── frozen_model.pth
 │   ├── input.json
-│   ├── model.ckpt-10000000.pt
 │   ├── lcurve
+│   ├── model.ckpt-10000000.pt
 │   └── dataset
-│       ├── LiGePS
+├── vaspworkflow
+│   ├── POSCAR
+│   ├── structure_db
+│   ├── utils
+│   ├── flow.py
+│   ├── input
+│   ├── nohup.out
+│   └── record.txt
+├── LICENSE
 └── README.md
 ```
 
@@ -60,7 +65,7 @@ This section is responsible for generating structures, including bulk and slab s
 - `material.json`: Information for database generation.
 - `molecule.json`: Molecular structures database.
 
-### 2. DataSetWorkflow
+### 2. VASPWorkflow
 
 This section manages VASP tasks and workflows, as well as collects data for dpdata.
 
@@ -121,7 +126,8 @@ Ensure that your system has the following software installed:
 - ASE (version > 3.22)
 - DeepMD-kit (version > 3.0.0a1)
 - dpdata (version > 0.2.18)
-- VASP and VASPkit
+- VASP (version > 5.4.4)
+- VASPKIT
 - SLURM (for job scheduling)
 - tqdm (for progress bars)
 
@@ -152,7 +158,7 @@ python get-slab.py --up-down UUUUDDDD --plot --element Ru --molecule-type all --
 Navigate to the `datasetworkflow` directory, edit the `input` file as needed, and run `flow.py`:
 
 ```
-cd datasetworkflow
+cd vaspworkflow
 nohup python flow.py POSCAR opt &
 python flow.py POSCAR optcheck
 nohup python flow.py POSCAR md &
@@ -167,6 +173,7 @@ Navigate to the `postworkflow` directory, edit the configuration files, and run 
 
 ```
 cd postworkflow
+cd optdp or optoc
 python flowopt.py
 ```
 
@@ -235,6 +242,6 @@ This project is licensed under the GNU General Public License v3.0. See the [LIC
 * VASP: [https://www.vasp.at/](https://www.vasp.at/)
 * DeepMD-kit: [https://github.com/deepmodeling/deepmd-kit](https://github.com/deepmodeling/deepmd-kit)
 * dpdata: [https://github.com/deepmodeling/dpdata](https://github.com/deepmodeling/dpdata)
-* VASPkit: [https://vaspkit.com/](https://vaspkit.com/)
+* VASPKIT: [https://vaspkit.com/](https://vaspkit.com/)
 * fairchem: [https://github.com/FAIR-Chem/fairchem](https://github.com/FAIR-Chem/fairchem)
 * SLURM: [https://slurm.schedmd.com/](https://markdown.lovejade.cn/)
