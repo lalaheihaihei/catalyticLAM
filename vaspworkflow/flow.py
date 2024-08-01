@@ -395,9 +395,9 @@ class DPDataProcessor:
                     seen_folders.append(folder_path)
             return seen_folders
         
-        import re
 
         def extract_nonzero_elements(compound_string):
+            import re
             """ Extract non-zero elements from a compound string."""
             elements = re.findall(r'([A-Z][a-z]*)(\d+)', compound_string)
             nonzero_elements = [(element, int(quantity)) for element, quantity in elements if int(quantity) != 0]
@@ -417,8 +417,7 @@ class DPDataProcessor:
         dataset = ms.train_test_split(test_size=float(self.test_size))
         if not os.path.exists(self.prefix):
             os.makedirs(self.prefix)
-        else:
-            pass
+
         if not os.path.exists(os.path.join(self.prefix, 'train')):
             os.makedirs(os.path.join(self.prefix, 'train'))
         if not os.path.exists(os.path.join(self.prefix, 'val')):
@@ -456,18 +455,21 @@ class DPDataProcessor:
                 r_distances=False,
                 r_fixed=True,
                 )
-                # tags = raw_data[0].get_tags()
 
+                def is_metal(atom):   # Check if atom is a metal element
+                    if atom.symbol not in ['H', 'C', 'N', 'O', 'S', 'Cl', 'Br', 'I', 'F']: # commen non-metal elements in absorbtion
+                        return True
+                    else:
+                        return False
+                    
                 all_data_objects = []
-                for i in data:
-                    ase_data = i.to_ase_structure()
-                # simple devide atom according to z coordinate, 1 for subsurface, 2 for surface
-                    pos = ase_data[0].positions[:, 2]
-                    cond1 = pos < np.max(pos) - 2 
-                    cond2 = np.min(pos) + 2 < pos
-                    cond = cond1 & cond2
-                    tag = np.where(cond, 1, 2)
+                tags = []
+                for labelsystem in data:
+                    ase_data = labelsystem.to_ase_structure()
 
+                    tag = [1 if is_metal(i) else 2 for i in ase_data[0]]  # 1 for metal, 2 for non-metal, Note: this is not suitable for substrate including non-metal elements
+                    for lenth in range(len(ase_data)):
+                        tags.append(tag)
                     data_objects = a2g.convert_all(ase_data, disable_tqdm=True)
                     all_data_objects.extend(data_objects)
                 # return all_data_objects
@@ -484,7 +486,7 @@ class DPDataProcessor:
                 #assign fid
                     data1.fid = torch.LongTensor([fid])
                     data1.sid = torch.LongTensor([0])
-                    data1.tags = torch.LongTensor(tag)
+                    data1.tags = torch.LongTensor(tags[fid])
 
                     txn = db.begin(write=True)
                     txn.put(f"{fid}".encode("ascii"), pickle.dumps(data1, protocol=-1))
@@ -570,7 +572,7 @@ def main():
     elif args.operation == "plot" and os.path.isdir(os.path.join(dataset_prefix, 'train')):
         from utils.plot_weight import PeriodicTableWeightsVisualizer
         visualizer = PeriodicTableWeightsVisualizer(dataset_prefix, fmt=dataset_fmt)
-        visualizer.plot_2d(name = plot_name)
+        visualizer.plot_2d(name=plot_name)
     
     
 if __name__ == "__main__":
