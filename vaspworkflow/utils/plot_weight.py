@@ -120,19 +120,15 @@ def calculate_element_weights_npy(self):
         # Iterate over POSCAR files to calculate frequencies
         for poscar_file in tqdm(glob.glob(pathname=os.path.join(self.poscar_dir, '**/type_map.raw'), recursive=True)):
             # ther may raise error for the older dataset deduced by dpdata ,the direction should be set.000/real_atom_types.npy
-            atom_type = np.load(os.path.join(os.path.dirname(poscar_file), 'set.000000/real_atom_types.npy'))
+            arrays = [np.load(set_file) for set_file in glob.glob(pathname=os.path.join(os.path.dirname(poscar_file), '**/real_atom_types.npy'), recursive=True)]
+            atom_type = np.vstack(arrays)
+
             with open(os.path.join(os.path.dirname(poscar_file), 'type_map.raw'), encoding='utf-8') as f:
                 typemap = [line.strip('\n') for line in f.readlines()]
-            all_stru = []
+
             for itype in atom_type:
                 structure = [typemap[i] for i in set(itype)]
-                structure = sorted(structure)
-                # if structure not in all_stru:
-                #     all_stru.append(structure)
-                #     for element in structure:
-                #         element_frequencies[element] = element_frequencies.get(element, 0) + 1 # structure.composition[element]
-                # else:
-                #     pass
+                # structure = sorted(structure)
 
                 for element in structure:
                 # symbol = element.symbol
@@ -199,7 +195,7 @@ def calculate_element_weights_npy(self):
             ax.add_patch(plt.Rectangle((x + 0.05, y + 0.05), 0.9, 0.9, color=color, edgecolor=text_color, linewidth=0.5))
             ax.text(x + 0.5, y + 0.5, el.symbol, ha='center', va='center', color=text_color, fontsize=15)
             ax.text(x + 0.1, y + 0.9, f'{el.Z}', ha='left', va='top', color=text_color, fontsize=10)
-            ax.text(x + 0.5, y + 0.05, f'{weight:.3f}', ha='center', va='bottom', color=text_color, fontsize=8)
+            ax.text(x + 0.5, y + 0.05, f'{weight}', ha='center', va='bottom', color=text_color, fontsize=8)
     
         lanthanides = [el for el in Element if 57 <= el.Z <= 71]
         for i, el in enumerate(lanthanides):
@@ -211,7 +207,7 @@ def calculate_element_weights_npy(self):
             ax.add_patch(plt.Rectangle((x + 0.05, y + 0.05), 0.9, 0.9, color=color, edgecolor=text_color, linewidth=0.5))
             ax.text(x + 0.5, y + 0.5, el.symbol, ha='center', va='center', color=text_color, fontsize=12)
             ax.text(x + 0.1, y + 0.9, f'{el.Z}', ha='left', va='top', color=text_color, fontsize=8)
-            ax.text(x + 0.5, y + 0.05, f'{weight:.3f}', ha='center', va='bottom', color=text_color, fontsize=8)
+            ax.text(x + 0.5, y + 0.05, f'{weight}', ha='center', va='bottom', color=text_color, fontsize=8)
     
         ax.set_xlim(0, max(18, len(lanthanides)))
         ax.set_ylim(-2, max_row)
