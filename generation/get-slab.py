@@ -1,5 +1,7 @@
-from itertools import combinations
+import json
+import argparse
 import numpy as np
+from itertools import combinations
 from pymatgen.analysis.adsorption import AdsorbateSiteFinder, plot_slab, reorient_z, get_rot
 from pymatgen.core.surface import generate_all_slabs
 from pymatgen.symmetry.analyzer import SpacegroupAnalyzer
@@ -8,10 +10,6 @@ from pymatgen.io.vasp.inputs import Poscar
 from matplotlib import pyplot as plt
 from mp_api.client import MPRester
 from plotter import SlabPlotter
-from molecule_db import molecule_database
-import material_db
-from material_db import *
-import argparse
 
 class SlabGenerator:
     def __init__(self, api_key, enable_plotting):
@@ -21,7 +19,7 @@ class SlabGenerator:
         if self.enable_plotting:
             self.plotter = SlabPlotter()  # 如果启用绘图，创建SlabPlotter的实例
 
-    def generate_slabs(self, material_ids, molecule_type, up_down, max_index, min_slab_size, min_vacuum_size, min_lw, distance, element,max_slabs,molecule_types):
+    def generate_slabs(self, material_ids, molecule_type, up_down, max_index, min_slab_size, min_vacuum_size, min_lw, distance, element,max_slabs, molecule_types):
         """
         Generate slabs from given material IDs and adsorb molecules on them.
         
@@ -39,7 +37,7 @@ class SlabGenerator:
                 struct = self.mpr.get_structure_by_material_id(mp_id["mp_id"])  # Get structure from Materials Project
                 struct = SpacegroupAnalyzer(struct,symprec=0.03).get_conventional_standard_structure()  # Standardize structure
                 slabs = generate_all_slabs(struct, max_index=max_index, min_slab_size=min_slab_size,
-                                       min_vacuum_size=min_vacuum_size, center_slab=True,max_normal_search=2)  # Generate slabs
+                                       min_vacuum_size=min_vacuum_size, center_slab=True, max_normal_search=2)  # Generate slabs
                 
                 #delete repeat miller index
                 unique_slabs = {}
@@ -333,6 +331,26 @@ class SlabGenerator:
                         if up_down == "UUUUDDDD":
                             break
 
+def read_json_file(file_path):
+    with open(file_path, 'r') as file:
+        return json.load(file)
+
+molecule_database = read_json_file('molecule.json')
+material_db = read_json_file('material.json')
+
+reactions = material_db.get('reactions', [])
+type1 = material_db.get('type1', [])
+type2 = material_db.get('type2', [])
+type3 = material_db.get('type3', [])
+type4 = material_db.get('type4', [])
+
+for material in type3:
+    reaction_type = material.get('ads')
+    if reaction_type in reactions:
+        material['ads'] = reactions[reaction_type]
+    else:
+        print(f"Reaction type {reaction_type} not found in reactions database.")
+
 def parse_command_line_arguments():
     """
     Parses command line arguments and returns the parsed arguments.
@@ -370,7 +388,7 @@ if __name__ == "__main__":
     enable_plotting = args.plot
     up_down = args.up_down
 
-    material_ids = getattr(material_db, args.type)
+    material_ids = material_db.get(args.type, [])
 
     slab_generator = SlabGenerator(api_key, enable_plotting)
     slab_generator.run(material_ids=material_ids, molecule_type=args.molecule_type, up_down=args.up_down,
