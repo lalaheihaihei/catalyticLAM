@@ -5,9 +5,6 @@ from mp_api.client import MPRester
 from pymatgen.io.vasp.inputs import Poscar
 from plotter import BulkPlotter
 from pymatgen.symmetry.analyzer import SpacegroupAnalyzer
-from mp_api.client import MPRester
-from element_list import metal_element_list,alloy_element_list
-from material_db import type1,type4  # Replace 'some_library' with the actual library name
 
 class BulkGenerator:
     def __init__(self, api_key):
@@ -172,10 +169,22 @@ def get_most_stable_alloy_mp_id(api_key, elementNumber, elements, ificsd=True, a
                 print(f"An error occurred for element pair {element_pair}: {e}")
     return stable_ids
 
+def read_json_file(file_path):
+    with open(file_path, 'r') as file:
+        return json.load(file)
+
+element_data = read_json_file('element_list.json')
+material_data = read_json_file('material.json')
+
+metal_element_list = element_data['metal_element_list']
+alloy_element_list = element_data['alloy_element_list']
+type1 = material_data['type1']
+type4 = material_data['type4']
+
 if __name__ == "__main__":
     args = parse_command_line_arguments()
     if args.task == "search":
-        if args.bulktype == "metal": 
+        if args.bulktype == "metal":
             elements = metal_element_list
             most_stable_mp_ids = get_most_stable_metal_mp_id(args.api_key, elements, args.ificsd)
             with open("metal_mp_ids.json", "w") as f:
