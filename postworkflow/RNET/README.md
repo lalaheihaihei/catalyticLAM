@@ -127,8 +127,8 @@ Optimize all possible intermedieas by `flowopt.py`. And plot the energy changes 
 ```sh
 python ./plot_all.py
 ```
-![Energies per ionic steps calculated by VASP and CLAM+VASP for OPT calulation](../docs/energy_change_comparison-rnet.png)
-![Energies difference after per finetune steps and the final VASP energies](../docs/energy_differences_distribution.png)
+![Energies per ionic steps calculated by VASP and CLAM+VASP for OPT calulation](../../docs/energy_change_comparison-rnet.png)
+![Energies difference after per finetune steps and the final VASP energies](../../docs/energy_differences_distribution.png)
 
 
 ## 5. License
