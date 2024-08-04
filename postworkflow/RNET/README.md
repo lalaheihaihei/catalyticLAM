@@ -16,8 +16,9 @@ Construct intermediates and reaction networks containing C, H, O elements (up to
     - [3.1.1 Command-Line Arguments](#311-command-line-arguments)
     - [3.1.2 Example Command](#312-example-command)
   - [3.2 Outputs for RNet.py](#32-outputs-for-makeslabpy)
-- [4. License](#4-license)
-- [5. Acknowledgements](#5-acknowledgements)
+- [4. Optimization and Plot](#4-optimization-and-plot)
+- [5. License](#5-license)
+- [6. Acknowledgements](#6-acknowledgements)
 
 ## 0. Prerequisites
 
@@ -120,11 +121,21 @@ python MakeSlab.py --element Pt --max-index 1
 [element][surface_index]_[molecule_ID]-[molecule_chemical_fomula].vasp
 e.g. `Pt100_0-H2.vasp`
 
-## 4. License
+## 4. Optimization and Plot
+
+Optimize all possible intermedieas by `flowopt.py`. And plot the energy changes and energy differences MAE by `plot_all.py`.
+```sh
+python ./plot_all.py
+```
+![Energies per ionic steps calculated by VASP and CLAM+VASP for OPT calulation](../docs/energy_change_comparison-rnet.png)
+![Energies difference after per finetune steps and the final VASP energies](../docs/energy_differences_distribution.png)
+
+
+## 5. License
 
 This project is licensed under the LGPL-3.0 License.
 
-## 5. Acknowledgements
+## 6. Acknowledgements
 
 * ASE: [https://wiki.fysik.dtu.dk/ase/](https://wiki.fysik.dtu.dk/ase/)
 * Pymatgen: [https://pymatgen.org/](https://pymatgen.org/)
