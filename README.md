@@ -2,62 +2,11 @@
 
 Machine-Learning-Based Interatomic Potentials for Catalysis: an Universal Catalytic Large Atomic Model
 
-## Directory Structure
-
-```
-├── docs
-├── examples
-├── generation
-│   ├── element_list.json
-│   ├── get-bulk.py
-│   ├── get-slab.py
-│   ├── material.json
-│   ├── molecule.json
-│   └── plotter.py
-├── postworkflow
-│   ├── RNET
-│   ├── optdp
-│   ├── optoc
-│   └── ts
-├── scripts
-│   ├── cif2pos.py
-│   ├── get-cluster.py
-│   ├── json2cif.py
-│   └── xyz2pos.py
-├── structure_db
-│   ├── 2D.tgz
-│   ├── 2D-raw.tgz
-│   ├── bulk.tgz
-│   ├── cluster.tgz
-│   ├── cluster-raw.tgz
-│   ├── molecule.tgz
-│   ├── molecule-raw.tgz
-│   └── slab.tgz
-├── train
-│   ├── checkpoint
-│   ├── finetune.json
-│   ├── frozen_model.pth
-│   ├── input.json
-│   ├── lcurve
-│   ├── model.ckpt-10000000.pt
-│   └── dataset
-├── vaspworkflow
-│   ├── POSCAR
-│   ├── structure_db
-│   ├── utils
-│   ├── flow.py
-│   ├── input
-│   ├── nohup.out
-│   └── record.txt
-├── LICENSE
-└── README.md
-```
-
 ## Overview
 
 ### 1. Generation
 
-This section is responsible for generating structures, including bulk and slab structures for VASP calculation. Please read README.md in generation for details.
+This section is responsible for generating structures, including bulk and slab structures for VASP calculation. Please read [README.md](./generation/README.md) in generation for details.
 
 - `get-bulk.py`: Generates bulk structures.
 - `get-slab.py`: Generates slab structures.
