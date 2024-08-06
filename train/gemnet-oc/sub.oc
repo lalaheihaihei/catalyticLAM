@@ -1,0 +1,37 @@
+#!/bin/bash
+#SBATCH -n 12
+#SBATCH -N 1
+#SBATCH --gres=gpu:1
+#SBATCH -J deepmd-kit
+#SBATCH --partition=gpu
+#SBATCH --mem=24G                 # 请求的总内存（不是GPU内存）
+
+# 打印任务信息
+echo "Starting job $SLURM_JOB_ID at " `date`
+echo "SLURM_SUBMIT_DIR is $SLURM_SUBMIT_DIR"
+echo "Running on nodes: $SLURM_NODELIST"
+
+# 执行任务
+## 载入vasp
+#module load VASP/6.4.1-gzbuild-intel_8300
+#mpirun vasp_std > vasp.out 2>vasp.err
+#dp train train.json 1>> train.log 2>> train.err
+
+# CUDA_VISIBLE_DEVICES=0,1
+#export OMP_NUM_THREADS=2
+#export DP_INTRA_OP_PARALLELISM_THREADS=2
+#export DP_INTER_OP_PARALLELISM_THREADS=8
+
+module load CUDA/12.3.2
+#CUDA_VISIBLE_DEVICES=0,torchrun --standalone --nproc_per_node=gpu --no-python dp --pt train input_torch.json 
+
+#ulimit -n unlimited
+#dp --pt  train data-2.json --finetune model.ckpt-2000.pt --model-branch no_fe_ener > finetune.out
+#dp --pt --skip-neighbor-stat train input.json > out
+#python main.py --mode train --config-yml gemnet_oc.yml --seed 12334  --print-every 500 > out
+#python main.py --mode train --config-yml gemnet_oc.yml --seed 12334 --checkpoint /home/ljcgroup/wzh/fairchem/fairchem/fairchem/ceshi/checkpoints/2024-07-26-13-45-36/checkpoint.pt >  out
+# python main.py --mode train --config-yml gemnet_oc.yml --seed 12334 --checkpoint /home/ljcgroup/wzh/fairchem/fairchem/fairchem/ceshi/batch-4/checkpoints/2024-07-15-16-49-04/checkpoint.pt >  out 
+python main.py --mode train --config-yml finetune1.yml --checkpoint ./gnoc_oc22_oc20_all_s2ef.pt --print-every 1000 >> out
+# 任务结束
+echo "Job $SLURM_JOB_ID done at " `date`
+
