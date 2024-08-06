@@ -78,7 +78,7 @@ cd catalyticLAM
 
 ### 3.1 Generate Structures
 
-Navigate to the (generation)[./generaion/] directory and run the appropriate script to generate the desired structures:
+Navigate to the [generation](./generaion/) directory and run the appropriate script to generate the desired structures:
 
 - `get-bulk.py`: Generates bulk structures.
 - `get-slab.py`: Generates slab structures.
@@ -92,11 +92,11 @@ python get-bulk.py --task search --ificsd --bulktype alloy --elementNumber 2
 python get-slab.py --up-down UUD --plot --element Au --molecule-type CO --type type1
 python get-slab.py --up-down UUUUDDDD --plot --element Ru --molecule-type all --type type3
 ```
-Detail usages are in (README.md)[./generaion/README.md]
+Detail usages are in [README.md](./generaion/README.md)
 
 ### 3.2 Run VASP Workflow
 
-Navigate to the (vaspworkflow)[./vaspworkflow/] directory, edit the `input` file as needed, and run `flow.py`:
+Navigate to the [vaspworkflow](./vaspworkflow/) directory, edit the `input` file as needed, and run `flow.py`:
 
 - `flow.py`: Main workflow script for managing VASP calculations and data processing.
 - `input`: Input parameter file.
@@ -113,11 +113,11 @@ python flow.py POSCAR mdcheck
 python flow.py POSCAR dpdata
 python flow.py POSCAR plot
 ```
-Detail usages are in (README.md)[./vaspworkflow/README.md]
+Detail usages are in [README.md](./vaspworkflow/README.md)
 
 ### 3.3 Run Structure Optimization and Transition State Search
 
-Navigate to the (postworkflow)[./postworkflow] directory, prepare input files, and run the relevant scripts:
+Navigate to the [postworkflow](./postworkflow) directory, prepare input files, and run the relevant scripts:
 
 - `flowopt.py`: Workflow script for structure optimization.
 - `flowts.py`: Workflow script for transition state search.
@@ -131,11 +131,11 @@ nohup python ./flowopt.py --num_iterations 3 --steps_per_iteration 200 --fixed_a
 cd tsdp or tsoc
 nohup python ./flowts.py POSCARis POSCARfs ./frozen_model.pth OUTCARis OUTCARfs &
 ```
-Detail usages are in (README.md)[./postworkflow/README.md]
+Detail usages are in [README.md](./postworkflow/README.md)
 
 ### 3.4 Run Reaction Network generation
 
-Navigate to the (postworkflow/RNET)[./postworkflow/RNET] directory, prepare input files, and run the relevant scripts:
+Navigate to the [postworkflow/RNET](./postworkflow/RNET) directory, prepare input files, and run the relevant scripts:
 
 - `finetune.json`: input file for fine-tuning the CLAM model.
 - `input.json`: input file for training the CLAM model.
@@ -148,12 +148,12 @@ cd postworkflow/RNET
 python script.py 1 2 --layout spring
 python MakeSlab.py --element Ce --max-index 1
 ```
-Detail usages are in (README.md)[./postworkflow/RNET/README.md]
+Detail usages are in [README.md](./postworkflow/RNET/README.md)
 
 ### 3.5 Construct Pretrained CLAM for Post Workflow
 
-Navigate to the (train)[./train] directory, edit the input files, and run the training or fine-tuning jobs.
-Details of CLAM are in (README.md)[./train/README.md]
+Navigate to the [train](./train) directory, edit the input files, and run the training or fine-tuning jobs.
+Details of CLAM are in [README.md](./train/README.md)
 
 - `cif2pos.py`: Convert CIF file to POSCAR.
 - `get-cluster.py`: Generate the structures of metal clusters in xyz format.
@@ -169,14 +169,14 @@ dp --pt train --finetune model.ckpt.10000000.pt --model-branch <head> finetune.j
 python main.py --mode train --config-yml finetune1.yml --print-every 1000 >> out
 python main.py --mode train --config-yml finetune1.yml --checkpoint gnoc_oc22_oc20_all_s2ef.pt --print-every 1000 >> out
 ```
-Detail usages are in (README.md)[./train/README.md]
+Detail usages are in [README.md](./train/README.md)
 
-more information please refer to (Deepmd-kit official website)[https://github.com/deepmodeling/deepmd-kit] and (fairchem official website)[https://github.com/FAIR-Chem/fairchem].
+more information please refer to [Deepmd-kit official website](https://github.com/deepmodeling/deepmd-kit) and [fairchem official website](https://github.com/FAIR-Chem/fairchem).
 
 
 ### 3.6 Other Scripts
 
-Navigate to the (scripts)[./scripts] directory and run the appropriate script to generate the cluster structures or convert file formats.
+Navigate to the [scripts](./scripts) directory and run the appropriate script to generate the cluster structures or convert file formats.
 
 * `cif2pos.py`: Convert CIF file to POSCAR.
 * `get-cluster.py`: Generate the structures of metal clusters in xyz format.
@@ -186,7 +186,7 @@ Navigate to the (scripts)[./scripts] directory and run the appropriate script to
 
 ### 3.7 initial structures
 
-Navigate to the (structure_db)[./structure_db] directory, you can find compressed files, which containing the initial structures.
+Navigate to the [structure_db](./structure_db) directory, you can find compressed files, which containing the initial structures.
 - `2D.tgz`: The total 6351 POSCAR files of 2D materials for VASP calculation.
 - `2D-raw.tgz`: The initial json file containing the information of 2D materials and the corresponding cif files.
 - `bulk.tgz`: The POSCAR files of metals and alloys for VASP calculation.
