@@ -6,7 +6,7 @@ Machine-Learning-Based Interatomic Potentials for Catalysis: a Universal Catalyt
    - [1.1 Generation](#11-generation)
    - [1.2 VASP Workflow](#12-vasp-workflow)
    - [1.3 Post Workflow](#13-post-workflow)
-   - [1.4 Pretrained CLAM for Post Workflow](#14-pretrained-calm-for-post-workflow)
+   - [1.4 Pretrained CLAM for Post Workflow](#14-pretrained-clam-for-post-workflow)
    - [1.5 Scripts](#15-scripts)
    - [1.6 Initial Structures](#16-initial-structures)
 2. [Installation](#2-installation)
@@ -45,7 +45,7 @@ This section contains the pretrained CLAM model for the post workflow, including
 
 This section contains useful scripts to generate cluster structures and convert the format of files.
 
-### 1.6 Initial Strctures
+### 1.6 Initial Structures
 
 This section contains the initial structure files and POSCAR files for VASP optimization and MD calculations to generate datasets.
 
