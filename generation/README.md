@@ -22,7 +22,7 @@ This section is responsible for generating structures, including bulk and slab s
 
 ## 1. element_list.json
 
-The [element_list.json](./element_list.json) file contains the list of metal (metal_element_list) and alloy (alloy_element_list) elements, and this file is mainly read by [get-bulk.py](./get-bulk.py) script for bulk materials (including pure metals, binary alloys, and ternary alloys, etc.) search and generation. In actual application, you can add or delete`metal` or `alloy` elements according to your needs.
+The [element_list.json](./element_list.json) file contains the list of metal (metal_element_list) and alloy (alloy_element_list) elements, and this file is mainly read by [get-bulk.py](./get-bulk.py) script for bulk materials (including pure metals, binary alloys, and ternary alloys, etc.) search and generation. In actual application, you can add or delete `metal` or `alloy` elements according to your needs.
 
 ## 2. molecule.json
 
@@ -129,8 +129,8 @@ For metal Pd there are four corresponding `reactions` defined in [material.json]
 
 ## 6. Acknowledgements
 
-* Python: [https://www.python.org/]()
-* ASE: [https://wiki.fysik.dtu.dk/ase/]()
-* Pymatgen: [https://pymatgen.com/]()
-* MP-API: [https://pypi.org/project/mp-api/]()
-* Numpy: [https://numpy.org/]()
+* Python: [https://www.python.org/](https://www.python.org/)
+* ASE: [https://wiki.fysik.dtu.dk/ase/](https://wiki.fysik.dtu.dk/ase/)
+* Pymatgen: [https://pymatgen.org/](https://pymatgen.org/)
+* MP-API: [https://pypi.org/project/mp-api/](https://pypi.org/project/mp-api/)
+* Numpy: [https://numpy.org/](https://numpy.org/)

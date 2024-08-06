@@ -36,6 +36,8 @@ Construct intermediates and reaction networks containing C, H, O elements (up to
 .
 ├── RNet.py # Genarate  reaction network diagram
 ├── MakeSlab.py # Construct all possible structures for intermediats adsorption on metal surfaces
+├── plot_all.py # Plot the energy changes and energy differences MAE
+├── example
 ├── utils
 │ ├── molecule_db.py # Complete molecular library containing up to C6 products
 │ ├── reaction_db.txt # Potential elementary reactions between molecules cataloged in the `molecule_db.py` file, where the first molecule acts as the reactant, and the second and third (if exist) molecules represent the products.
@@ -57,8 +59,8 @@ RNet.py constructs a reaction network diagram containing all possible intermedia
 
 This script supports the following command-line arguments:
 
-- noc（type=`int`): The maximum number of carbon atoms.
-- noo（type=`int`): The maximum number of oxygen atoms.
+- noc (type: `int`): The maximum number of carbon atoms.
+- noo (type: `int`): The maximum number of oxygen atoms.
 - `--layout` (type: `str`, default: `spring`): The layout for the network graph, choose from "spring", "circular", "shell", "kamada_kawai", "spectral" or "random".
 
 ### 2.1.2 Example Command
@@ -66,11 +68,11 @@ This script supports the following command-line arguments:
 To run the script, use the following command:
 
 ```sh
-python script.py noc noo [--layout str]
+python RNet.py noc noo [--layout str]
 ```
 
 ```bash
-python script.py 1 2 --layout spring
+python RNet.py 1 2 --layout spring
 ```
 
 ## 2.2 Outputs for RNet.py
@@ -109,7 +111,7 @@ This script supports the following command-line arguments:
 To run the script, use the following command:
 
 ```sh
-python script_name.py  [--plot BOOL] [--api-key STR] [--max-index INT] [--min-slab-size FLOAT] [--min-vacuum-size FLOAT] [--min-lw FLOAT] [--distance FLOAT] [--element STR] [--max-slabs INT]
+python MakeSlab.py  [--plot BOOL] [--api-key STR] [--max-index INT] [--min-slab-size FLOAT] [--min-vacuum-size FLOAT] [--min-lw FLOAT] [--distance FLOAT] [--element STR] [--max-slabs INT]
 ```
 
 ```sh
@@ -140,4 +142,3 @@ This project is licensed under the LGPL-3.0 License.
 * ASE: [https://wiki.fysik.dtu.dk/ase/](https://wiki.fysik.dtu.dk/ase/)
 * Pymatgen: [https://pymatgen.org/](https://pymatgen.org/)
 * NetworkX: [https://networkx.org/](https://networkx.org/)
-
