@@ -78,7 +78,7 @@ cd catalyticLAM
 
 ### 3.1 Generate Structures
 
-Navigate to the [generation](./generaion/) directory and run the appropriate script to generate the desired structures:
+Navigate to the [generation](./generation/) directory and run the appropriate script to generate the desired structures:
 
 - `get-bulk.py`: Generates bulk structures.
 - `get-slab.py`: Generates slab structures.
@@ -92,7 +92,7 @@ python get-bulk.py --task search --ificsd --bulktype alloy --elementNumber 2
 python get-slab.py --up-down UUD --plot --element Au --molecule-type CO --type type1
 python get-slab.py --up-down UUUUDDDD --plot --element Ru --molecule-type all --type type3
 ```
-Detail usages are in [README.md](./generaion/README.md)
+Detail usages are in [README.md](./generation/README.md)
 
 ### 3.2 Run VASP Workflow
 
