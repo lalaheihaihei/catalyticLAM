@@ -1,4 +1,16 @@
 # Training input files and model by DPA1 and Gemnet-OC
+## Table of Contents
+
+1. [Training input files and model by DPA1 and Gemnet-OC](#training-input-files-and-model-by-dpa1-and-gemnet-oc)
+   - [0. CLAM dataset (version: 2024Q2)](#0-clam-dataset-version-2024q2)
+   - [1. Training model](#1-training-model)
+     - [1.1 Training by DPA in DeePMD-kit](#11-training-by-dpa-in-deepmd-kit)
+     - [1.2 Training by Gemnet-OC](#12-training-by-gemnet-oc)
+   - [2. Finetune model](#2-finetune-model)
+     - [2.1 Finetune by DPA in DeePMD-kit](#21-finetune-by-dpa-in-deepmd-kit)
+     - [2.2 Finetune by Gemnet-OC](#22-finetune-by-gemnet-oc)
+   - [3. Checkpoints and configurations](#3-checkpoints-and-configurations)
+   - [4. Test Results](#4-test-results)
 
 ## 0. CLAM dataset (version: 2024Q2)
 
@@ -52,9 +64,9 @@ Example of finetune based on pretrained `model.ckpt-10000000.pt`, note that `--m
 dp --pt train finetune1.json --finetune ./model.ckpt-10000000.pt --model-branch bulk > finetune.out
 ```
 
-### 2.2 training by Gemnet-oc
+### 2.2 finetune by Gemnet-oc
 
-Example of finetune based on OC pretrained `gnoc_oc22_oc20_all_s2ef.pt`, and if you want to finetune the model from your self-made checkpoint, the `epoch`, `steps` information need to be removed by the [script](../script/sim_model.py).
+Example of finetune based on OC pretrained `gnoc_oc22_oc20_all_s2ef.pt`, and if you want to finetune the model from your self-made checkpoint, the `epoch`, `steps` information need to be removed by the [script](../scripts/sim_model.py).
 
 ```sh
 python main.py --mode train --config-yml finetune1.yml --checkpoint gnoc_oc22_oc20_all_s2ef.pt --print-every 1000 >> out
