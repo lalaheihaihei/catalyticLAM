@@ -6,9 +6,9 @@ Machine-Learning-Based Interatomic Potentials for Catalysis: a Universal Catalyt
    - [1.1 Generation](#11-generation)
    - [1.2 VASP Workflow](#12-vasp-workflow)
    - [1.3 Post Workflow](#13-post-workflow)
-   - [1.4 Pretrained Catalytic Large Atomic Model for Post Workflow](#14-pretrained-catalytic-large-atomic-model-for-post-workflow)
+   - [1.4 Pretrained CLAM for Post Workflow](#14-pretrained-calm-for-post-workflow)
    - [1.5 Scripts](#15-scripts)
-   - [1.6 Structure Database](#16-structure-database)
+   - [1.6 Initial Structures](#16-initial-structures)
 2. [Installation](#2-installation)
    - [2.1 Prerequisites](#21-prerequisites)
    - [2.2 Installation](#22-installation)
@@ -17,8 +17,9 @@ Machine-Learning-Based Interatomic Potentials for Catalysis: a Universal Catalyt
    - [3.2 Run VASP Workflow](#32-run-vasp-workflow)
    - [3.3 Run Structure Optimization and Transition State Search](#33-run-structure-optimization-and-transition-state-search)
    - [3.4 Run Reaction Network generation](#34-run-reaction-network-generation)
-   - [3.5 Construct Pretrained Catalytic Large Atomic Model for Post Workflow](#35-construct-pretrained-catalytic-large-atomic-model-for-post-workflow)
+   - [3.5 Construct Pretrained CLAM for Post Workflow](#35-construct-pretrained-clam-for-post-workflow)
    - [3.6 Other Scripts](#36-other-scripts)
+   - [3.7 Initial Structures](#37-initial-structures)
 4. [License](#4-license)
 5. [Acknowledgements](#5-acknowledgements)
 
@@ -36,7 +37,7 @@ This section manages VASP tasks and workflows, as well as collects data for `dpd
 
 This section is responsible for model-accelerated structure optimization, transition state search, and catalytic reaction network construction. The optimization and transition state search are based on a local fine-tune method, which involves a Labeling, Fine-tuning, and Inference loop to accelerate the optimization and MD process. It can also automatically construct reaction networks to generate possible intermediates and transition state structures.
 
-### 1.4 Pretrained Catalytic Large Atomic Model for Post Workflow
+### 1.4 Pretrained CLAM for Post Workflow
 
 This section contains the pretrained CLAM model for the post workflow, including its training, fine-tuning, and checkpoint files.
 
@@ -44,18 +45,9 @@ This section contains the pretrained CLAM model for the post workflow, including
 
 This section contains useful scripts to generate cluster structures and convert the format of files.
 
-### 1.6 Structure Database
+### 1.6 Initial Strctures
 
 This section contains the initial structure files and POSCAR files for VASP optimization and MD calculations to generate datasets.
-
-- `2D.tgz`: The total 6351 POSCAR files of 2D materials for VASP calculation.
-- `2D-raw.tgz`: The initial json file containing the information of 2D materials and the corresponding cif files.
-- `bulk.tgz`: The POSCAR files of metals and alloys for VASP calculation.
-- `cluster.tgz`: The POSCAR files of clusters for VASP calculation.
-- `cluster-raw.tgz`: The initial xyz files of clusters.
-- `molecule.tgz`: The total POSCAR files of molecules for VASP calculation.
-- `molecule-raw.tgz`: The initial xyz files of molecules.
-- `slab.tgz`: The POSCAR files of slabs for VASP calculation.
 
 ## 2. Installation 
 
@@ -158,7 +150,7 @@ python MakeSlab.py --element Ce --max-index 1
 ```
 Detail usages are in (README.md)[./postworkflow/RNET/README.md]
 
-### 3.5 Construct Pretrained Catalytic Large Atomic Model for PostWorkflow
+### 3.5 Construct Pretrained CLAM for Post Workflow
 
 Navigate to the (train)[./train] directory, edit the input files, and run the training or fine-tuning jobs.
 Details of CLAM are in (README.md)[./train/README.md]
@@ -182,7 +174,7 @@ Detail usages are in (README.md)[./train/README.md]
 more information please refer to (Deepmd-kit official website)[https://github.com/deepmodeling/deepmd-kit] and (fairchem official website)[https://github.com/FAIR-Chem/fairchem].
 
 
-### 3.7 Other Scripts
+### 3.6 Other Scripts
 
 Navigate to the (scripts)[./scripts] directory and run the appropriate script to generate the cluster structures or convert file formats.
 
@@ -191,6 +183,19 @@ Navigate to the (scripts)[./scripts] directory and run the appropriate script to
 * `json2cif.py`: Convert JSON file to CIF file.
 * `xyz2pos.py`: Convert XYZ file to POSCAR.
 * `sim_model.py`: For deleting the unnecessary keys in checkpoint files (oc22).
+
+### 3.7 initial structures
+
+Navigate to the (structure_db)[./structure_db] directory, you can find compressed files, which containing the initial structures.
+- `2D.tgz`: The total 6351 POSCAR files of 2D materials for VASP calculation.
+- `2D-raw.tgz`: The initial json file containing the information of 2D materials and the corresponding cif files.
+- `bulk.tgz`: The POSCAR files of metals and alloys for VASP calculation.
+- `cluster.tgz`: The POSCAR files of clusters for VASP calculation.
+- `cluster-raw.tgz`: The initial xyz files of clusters.
+- `molecule.tgz`: The total POSCAR files of molecules for VASP calculation.
+- `molecule-raw.tgz`: The initial xyz files of molecules.
+- `slab.tgz`: The POSCAR files of slabs for VASP calculation.
+
 
 ## 4. License
 
