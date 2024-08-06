@@ -131,6 +131,6 @@ For metal Pd there are four corresponding `reactions` defined in [material.json]
 
 * Python: [https://www.python.org/](https://www.python.org/)
 * ASE: [https://wiki.fysik.dtu.dk/ase/](https://wiki.fysik.dtu.dk/ase/)
-* Pymatgen: [https://pymatgen.com/](https://pymatgen.com/)
+* Pymatgen: [https://pymatgen.org/](https://pymatgen.org/)
 * MP-API: [https://pypi.org/project/mp-api/](https://pypi.org/project/mp-api/)
 * Numpy: [https://numpy.org/](https://numpy.org/)

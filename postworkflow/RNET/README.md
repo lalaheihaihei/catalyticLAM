@@ -36,6 +36,8 @@ Construct intermediates and reaction networks containing C, H, O elements (up to
 .
 ├── RNet.py # Genarate  reaction network diagram
 ├── MakeSlab.py # Construct all possible structures for intermediats adsorption on metal surfaces
+├── plot_all.py # Plot the energy changes and energy differences MAE
+├── example
 ├── utils
 │ ├── molecule_db.py # Complete molecular library containing up to C6 products
 │ ├── reaction_db.txt # Potential elementary reactions between molecules cataloged in the `molecule_db.py` file, where the first molecule acts as the reactant, and the second and third (if exist) molecules represent the products.

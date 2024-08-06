@@ -58,7 +58,7 @@ Ensure that your system has the following software installed:
 - Python 3 (version > 3.10)
 - ASE (version > 3.22)
 - Pymatgen (version > 2023.3.23)
-- DeepMD-kit (version > 3.0.0a1)
+- DeePMD-kit (version > 3.0.0a1)
 - dpdata (version > 0.2.18)
 - fairchem
 - VASP (version > 5.4.4)
@@ -72,6 +72,11 @@ Ensure that your system has the following software installed:
 
 ```bash
 git clone https://github.com/lalaheihaihei/catalyticLAM.git
+```
+
+2. Enter the folder:
+
+```
 cd catalyticLAM
 ```
 
@@ -95,7 +100,7 @@ python get-slab.py --plot --api-key Your-Api-Key --molecule-type CO --up-down UU
 python get-slab.py --plot --api-key Your-Api-Key --molecule-type all --up-down UUUUDDDD --element Pd --type type3
 ```
 
-Detail usages are in [README.md](./generation/README.md).
+Detailed usages are seen in [README.md](./generation/README.md).
 
 ### 3.2 Run VASP Workflow
 
@@ -117,7 +122,7 @@ python flow.py POSCAR dpdata
 python flow.py POSCAR plot
 ```
 
-Detail usages are in [README.md](./vaspworkflow/README.md).
+Detailed usages are seen in [README.md](./vaspworkflow/README.md).
 
 ### 3.3 Run Structure Optimization and Transition State Search
 
@@ -136,7 +141,7 @@ cd tsdp or tsoc
 nohup python ./flowts.py POSCARis POSCARfs ./frozen_model.pth OUTCARis OUTCARfs &
 ```
 
-Detail usages are in [README.md](./postworkflow/README.md).
+Detailed usages are seen in [README.md](./postworkflow/README.md).
 
 ### 3.4 Run Reaction Network generation
 
@@ -152,7 +157,7 @@ python RNet.py 1 2 --layout spring
 python MakeSlab.py --element Pt --max-index 1
 ```
 
-Detail usages are in [README.md](./postworkflow/RNET/README.md).
+Detailed usages are seen in [README.md](./postworkflow/RNET/README.md).
 
 ### 3.5 Construct Pretrained CLAM for Post Workflow
 
@@ -169,13 +174,13 @@ python main.py --mode train --config-yml finetune1.yml --print-every 1000 >> out
 python main.py --mode train --config-yml finetune1.yml --checkpoint gnoc_oc22_oc20_all_s2ef.pt --print-every 1000 >> out
 ```
 
-Detail usages are in [README.md](./train/README.md).
+Detailed usages are seen in [README.md](./train/README.md).
 
 More information please refer to [Deepmd-kit official website](https://github.com/deepmodeling/deepmd-kit) and [fairchem official website](https://github.com/FAIR-Chem/fairchem).
 
 ### 3.6 Other Scripts
 
-Navigate to the [scripts](./scripts) directory and run the appropriate script to generate the cluster structures or convert file formats. More details are in [README.md](./scripts/README.md)
+Navigate to the [scripts](./scripts) directory and run the appropriate script to generate the cluster structures or convert file formats.
 
 * `cif2pos.py`: Convert CIF file to POSCAR.
 * `get-cluster.py`: Generate the structures of metal clusters in xyz format.
@@ -183,7 +188,9 @@ Navigate to the [scripts](./scripts) directory and run the appropriate script to
 * `xyz2pos.py`: Convert XYZ file to POSCAR.
 * `sim_model.py`: For deleting the unnecessary keys in checkpoint files (oc22).
 
-### 3.7 initial structures
+More details are seen in [README.md](./scripts/README.md).
+
+### 3.7 Initial structures
 
 Navigate to the [structure_db](./structure_db) directory, you can find compressed files, which containing the initial structures.
 
@@ -208,5 +215,5 @@ This project is licensed under the GNU General Public License v3.0. See the [LIC
 * dpdata: [https://github.com/deepmodeling/dpdata](https://github.com/deepmodeling/dpdata)
 * fairchem: [https://fair-chem.github.io/index.html](https://fair-chem.github.io/index.html)
 * VASPKIT: [https://vaspkit.com/](https://vaspkit.com/)
-* Pymatgen: [https://pymatgen.com/](https://pymatgen.com/)
+* Pymatgen: [https://pymatgen.org/](https://pymatgen.org/)
 * SLURM: [https://slurm.schedmd.com/](https://slurm.schedmd.com/)
