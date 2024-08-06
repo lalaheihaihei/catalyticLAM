@@ -43,13 +43,13 @@ This section contains the pretrained CLAM model for the post workflow, including
 
 ### 1.5 Scripts
 
-This section contains useful scripts to generate cluster structures and convert the format of files.
+This section contains some useful scripts to generate cluster structures and convert the format of files.
 
 ### 1.6 Initial Structures
 
 This section contains the initial structure files and POSCAR files for VASP optimization and MD calculations to generate datasets.
 
-## 2. Installation 
+## 2. Installation
 
 ### 2.1 Prerequisites
 
@@ -57,9 +57,10 @@ Ensure that your system has the following software installed:
 
 - Python 3 (version > 3.10)
 - ASE (version > 3.22)
+- Pymatgen (version > 2023.3.23)
 - DeepMD-kit (version > 3.0.0a1)
 - dpdata (version > 0.2.18)
-- fairchem 
+- fairchem
 - VASP (version > 5.4.4)
 - VASPKIT
 - SLURM (for job scheduling)
@@ -88,11 +89,13 @@ Navigate to the [generation](./generation/) directory and run the appropriate sc
 
 ```
 cd generation
-python get-bulk.py --task search --ificsd --bulktype alloy --elementNumber 2
-python get-slab.py --up-down UUD --plot --element Au --molecule-type CO --type type1
-python get-slab.py --up-down UUUUDDDD --plot --element Ru --molecule-type all --type type3
+python get-bulk.py --api-key Your-Api-Key --bulktype metal --elementNumber 1 --task search --ificsd
+python get-bulk.py --plot --api-key Your-Api-Key --min-lw 10.0 --task generate
+python get-slab.py --plot --api-key Your-Api-Key --molecule-type CO --up-down UUD --element Au --type type1
+python get-slab.py --plot --api-key Your-Api-Key --molecule-type all --up-down UUUUDDDD --element Pd --type type3
 ```
-Detail usages are in [README.md](./generation/README.md)
+
+Detail usages are in [README.md](./generation/README.md).
 
 ### 3.2 Run VASP Workflow
 
@@ -113,7 +116,8 @@ python flow.py POSCAR mdcheck
 python flow.py POSCAR dpdata
 python flow.py POSCAR plot
 ```
-Detail usages are in [README.md](./vaspworkflow/README.md)
+
+Detail usages are in [README.md](./vaspworkflow/README.md).
 
 ### 3.3 Run Structure Optimization and Transition State Search
 
@@ -131,52 +135,47 @@ nohup python ./flowopt.py --num_iterations 3 --steps_per_iteration 200 --fixed_a
 cd tsdp or tsoc
 nohup python ./flowts.py POSCARis POSCARfs ./frozen_model.pth OUTCARis OUTCARfs &
 ```
-Detail usages are in [README.md](./postworkflow/README.md)
+
+Detail usages are in [README.md](./postworkflow/README.md).
 
 ### 3.4 Run Reaction Network generation
 
 Navigate to the [postworkflow/RNET](./postworkflow/RNET) directory, prepare input files, and run the relevant scripts:
 
-- `finetune.json`: input file for fine-tuning the CLAM model.
-- `input.json`: input file for training the CLAM model.
-- `model.ckpt-10000000.pt`: The checkpoint of pretrained CLAM model.
-- `lcurve`: output file containing learning curves.
-- `dataset`: Directory containing the dataset for finetune operation.
+- `RNet.py`:  Genarate  reaction network diagram.
+- `MakeSlab.py`: Construct all possible structures for intermediats adsorption on metal surfaces.
+- `plot_all.py`: Plot the energy changes and energy differences MAE.
 
 ```
 cd postworkflow/RNET
-python script.py 1 2 --layout spring
-python MakeSlab.py --element Ce --max-index 1
+python RNet.py 1 2 --layout spring
+python MakeSlab.py --element Pt --max-index 1
 ```
-Detail usages are in [README.md](./postworkflow/RNET/README.md)
+
+Detail usages are in [README.md](./postworkflow/RNET/README.md).
 
 ### 3.5 Construct Pretrained CLAM for Post Workflow
 
 Navigate to the [train](./train) directory, edit the input files, and run the training or fine-tuning jobs.
 Details of CLAM are in [README.md](./train/README.md)
 
-- `cif2pos.py`: Convert CIF file to POSCAR.
-- `get-cluster.py`: Generate the structures of metal clusters in xyz format.
-- `json2cif.py`: Convert JSON file to CIF file.
-- `xyz2pos.py`: Convert XYZ file to POSCAR.
-- `sim_model.py`: A script for delete the unnecessary keys in checkpoint files(oc22).
-
 ```
 dp --pt train input.json > out
 dp --pt train --finetune model.ckpt.10000000.pt --model-branch <head> finetune.json > out (At present, the head name is only supported for oc22, qm and metal)
 ```
+
 ```
 python main.py --mode train --config-yml finetune1.yml --print-every 1000 >> out
 python main.py --mode train --config-yml finetune1.yml --checkpoint gnoc_oc22_oc20_all_s2ef.pt --print-every 1000 >> out
 ```
-Detail usages are in [README.md](./train/README.md)
 
-more information please refer to [Deepmd-kit official website](https://github.com/deepmodeling/deepmd-kit) and [fairchem official website](https://github.com/FAIR-Chem/fairchem).
+Detail usages are in [README.md](./train/README.md).
 
+More information please refer to [Deepmd-kit official website](https://github.com/deepmodeling/deepmd-kit) and [fairchem official website](https://github.com/FAIR-Chem/fairchem).
 
 ### 3.6 Other Scripts
 
-Navigate to the [scripts](./scripts) directory and run the appropriate script to generate the cluster structures or convert file formats.
+Navigate to the [scripts](./scripts) directory and run the appropriate script to generate the cluster structures or convert file formats. More details are in [README.md](./scripts/README.md)
 
 * `cif2pos.py`: Convert CIF file to POSCAR.
 * `get-cluster.py`: Generate the structures of metal clusters in xyz format.
@@ -187,6 +186,7 @@ Navigate to the [scripts](./scripts) directory and run the appropriate script to
 ### 3.7 initial structures
 
 Navigate to the [structure_db](./structure_db) directory, you can find compressed files, which containing the initial structures.
+
 - `2D.tgz`: The total 6351 POSCAR files of 2D materials for VASP calculation.
 - `2D-raw.tgz`: The initial json file containing the information of 2D materials and the corresponding cif files.
 - `bulk.tgz`: The POSCAR files of metals and alloys for VASP calculation.
@@ -196,18 +196,17 @@ Navigate to the [structure_db](./structure_db) directory, you can find compresse
 - `molecule-raw.tgz`: The initial xyz files of molecules.
 - `slab.tgz`: The POSCAR files of slabs for VASP calculation.
 
-
 ## 4. License
 
 This project is licensed under the GNU General Public License v3.0. See the [LICENSE](LICENSE) file for details.
 
 ## 5. Acknowledgements
 
-* ASE: [https://wiki.fysik.dtu.dk/ase/](https://markdown.lovejade.cn/)
+* ASE: [https://wiki.fysik.dtu.dk/ase/](https://wiki.fysik.dtu.dk/ase/)
 * VASP: [https://www.vasp.at/](https://www.vasp.at/)
-* DeepMD-kit: [https://github.com/deepmodeling/deepmd-kit](https://github.com/deepmodeling/deepmd-kit)
+* DeePMD-kit: [https://github.com/deepmodeling/deepmd-kit](https://github.com/deepmodeling/deepmd-kit)
 * dpdata: [https://github.com/deepmodeling/dpdata](https://github.com/deepmodeling/dpdata)
 * fairchem: [https://fair-chem.github.io/index.html](https://fair-chem.github.io/index.html)
 * VASPKIT: [https://vaspkit.com/](https://vaspkit.com/)
-* fairchem: [https://github.com/FAIR-Chem/fairchem](https://github.com/FAIR-Chem/fairchem)
-* SLURM: [https://slurm.schedmd.com/](https://markdown.lovejade.cn/)
+* Pymatgen: [https://pymatgen.com/](https://pymatgen.com/)
+* SLURM: [https://slurm.schedmd.com/](https://slurm.schedmd.com/)

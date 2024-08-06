@@ -301,10 +301,9 @@ This project is licensed under the LGPL-3.0 License.
 
 ## 6. Acknowledgements
 
-* ASE: [https://wiki.fysik.dtu.dk/ase/]()
+* ASE: [https://wiki.fysik.dtu.dk/ase/](https://wiki.fysik.dtu.dk/ase/)
 * VASP: [https://www.vasp.at/](https://www.vasp.at/)
-* DeepMD-kit: [https://github.com/deepmodeling/deepmd-kit](https://github.com/deepmodeling/deepmd-kit)
+* DeePMD-kit: [https://github.com/deepmodeling/deepmd-kit](https://github.com/deepmodeling/deepmd-kit)
 * dpdata: [https://github.com/deepmodeling/dpdata](https://github.com/deepmodeling/dpdata)
-* VASPkit: [https://vaspkit.com/](https://vaspkit.com/)
-* SLURM: [https://slurm.schedmd.com/]()
-
+* VASPKIT: [https://vaspkit.com/](https://vaspkit.com/)
+* SLURM: [https://slurm.schedmd.com/](https://slurm.schedmd.com/)
