@@ -1,4 +1,3 @@
-# plotter.py
 from matplotlib import pyplot as plt
 from ase import Atoms
 from ase.visualize.plot import plot_atoms
@@ -131,4 +130,3 @@ class BulkPlotter:
         """
         self.fig.savefig(filename)
         plt.close(self.fig)  # Close the figure to free up memory
-
