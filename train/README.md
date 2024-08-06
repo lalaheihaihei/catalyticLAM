@@ -1,4 +1,4 @@
-# Training input files and model by DPA1 and Gemnet-OC
+# Training input files, configurations and checkpoints by DPA1 and Gemnet-OC
 ## Table of Contents
 
 1. [Training input files and model by DPA1 and Gemnet-OC](#training-input-files-and-model-by-dpa1-and-gemnet-oc)
