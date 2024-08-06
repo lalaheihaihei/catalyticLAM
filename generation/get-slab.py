@@ -14,10 +14,10 @@ from plotter import SlabPlotter
 class SlabGenerator:
     def __init__(self, api_key, enable_plotting):
         self.mpr = MPRester(api_key)  # Materials Project REST API client
-        self.enable_plotting = enable_plotting  # 控制是否绘图
+        self.enable_plotting = enable_plotting
         print("Plot:",self.enable_plotting)
         if self.enable_plotting:
-            self.plotter = SlabPlotter()  # 如果启用绘图，创建SlabPlotter的实例
+            self.plotter = SlabPlotter()
 
     def generate_slabs(self, material_ids, molecule_type, up_down, max_index, min_slab_size, min_vacuum_size, min_lw, distance, element,max_slabs, molecule_types):
         """
@@ -362,19 +362,17 @@ def parse_command_line_arguments():
 
     # Add all required arguments
     parser.add_argument("--plot", action="store_true", help="Enable plotting of top view of slabs and its adsorption sites, default: False")
-    parser.add_argument("--api-key", type=str, default="rod4hw9iGEVqyrKAsfCHzZ7FhbYgYPgd", help="Materials Project API key")
-    # parser.add_argument("--api-key", type=str, required=True, help="Materials Project API key")
+    parser.add_argument("--api-key", type=str, default="Your-Api-Key", help="Materials Project API key")
     parser.add_argument("--molecule-type", type=str, default="NH3", help="Type of molecule to adsorb, default: NH3")
-    parser.add_argument("--up-down", type=str, choices=['U', 'D', 'UD', 'UUD', 'UUUUDDDD'], default="UUD",
-                        help="Indicator of where to adsorb molecules: 'U' for up, 'D' for down, 'UD' for both, 'UUD' for two up and one down, 'UUUUDDDD' for type3 to generate different adsorbates combination on top and bottom surface. Default: UUD")
+    parser.add_argument("--up-down", type=str, choices=['U', 'D', 'UD', 'UUD', 'UUUUDDDD'], default="UUD", help="Indicator of where to adsorb molecules: 'U' for up, 'D' for down, 'UD' for both, 'UUD' for two up and one down, 'UUUUDDDD' for type3 to generate different adsorbates combination on top and bottom surface. Default: UUD")
     parser.add_argument("--max-index", type=int, default=2, help="Maximum Miller index to consider for slab generation, default: 2")
     parser.add_argument("--min-slab-size", type=float, default=8.0, help="Minimum size of the slab, default: 8.0")
     parser.add_argument("--min-vacuum-size", type=float, default=15.0, help="Minimum size of the vacuum layer, default: 15.0")
     parser.add_argument("--min-lw", type=float, default=10.0, help="Minimum slab model a and b vector, default: 10.0")
     parser.add_argument("--distance", type=float, default=2.0, help="Distance between adsorbate and slab, default: 2.0")
     parser.add_argument("--element", type=str, default="Au", help="Chemical formula of the materials to process, ex: Pt3Ni or Pt")
-    parser.add_argument("--max-slabs", type=int, default=None, help="Maximum number of slabs to process per material")
-    parser.add_argument("--type", type=str, default="type1", help="select which type of materials group in materials_db.py, default: type1")
+    parser.add_argument("--max-slabs", type=int, default=6, help="Maximum number of slabs to process per material")
+    parser.add_argument("--type", type=str, default="type1", help="select which type of materials group in material.json, default: type1")
     
     return parser.parse_args()
 
