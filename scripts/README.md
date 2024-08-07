@@ -51,9 +51,9 @@ python xyz2pos.py --input_dir XYZ
 # --padding reprensts the distance of the atoms from the box boundary in three directions, default is '5.0'
 ```
 
-5. sim_model.py
+5. cal_nframes.py: Calculate the number of frames in a dataset with dp(deepmd-kit) format.
 
 ```
-python sim_model.py
-# You should revise the path of checkpoint files and specify the keys you want to delete by yourself.
+python cal_nframes.py 
+return the number of frames in a dataset
 ```
