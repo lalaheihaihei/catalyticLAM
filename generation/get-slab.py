@@ -1,5 +1,7 @@
-from itertools import combinations
+import json
+import argparse
 import numpy as np
+from itertools import combinations
 from pymatgen.analysis.adsorption import AdsorbateSiteFinder, plot_slab, reorient_z, get_rot
 from pymatgen.core.surface import generate_all_slabs
 from pymatgen.symmetry.analyzer import SpacegroupAnalyzer
@@ -8,20 +10,16 @@ from pymatgen.io.vasp.inputs import Poscar
 from matplotlib import pyplot as plt
 from mp_api.client import MPRester
 from plotter import SlabPlotter
-from molecule_db import molecule_database
-import material_db
-from material_db import *
-import argparse
 
 class SlabGenerator:
     def __init__(self, api_key, enable_plotting):
         self.mpr = MPRester(api_key)  # Materials Project REST API client
-        self.enable_plotting = enable_plotting  # 控制是否绘图
+        self.enable_plotting = enable_plotting
         print("Plot:",self.enable_plotting)
         if self.enable_plotting:
-            self.plotter = SlabPlotter()  # 如果启用绘图，创建SlabPlotter的实例
+            self.plotter = SlabPlotter()
 
-    def generate_slabs(self, material_ids, molecule_type, up_down, max_index, min_slab_size, min_vacuum_size, min_lw, distance, element,max_slabs,molecule_types):
+    def generate_slabs(self, material_ids, molecule_type, up_down, max_index, min_slab_size, min_vacuum_size, min_lw, distance, element,max_slabs, molecule_types):
         """
         Generate slabs from given material IDs and adsorb molecules on them.
         
@@ -39,7 +37,7 @@ class SlabGenerator:
                 struct = self.mpr.get_structure_by_material_id(mp_id["mp_id"])  # Get structure from Materials Project
                 struct = SpacegroupAnalyzer(struct,symprec=0.03).get_conventional_standard_structure()  # Standardize structure
                 slabs = generate_all_slabs(struct, max_index=max_index, min_slab_size=min_slab_size,
-                                       min_vacuum_size=min_vacuum_size, center_slab=True,max_normal_search=2)  # Generate slabs
+                                       min_vacuum_size=min_vacuum_size, center_slab=True, max_normal_search=2)  # Generate slabs
                 
                 #delete repeat miller index
                 unique_slabs = {}
@@ -333,6 +331,26 @@ class SlabGenerator:
                         if up_down == "UUUUDDDD":
                             break
 
+def read_json_file(file_path):
+    with open(file_path, 'r') as file:
+        return json.load(file)
+
+molecule_database = read_json_file('molecule.json')
+material_db = read_json_file('material.json')
+
+reactions = material_db.get('reactions', [])
+type1 = material_db.get('type1', [])
+type2 = material_db.get('type2', [])
+type3 = material_db.get('type3', [])
+type4 = material_db.get('type4', [])
+
+for material in type3:
+    reaction_type = material.get('ads')
+    if reaction_type in reactions:
+        material['ads'] = reactions[reaction_type]
+    else:
+        print(f"Reaction type {reaction_type} not found in reactions database.")
+
 def parse_command_line_arguments():
     """
     Parses command line arguments and returns the parsed arguments.
@@ -344,19 +362,17 @@ def parse_command_line_arguments():
 
     # Add all required arguments
     parser.add_argument("--plot", action="store_true", help="Enable plotting of top view of slabs and its adsorption sites, default: False")
-    parser.add_argument("--api-key", type=str, default="rod4hw9iGEVqyrKAsfCHzZ7FhbYgYPgd", help="Materials Project API key")
-    # parser.add_argument("--api-key", type=str, required=True, help="Materials Project API key")
+    parser.add_argument("--api-key", type=str, default="Your-Api-Key", help="Materials Project API key")
     parser.add_argument("--molecule-type", type=str, default="NH3", help="Type of molecule to adsorb, default: NH3")
-    parser.add_argument("--up-down", type=str, choices=['U', 'D', 'UD', 'UUD', 'UUUUDDDD'], default="UUD",
-                        help="Indicator of where to adsorb molecules: 'U' for up, 'D' for down, 'UD' for both, 'UUD' for two up and one down, 'UUUUDDDD' for type3 to generate different adsorbates combination on top and bottom surface. Default: UUD")
+    parser.add_argument("--up-down", type=str, choices=['U', 'D', 'UD', 'UUD', 'UUUUDDDD'], default="UUD", help="Indicator of where to adsorb molecules: 'U' for up, 'D' for down, 'UD' for both, 'UUD' for two up and one down, 'UUUUDDDD' for type3 to generate different adsorbates combination on top and bottom surface. Default: UUD")
     parser.add_argument("--max-index", type=int, default=2, help="Maximum Miller index to consider for slab generation, default: 2")
     parser.add_argument("--min-slab-size", type=float, default=8.0, help="Minimum size of the slab, default: 8.0")
     parser.add_argument("--min-vacuum-size", type=float, default=15.0, help="Minimum size of the vacuum layer, default: 15.0")
     parser.add_argument("--min-lw", type=float, default=10.0, help="Minimum slab model a and b vector, default: 10.0")
     parser.add_argument("--distance", type=float, default=2.0, help="Distance between adsorbate and slab, default: 2.0")
     parser.add_argument("--element", type=str, default="Au", help="Chemical formula of the materials to process, ex: Pt3Ni or Pt")
-    parser.add_argument("--max-slabs", type=int, default=None, help="Maximum number of slabs to process per material")
-    parser.add_argument("--type", type=str, default="type1", help="select which type of materials group in materials_db.py, default: type1")
+    parser.add_argument("--max-slabs", type=int, default=6, help="Maximum number of slabs to process per material")
+    parser.add_argument("--type", type=str, default="type1", help="select which type of materials group in material.json, default: type1")
     
     return parser.parse_args()
 
@@ -370,7 +386,7 @@ if __name__ == "__main__":
     enable_plotting = args.plot
     up_down = args.up_down
 
-    material_ids = getattr(material_db, args.type)
+    material_ids = material_db.get(args.type, [])
 
     slab_generator = SlabGenerator(api_key, enable_plotting)
     slab_generator.run(material_ids=material_ids, molecule_type=args.molecule_type, up_down=args.up_down,

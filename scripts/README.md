@@ -1,4 +1,4 @@
-### Scripts
+# Scripts
 
 This section contains some useful scripts to generate cluster structures and convert the format of files.
 
@@ -6,8 +6,9 @@ This section contains some useful scripts to generate cluster structures and con
 - `get-cluster.py`: Generate the structures of metal clusters in xyz format.
 - `json2cif.py`: Convert JSON file to CIF file.
 - `xyz2pos.py`: Convert XYZ file to POSCAR.
+- `sim_model.py`: For deleting the unnecessary keys in checkpoint files (oc22).
 
-### Usage
+## Usage
 
 1. cif2pos.py:
 
@@ -48,11 +49,4 @@ python xyz2pos.py --input_dir XYZ
 # --input_dir represents the path to the input directory containing XYZ files
 # --output_dir represents the path to the output directory for POSCAR files, default is 'POSCAR'
 # --padding reprensts the distance of the atoms from the box boundary in three directions, default is '5.0'
-```
-
-5. cal_nframes.py: this script is used to calculate the number of frames in the dataset with dp format
-
-```
-python cal_nframes.py
-return number of frames
 ```

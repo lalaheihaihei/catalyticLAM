@@ -2,6 +2,27 @@
 
 This project provides a script to manage VASP calculations for optimizing atomic structures (OPT), running molecular dynamics (MD), and processing results into datasets for machine learning purposes. The script supports submitting VASP jobs, checking SCF convergence, running MD simulations, and converting data for DeepMD or Graph Neural Network training. Additionally, it includes functionality for visualizing the occurrence of elements in the dataset.
 
+
+## Table of Contents
+
+1. [Prerequisites](#prerequisites)
+2. [File Structure](#file-structure)
+3. [Usage](#usage)
+   1. [Command-Line Arguments](#command-line-arguments)
+   2. [Example Command](#example-command)
+   3. [Input File](#input-file)
+4. [Workflow Description](#workflow-description)
+5. [Detailed Instructions](#detailed-instructions)
+   1. [Prepare the Environment](#1-prepare-the-environment)
+   2. [Set Up Input Parameters](#2-set-up-input-parameters)
+   3. [Run the Script](#3-run-the-script)
+   4. [Check Job Status](#4-check-job-status)
+   5. [Process Data](#5-process-data)
+   6. [Plot Element Weights](#6-plot-element-weights)
+6. [Notes](#notes)
+7. [License](#license)
+8. [Acknowledgements](#acknowledgements)
+
 ## Prerequisites
 
 - Python 3 (version &gt; 3.10)
@@ -134,15 +155,19 @@ python vasp_manager.py POSCAR mdcheck
 After completing the VASP simulations, convert the results into a suitable format for machine learning:
 
 ```
-python vasp_manager.py POSCAR plot
+python vasp_manager.py POSCAR dpdata 
 ```
+
+change the `dataset_prefix: /path/to/work/data` and `dataset_fmt: npy_single # or npy_mix or lmdb` parameters to control which format to output.
+
 
 ### 6. Plot Element Weights
 
 Visualize the occurrence of elements in your dataset:
 ```
-python vasp_manager.py POSCAR dpdata
+python vasp_manager.py POSCAR plot
 ```
+![example of the plot element weight](../docs/element_weight.png)
 
 ## Notes
 
