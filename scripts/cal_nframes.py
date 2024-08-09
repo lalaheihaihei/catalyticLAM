@@ -19,7 +19,7 @@ def find_folders_with_outcar(search_path='./', label='OUTCAR'):
             seen_folders.append(folder_path)
     return seen_folders
 
-d = find_folders_with_outcar('/home/ljcgroup/wzh/data/qm/data-0.9/data-qm-train0.9', 'energy.npy') # At this point, d contains all folders with 'energy.npy'
+d = find_folders_with_outcar('./Your-Path/', 'energy.npy') # At this point, d contains all folders with 'energy.npy'
 num = 0
 for i in d:
     num += len(np.load(f'{i}/energy.npy'))
