@@ -7,18 +7,14 @@ from fairchem.core.datasets.oc22_lmdb_dataset import OC22LmdbDataset
 from tqdm import tqdm
 import argparse
 
-# 创建 ArgumentParser 对象
 parser = argparse.ArgumentParser(description='make data test')
 
-# 添加位置参数
 parser.add_argument('--checkpoint', type=str,
                     help='the path of the checkpoint file')
 
-# 添加可选参数
 parser.add_argument('--dataset', type=str,
                     help='the path of the dataset')
 
-# 解析命令行参数
 args = parser.parse_args()
 
 # checkpoint = '/home/ljcgroup/ljc/oc-finetune/checkpoints/2024-08-03-23-10-56/checkpoint.pt'
@@ -27,8 +23,8 @@ model = OCPCalculator(checkpoint_path=args.checkpoint, cpu= not torch.cuda.is_av
 data = OC22LmdbDataset({"src":f'{args.dataset}'})
 
 def torch_geometric_to_ase(data):
-    positions = data.pos.numpy()  # 获取原子坐标
-    sys = data.atomic_numbers.numpy()     # 获取原子类型
+    positions = data.pos.numpy()  # get atom positions
+    sys = data.atomic_numbers.numpy()     # get atomic numbers
     cell = data.cell.numpy().reshape(3,3)
     numbers = data.natoms
     atoms = Atoms( positions=positions, cell=cell,symbols=sys, pbc=True)

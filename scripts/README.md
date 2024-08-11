@@ -54,6 +54,16 @@ python xyz2pos.py --input_dir XYZ
 5. cal_nframes.py: Calculate the number of frames in a dataset with dp(deepmd-kit) format.
 
 ```
-python cal_nframes.py 
+python cal_nframes.py --dataset "dataset path"
 return the number of frames in a dataset
+# --dataset represents the path to the dataset
+```
+
+6. make_test.py: make a dataset test with lmdb format
+
+```
+python make_test.py --checkpoint "checkpoint path" --dataset "dataset path" 
+return thr rmse and mae error of a dataset
+# --checkpoint represents the path to the checkpoint file
+# --dataset represents the path to the dataset file
 ```
