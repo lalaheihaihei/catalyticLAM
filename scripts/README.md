@@ -7,6 +7,7 @@ This section contains some useful scripts to generate cluster structures and con
 - `json2cif.py`: Convert JSON file to CIF file.
 - `xyz2pos.py`: Convert XYZ file to POSCAR.
 - `sim_model.py`: For deleting the unnecessary keys in checkpoint files (oc22).
+- `cal_nframes.py`: Calculate the number of frames in a dataset with dp (deepmd-kit) format.
 
 ## Usage
 
