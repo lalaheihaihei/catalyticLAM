@@ -4,7 +4,6 @@ from glob import glob
 import numpy as np
 import argparse
 
-# 创建 ArgumentParser 对象
 parser = argparse.ArgumentParser(description='calculate numbers of frames of dataset')
 
 parser.add_argument('--dataset', type=str,
@@ -27,12 +26,8 @@ def find_folders_with_outcar(search_path='./', label='OUTCAR'):
             seen_folders.append(folder_path)
     return seen_folders
 
-<<<<<<< HEAD
 
 d = find_folders_with_outcar(args.dataset, 'energy.npy') # At this point, d contains all folders with 'energy.npy'
-=======
-d = find_folders_with_outcar('./Your-Path/', 'energy.npy') # At this point, d contains all folders with 'energy.npy'
->>>>>>> upstream/master
 num = 0
 for i in d:
     num += len(np.load(f'{i}/energy.npy'))
