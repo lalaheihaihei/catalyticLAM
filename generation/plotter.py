@@ -37,12 +37,12 @@ class SlabPlotter:
             if self.current_ax_index < len(self.axs):
                 ax = self.axs[self.current_ax_index]
                 plot_atoms(ase_atoms, ax, rotation='90x')
-                ax.title.set_text(f"Miller index: {miller_index}")  # 添加 Miller index 信息
+                ax.title.set_text(f"Miller index: {miller_index}")  # Add Miller index
                 self.current_ax_index += 1
             if self.current_ax_index < len(self.axs):
                 ax = self.axs[self.current_ax_index]
                 plot_atoms(ase_atoms, ax, rotation='0x,0y,0z')
-                ax.title.set_text(f"Miller index: {miller_index}")  # 添加 Miller index 信息
+                ax.title.set_text(f"Miller index: {miller_index}")  # Add Miller index
                 self.current_ax_index += 1
     def plot_slabs_with_side_view_ase_uudd(self, ads_structs, material_id, miller_index):
         """
@@ -62,12 +62,12 @@ class SlabPlotter:
             if self.current_ax_index < len(self.axs):
                 ax = self.axs[self.current_ax_index]
                 plot_atoms(ase_atoms, ax, rotation='90x')
-                ax.title.set_text(f"Miller index: {miller_index}")  # 添加 Miller index 信息
+                ax.title.set_text(f"Miller index: {miller_index}")  # Add Miller index
                 self.current_ax_index += 1
             if self.current_ax_index < len(self.axs):
                 ax = self.axs[self.current_ax_index]
                 plot_atoms(ase_atoms, ax, rotation='0x,0y,0z')
-                ax.title.set_text(f"Miller index: {miller_index}")  # 添加 Miller index 信息
+                ax.title.set_text(f"Miller index: {miller_index}")  # Add Miller index
                 self.current_ax_index += 1
 
     def save_figure(self, material_id,molecule_type):

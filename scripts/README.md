@@ -8,10 +8,11 @@ This section contains some useful scripts to generate cluster structures and con
 - `xyz2pos.py`: Convert XYZ file to POSCAR.
 - `sim_model.py`: For deleting the unnecessary keys in checkpoint files (oc22).
 - `cal_nframes.py`: Calculate the number of frames in a dataset with dp (deepmd-kit) format.
+- `make_test.py`: Make a dataset test with lmdb format.
 
 ## Usage
 
-1. cif2pos.py:
+1. cif2pos.py
 
 ```
 python cif2pos.py --input_dir CIF --output_dir POSCAR   # Convert the cif files in the CIF folder to corresponding POSCAR files in the POSCAR folder
@@ -20,7 +21,7 @@ python cif2pos.py --input_dir CIF
 # --output_dir represents the path to the output directory for POSCAR files, default is 'POSCAR'
 ```
 
-2. get-cluster.py:
+2. get-cluster.py
 
 ```
 python get-cluster.py   # generate all cluster structures in xyz format
@@ -33,7 +34,7 @@ python get-cluster.py --type hcp --element Zn   # generate Zn-related clusters i
 # --type represents which element or metal to use, default is 'all'
 ```
 
-3. json2cif.py:
+3. json2cif.py
 
 ```
 python json2cif.py --file input.json --outdir CIF   # Convert the json file to corresponding cif files in the CIF folder
@@ -42,7 +43,7 @@ python json2cif.py --file input.json
 # --outdir represents the path to the output directory for CIF files, default is 'CIF'
 ```
 
-4. xyz2pos.py:
+4. xyz2pos.py
 
 ```
 python xyz2pos.py --input_dir XYZ --output_dir POSCAR --padding 5.0
@@ -52,7 +53,14 @@ python xyz2pos.py --input_dir XYZ
 # --padding reprensts the distance of the atoms from the box boundary in three directions, default is '5.0'
 ```
 
-5. cal_nframes.py: Calculate the number of frames in a dataset with dp(deepmd-kit) format.
+5. sim_model.py
+
+```
+python sim_model.py
+# You should revise the path of checkpoint files and specify the keys you want to delete by yourself.
+```
+
+6. cal_nframes.py
 
 ```
 python cal_nframes.py --dataset "dataset path"
@@ -60,7 +68,7 @@ return the number of frames in a dataset
 # --dataset represents the path to the dataset
 ```
 
-6. make_test.py: make a dataset test with lmdb format
+7. make_test.py
 
 ```
 python make_test.py --checkpoint "checkpoint path" --dataset "dataset path" 

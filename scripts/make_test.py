@@ -17,9 +17,9 @@ parser.add_argument('--dataset', type=str,
 
 args = parser.parse_args()
 
-# checkpoint = '/home/ljcgroup/ljc/oc-finetune/checkpoints/2024-08-03-23-10-56/checkpoint.pt'
+# checkpoint = '/Your-Path/checkpoint.pt'
 model = OCPCalculator(checkpoint_path=args.checkpoint, cpu= not torch.cuda.is_available())
-# prefix = '/home/ljcgroup/wzh/data/lmdb/val/bulk'
+# prefix = '/Your-Path/Your-Prefix'
 data = OC22LmdbDataset({"src":f'{args.dataset}'})
 
 def torch_geometric_to_ase(data):
@@ -177,4 +177,3 @@ plt.ylabel('Predicted force_z (eV/Å)')
 plt.text(torch.mean(forces_z_dft), torch.mean(forces_z_pred), f'RMSE = {rmse_forces_z:.3f} eV/Å')
 plt.tight_layout()
 plt.savefig('test.png')
-
