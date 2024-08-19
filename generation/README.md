@@ -52,8 +52,8 @@ This script supports the following command-line arguments:
 - `--api-key` (type: `str`, default: `Your-Api-Key`): The Materials Project API key. Replace this string with your own API key when using this script.
 - `--min-lw` (type: `float`, default: `10.0`): The value defines the minimum length of the three vectors *a*, *b*, and *c* in the generating bulk structures.
 - `--bulktype` (type: `str`, default: `metal`): The bulk types selected to search or generate bulk structures. There are three options, which are `metal`, `alloy` and `oxide`.
-- `--elementNumber` (type: `int`, default: `2`): The number of element types of alloy. When the `bulktype` is `metal`, the value should be `1`, and for binary and ternary alloy the value is `2` and `3`, respectively.
-- `--task` (type: `str`, default: `generate`): This bulk types selected to search or generate bulk structures. There are two options, which are `search` and `generate`.
+- `--elementNumber` (type: `int`, default: `1`): The number of element types of alloy. When the `bulktype` is `metal`, the value should be `1`, and for binary and ternary alloy the value is `2` and `3`, respectively.
+- `--task` (type: `str`, default: `search`): This bulk types selected to search or generate bulk structures. There are two options, which are `search` and `generate`.
 - `--abovehull` (type: `float`, default: `0.3`): This value reprsents the energy scope for structure search, which is corresponding to the `energy_above_hull` in Materials Project.
 - `--ifiscd` (type: `bool`, default: `False`): icsd true means only experimental strcutures, theoretical means include all possible structures include the material does not match any known ICSD entries.
 
@@ -120,12 +120,12 @@ This command means generating 76 slabs with 19 molecules defined in [material.js
 ![An example of slabs with NH3 molecule adsorbed on four RuIr alloy surfaces](../docs/slabs-RuIr-NH3.png)
 
 ```
-python get-slab.py --plot --api-key Your-Api-Key --molecule-type all --up-down UUUUDDDD --element Pd --max-slabs 1 --type type3
+python get-slab.py --plot --api-key Your-Api-Key --molecule-type all --up-down UUUUDDDD --element Fe --max-slabs 3 --type type3
 ```
 
-For metal Pd there are four corresponding `reactions` defined in [material.json](./material.json), including `C2H2_Hydrogenation`, `ORR_OER`, `HER_HOR` and `Waterinterface`, each of which contains 5, 5, 4, and 4 adsorbates respectively, relusting in 5, 5, 1, and 1 comninations for each reaction. Therefore, this command will generate 12 slabs for Pd(100) surface, where four adsorbates locate at the upper suface and four on the bottom surface.
+For metal Fe there are three corresponding `reactions` defined in [material.json](./material.json), including `AmmoniaSynthesis`, `Fischer_Tropsch`, and `Waterinterface`, each of which contains 6, 6, and 4 adsorbates respectively, relusting in 15, 15, and 1 comninations for each reaction. Therefore, this command will generate 31 structures for Fe(100), Fe(110), and Fe(111) surfaces,respectively, where four adsorbates locate at the upper suface and four on the bottom surface.
 
-![An example of slabs with 5 comnibations of 4 adsorbates adsorbed on the Pd(100) surface](../docs/slabs-Pd100-C2H2_Hydrogenation.png)
+![An example of slabs with 15 comnibations of 6 adsorbates adsorbed on the Fe(100) surface](../docs/slabs-Fe100-Fischer_Tropsch.png)
 
 ## 6. Acknowledgements
 

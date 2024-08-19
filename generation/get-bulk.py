@@ -114,8 +114,8 @@ def parse_command_line_arguments():
     parser.add_argument("--api-key", type=str, default="Your-Api-Key", help="Materials Project API key")
     parser.add_argument("--min-lw", type=float, default=10.0, help="Minimum slab model a and b vector, default: 10.0")
     parser.add_argument("--bulktype", type=str, default="metal", help="input metal or alloy or oxide, default: metal")
-    parser.add_argument("--elementNumber", type=int, default=2, help="Number of element types of alloy, default: 2")
-    parser.add_argument("--task", type=str, default="generate", help="Task is bulk search or generate, default: generation")
+    parser.add_argument("--elementNumber", type=int, default=1, help="Number of element types of alloy, default: 2")
+    parser.add_argument("--task", type=str, default="search", help="Task is bulk search or generate, default: generation")
     parser.add_argument("--abovehull", type=float, default=0.3, help="set the energy scope (0,energy_above_hull) for structure search, default: 0.3")
     parser.add_argument("--ificsd", action="store_true", help="icsd true means only experimental strcutures, theoretical means include all possible structures include the material does not match any known ICSD entries")
     

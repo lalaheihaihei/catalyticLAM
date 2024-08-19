@@ -188,6 +188,7 @@ Navigate to the [scripts](./scripts) directory and run the appropriate script to
 * `xyz2pos.py`: Convert XYZ file to POSCAR.
 * `sim_model.py`: For deleting the unnecessary keys in checkpoint files (oc22).
 * `cal_nframes.py`: Calculate the number of frames in a dataset with dp (deepmd-kit) format.
+* `make_test.py`: Make a dataset test with lmdb format.
 
 More details are seen in [README.md](./scripts/README.md).
 

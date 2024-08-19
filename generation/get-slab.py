@@ -63,7 +63,6 @@ class SlabGenerator:
             if self.enable_plotting:
                 self.plotter.save_figure(mp_id,molecule_type)  # Save the figure
 
-
     def process_slabs(self, slab, struct, mp_id, molecule_type, up_down, distance, material_id, molecule_types):
         """
         Process each slab: adsorb molecules and handle plotting and structure saving.
@@ -100,7 +99,6 @@ class SlabGenerator:
                 self.plotter.plot_slabs_with_side_view_ase(ads_structs,material_id)
             self.save_structures(ads_structs, mp_id, struct, slab.miller_index, molecule_type)  # Save the structure
        
-        
         elif up_down == "U":  # Adsorb on the top surface
             max_z_atom.z += distance
             ads_structs = [reorient_z(asf.add_adsorbate(adsorbate, max_z_atom.coords))]  # Add adsorbate
@@ -109,12 +107,10 @@ class SlabGenerator:
 
             self.save_structures(ads_structs, mp_id, struct, slab.miller_index, molecule_type)  # Save the structure
 
-
         elif up_down == "UD":  # Adsorb on both surfaces
             # For both surfaces, first flip and adsorb on bottom, then adsorb on top
             min_z_atom.z -= distance + z_span
             max_z_atom.z += distance
-
 
             #Flip a direction of adsorbate and put one on the bottom surface
             adsorbate_D = self.flip_molecule_vertically(adsorbate)
@@ -129,12 +125,10 @@ class SlabGenerator:
 
             self.save_structures(ads_structs, mp_id, struct, slab.miller_index, molecule_type)  # Save the structure
 
-
         elif up_down == "UUD":  # Adsorb on both surfaces
             # For both surfaces, first flip and adsorb on bottom, then adsorb on 2 top
             min_z_atom.z -= distance + z_span
             max_z_atom.z += distance
-
 
             #Flip a direction of adsorbate and put one on the bottom surface
             adsorbate_D = self.flip_molecule_vertically(adsorbate)
@@ -203,19 +197,19 @@ class SlabGenerator:
                 z_coords3 = [coord[2] for coord in molecules[3].cart_coords]
                 z_span3 = max(z_coords3) - min(z_coords3)
                 
-                min_z_atom.z -= z_span0
-                ads_structs_D = asf.add_adsorbate(adsorbate_D0, min_z_atom.coords)
+                #min_z_atom.z -= z_span0
+                ads_structs_D = asf.add_adsorbate(adsorbate_D0, (min_z_atom.coords[0], min_z_atom.coords[1], min_z_atom.coords[2] - z_span0))
                 asf_D = AdsorbateSiteFinder(ads_structs_D)
     
                 min_newx1 = min_z_atom.x + slab.lattice.matrix[1][0]/2
                 min_newy1 = min_z_atom.y + slab.lattice.matrix[1][1]/2
-                min_newz1 = min_z_atom.z + slab.lattice.matrix[1][2]/2 + z_span0 - z_span1
+                min_newz1 = min_z_atom.z + slab.lattice.matrix[1][2]/2
                 min_newx2 = min_newx1 + slab.lattice.matrix[0][0]/2
                 min_newy2 = min_newy1 + slab.lattice.matrix[0][1]/2
-                min_newz2 = min_newz1 + slab.lattice.matrix[0][2]/2 + z_span1 - z_span2
+                min_newz2 = min_newz1 + slab.lattice.matrix[0][2]/2
                 min_newx3 = min_z_atom.x + slab.lattice.matrix[0][0]/2
                 min_newy3 = min_z_atom.y + slab.lattice.matrix[0][1]/2
-                min_newz3 = min_z_atom.z + slab.lattice.matrix[0][2]/2 + z_span0 - z_span3
+                min_newz3 = min_z_atom.z + slab.lattice.matrix[0][2]/2
                 
                 min_new1 = (min_newx1, min_newy1, min_newz1)
                 min_new2 = (min_newx2, min_newy2, min_newz2)
@@ -226,7 +220,6 @@ class SlabGenerator:
                 asf_DDD = AdsorbateSiteFinder(ads_structs_DDD)
                 ads_structs_DDDD = asf_DDD.add_adsorbate(adsorbate_D3, min_new3)
                 asf_DDDD = AdsorbateSiteFinder(ads_structs_DDDD)
-    
     
                 #Put one adsorbate on top surface
                 asf_DDDD = AdsorbateSiteFinder(ads_structs_DDDD)
@@ -260,7 +253,7 @@ class SlabGenerator:
                     #self.plotter.plot_slabs(slab, [min_z_atom.coords, max_z_atom.coords, max_new])
                     self.plotter.plot_slabs_with_side_view_ase(ads_structs, material_id, miller_index)
                 self.save_structures(ads_structs, mp_id, struct, slab.miller_index, comb[0]+'_'+comb[1]+'_'+comb[2]+'_'+comb[3])  # Save the structure
-            self.plotter.save_figure(mp_id,str(slab.miller_index)+molecule_type)
+            self.plotter.save_figure(mp_id,str(slab.miller_index)+'-'+molecule_type)
 
     def flip_molecule_vertically(self, molecule, angle_degrees=180):
         """
@@ -375,7 +368,6 @@ def parse_command_line_arguments():
     parser.add_argument("--type", type=str, default="type1", help="select which type of materials group in material.json, default: type1")
     
     return parser.parse_args()
-
 
 if __name__ == "__main__":
     # Example usage
