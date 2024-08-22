@@ -2,6 +2,8 @@
 
 Machine-Learning-Based Interatomic Potentials for Catalysis: a Universal Catalytic Large Atomic Model
 
+* [Paper](https://chemrxiv.org/engage/chemrxiv/article-details/66c56756a4e53c48760ee61c)
+
 1. [Overview](#1-overview)
    - [1.1 Generation](#11-generation)
    - [1.2 VASP Workflow](#12-vasp-workflow)
@@ -22,6 +24,7 @@ Machine-Learning-Based Interatomic Potentials for Catalysis: a Universal Catalyt
    - [3.7 Initial Structures](#37-initial-structures)
 4. [License](#4-license)
 5. [Acknowledgements](#5-acknowledgements)
+6. [Citation](#6-citation)
 
 ## 1. Overview
 
@@ -219,3 +222,12 @@ This project is licensed under the GNU General Public License v3.0. See the [LIC
 * VASPKIT: [https://vaspkit.com/](https://vaspkit.com/)
 * Pymatgen: [https://pymatgen.org/](https://pymatgen.org/)
 * SLURM: [https://slurm.schedmd.com/](https://slurm.schedmd.com/)
+
+## 6. Citation
+
+Please cite the works below if this repository is helpful.
+
+* [CLAM](https://chemrxiv.org/engage/chemrxiv/article-details/66c56756a4e53c48760ee61c)
+```
+Wu Z, Zhou L, Hou P, Liu Y, Guo T, Liu J-C. Catalytic Large Atomic Model (CLAM): A Machine-Learning-Based Interatomic Potential Universal Model. ChemRxiv. 2024; doi:10.26434/chemrxiv-2024-2xzct 
+```
