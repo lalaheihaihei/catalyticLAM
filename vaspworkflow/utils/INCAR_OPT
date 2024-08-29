@@ -1,6 +1,6 @@
-SYSTEM =  QM9 
+SYSTEM =  Bulk
 
-ISMEAR =  0 
+ISMEAR =  1
 SIGMA  =  0.1
 ENCUT  =  500
 EDIFF  =  1E-5

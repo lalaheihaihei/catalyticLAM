@@ -7,7 +7,6 @@ import subprocess
 import dpdata as dp
 from tqdm import tqdm
 
-
 class VASPManager:
     """
     Class to manage VASP calculations.
@@ -43,7 +42,6 @@ class VASPManager:
         os.chdir(target_folder)
         print(f"Entered folder '{target_folder}' and perform operations")
         return True
-
 
 class VASPJobManager:
     """
@@ -252,7 +250,6 @@ class VASPJobManager:
                     record_file.write(f"Failed to submit job in {os.getcwd()} due to error: {e}\n")
                 break
 
-
 class AtomicStructureManager:
     """
     Class for managing atomic structures.
@@ -291,7 +288,6 @@ class AtomicStructureManager:
             print(f"File not found: {poscar_path}")
         except Exception as e:
             print(f"Error processing {poscar_path}: {e}")
-
 
 class ConvergenceChecker:
     """ Class for checking convergence of calculations."""
@@ -363,7 +359,6 @@ class ConvergenceChecker:
             with open(record_file_path, "a") as record_file:
                 record_file.write(f"{outcar_path} file not found in {md_folder}\n")
 
-
 class DPDataProcessor:
     """
     Class for processing DP data.
@@ -395,7 +390,6 @@ class DPDataProcessor:
                     seen_folders.append(folder_path)
             return seen_folders
         
-
         def extract_nonzero_elements(compound_string):
             import re
             """ Extract non-zero elements from a compound string."""
@@ -443,7 +437,6 @@ class DPDataProcessor:
             import pickle
             import torch
             import numpy as np
-
 
             def tolmdb(file, data):
                 """ Convert data to lmdb format. note: this format is justed for s2ef task with fairchem package."""
@@ -502,7 +495,6 @@ class DPDataProcessor:
             tolmdb(file='train', data=dataset[0])
             tolmdb(file='val', data=dataset[1])
 
-
 def parse_arguments():
     """ Parse command-line arguments. """
     parser = argparse.ArgumentParser(description="Manage VASP calculations and processing with various commands.")
@@ -510,7 +502,6 @@ def parse_arguments():
     parser.add_argument("operation", choices=["opt", "md", "optcheck", "mdcheck", "dpdata",'plot'], help="Specify the operation to perform.")
     parser.add_argument("-r", "--restart", choices=["restart"], default=None, help="Restart tasks if needed.")
     return parser.parse_args()
-
 
 def read_parameters_from_file(file_path="input"):
     """ Read parameters from a file. """
@@ -536,7 +527,6 @@ def read_parameters_from_file(file_path="input"):
         parameters.get('plot_name',None)
 
     )
-
 
 def main():
     """ Main function. the entry for the program."""
@@ -574,7 +564,5 @@ def main():
         visualizer = PeriodicTableWeightsVisualizer(dataset_prefix, fmt=dataset_fmt)
         visualizer.plot_2d(name=plot_name)
     
-    
 if __name__ == "__main__":
     main()
-
