@@ -1,6 +1,6 @@
 # postworkflow
 
-Aims of flowopt.py and flowts.py are reducing the ionic steps of optimization and transition state calculations, to avoid computational cost of SCF step,
+Aims of flowopt.py and flowts.py are reducing the ionic steps of optimization and transition state calculations, to avoid computational cost of SCF steps
 
 ## Table of Contents
 
@@ -31,15 +31,15 @@ Aims of flowopt.py and flowts.py are reducing the ionic steps of optimization an
 - Python 3 (version > 3.10)
 - ASE (Atomic Simulation Environment, version > 3.22)
 - VASP (Vienna Ab initio Simulation Package)
-- DeepMD-kit (version > 3.0.0a1)
+- DeePMD-kit (version > 3.0.0a1)
 - dpdata (version > 0.2.18)
-- VASPkit
+- VASPKIT
 - SLURM (for job scheduling)
 
 
 ## 1. flowopt.py
 
-flowopt.py script performs an iterative optimization and fine-tuning workflow using ASE (Atomic Simulation Environment) and VASP (Vienna Ab initio Simulation Package) with DeepMD-kit. The workflow involves optimizing atomic structures, running VASP calculations, generating new datasets for finetune, and fine-tuning machine learning models iteratively. After completing the specified number of iterations, a final VASP optimization step is performed to get accurate configuration and energy.
+`flowopt.py` script performs an iterative optimization and fine-tuning workflow using ASE (Atomic Simulation Environment) and VASP (Vienna Ab initio Simulation Package) with DeePMD-kit. The workflow involves optimizing atomic structures, running VASP calculations, generating new datasets for finetune, and fine-tuning machine learning models iteratively. After completing the specified number of iterations, a final VASP optimization step is performed to get accurate configuration and energy.
 
 ![Energy per ionic steps calculated by VASP and CLAM+VASP for OPT calulation](../docs/opt_energy_change_comparison.png)
 ![Force per ionic steps calculated by VASP and CLAM+VASP for CI-NEB calulation](../docs/opt_force_change_comparison.png)
@@ -49,15 +49,15 @@ flowopt.py script performs an iterative optimization and fine-tuning workflow us
 ```
 .
 ├── flowopt.py # Main script for the workflow
-├── POSCAR # initial structure for opt
-├── frozen_model.pth # pretrained model needed when --skip_first_opt false 
+├── POSCAR # Initial structure for opt
+├── frozen_model.pth # Pretrained model needed when --skip_first_opt false
 ├── utils
 │ ├── INCAR # VASP input file for OPT `NSW = 3`
 │ ├── POTCAR # VASP pseudopotentials file
 │ ├── KPOINTS # VASP k-points file
-│ ├── sub.vasp # VASP submission script, slurm
+│ ├── sub.vasp # VASP submission script for slurm
 │ ├── finetune1.json # Fine-tuning configuration template
-│ └── sub.dp # DeepMD-kit submission script, slurm
+│ └── sub.dp # DeePMD-kit submission script for slurm
 └── record.txt # File to record the progress of the workflow for restart
 ```
 
@@ -73,24 +73,24 @@ flowopt.py script performs an iterative optimization and fine-tuning workflow us
 This script supports the following command-line arguments:
 
 - `--num_iterations` (type: `int`, default: `4`): The number of optimization and finetuning iterations to run. Each iteration consists of optimizing the structure using ASE, running a VASP calculation, generating a new dataset, and finetuning the model.
-- `--steps_per_iteration` (type: `int`, default: `100`): The number of training, i.e. "numb_steps" parameter in finetune.json, steps to perform during each finetuning iteration. This value will be multiplied by the iteration number to determine the total number of training steps for each iteration. for example: if --steps_per_iteration 100, numb_steps will be 100, 200, 300, 400 in finetune1, finetune2, finetune3, finetune4, respectively.
+- `--steps_per_iteration` (type: `int`, default: `100`): The number of training, i.e. "numb_steps" parameter in finetune.json, steps to perform during each finetuning iteration. This value will be multiplied by the iteration number to determine the total number of training steps for each iteration. For example: if --steps_per_iteration is 100, numb_steps will be 100, 200, 300, 400 in finetune1, finetune2, finetune3, and finetune4, respectively.
 - `--fixed_atoms` (type: `int`, default: `0`): The number of atoms to fix in position during the structure optimization step. The lowest atoms based on their z-coordinate will be fixed.
-- `--iffinal` (type: `bool`, default: `True`): Whether to perform the final optimization step. This step is carried out after the last iteration and includes an additional structure optimization and VASP calculation. Usually, it is necessary to keep --iffinal true to get an accurate final energy and configuration.
-- `--skip_first_opt` (type: `bool`, default: `False`): Whether to skip the first optimization step. If set to `True`, the script will directly use the initial `POSCAR` file for the first VASP calculation without performing the initial structure optimization by ASE with DP potential. Usually, if the training set of large atomic model include similar structureof POSCAR, it recommand to use --skip_first_opt false to get faster result. if the POSCAR is a new system, it recommand to use --skip_first_opt true to do VASP optimization of several step to get some dataset for finetune.
-- `--fmax` (type: `float`, default: `0.2`): The maximum force criterion for structure optimization by ase with DP potential. The optimization will stop when the forces on all atoms are below this threshold.
+- `--iffinal` (type: `bool`, default: `True`): Whether to perform the final optimization step. This step is carried out after the last iteration and includes an additional structure optimization and VASP calculation. Usually, it is necessary to keep `--iffinal` `True` to get an accurate final energy and configuration.
+- `--skip_first_opt` (type: `bool`, default: `False`): Whether to skip the first optimization step. If set to `True`, the script will directly use the initial `POSCAR` file for the first VASP calculation without performing the initial structure optimization by ASE with DP potential. Usually, if the training set of large atomic model includes similar structure of POSCAR, it recommands to use `--skip_first_opt` `False` to get faster result. If the POSCAR is a new system, it recommands to use `--skip_first_opt` `True` to do VASP optimization of several steps to get some dataset for finetune.
+- `--fmax` (type: `float`, default: `0.2`): The maximum force criterion for structure optimization by ASE with DP potential. The optimization will stop when the forces on all atoms are below this threshold.
 
 ### 1.2.2 Example Command
 
 To run the script, use the following command:
 
 ```sh
-python script_name.py [--num_iterations NUM] [--steps_per_iteration NUM] [--fixed_atoms NUM] [--iffinal BOOL] [--skip_first_opt BOOL]
+python flowopt.py [--num_iterations NUM] [--steps_per_iteration NUM] [--fixed_atoms NUM] [--iffinal BOOL] [--skip_first_opt BOOL]
 ```
 
 ```bash
-for in-domain system:
-nohup python script.py --num_iterations 3 --steps_per_iteration 200 --fixed_atoms 0 --iffinal true --skip_first_opt false --fmax 0.1 &
-for out-of-domain system:
+for in-domain (ID) system:
+nohup python flowopt.py --num_iterations 3 --steps_per_iteration 200 --fixed_atoms 0 --iffinal true --skip_first_opt false --fmax 0.1 &
+for out-of-domain (OOD) system:
 nohup python script.py --num_iterations 5 --steps_per_iteration 200 --fixed_atoms 0 --iffinal true --skip_first_opt true --fmax 0.2 &
 ```
 
@@ -115,29 +115,29 @@ K --> J
 The script follows these main steps:
 
 1. **Optimization of Atomic Structures by ASE** :
-   * Optimizes the atomic structure using catalyticLAM DeepMD-kit models.
-   * Saves the optimized structure as `CONTCAR-ase-{iteration}`.
+   * Optimize the atomic structure using catalyticLAM DeePMD-kit models.
+   * Save the optimized structure as `CONTCAR-ase-{iteration}`.
 2. **Preparation for VASP Calculation** :
-   * Creates a new directory for each iteration (`opt{iteration}`).
-   * Copies the optimized structure and necessary VASP input files to the new directory.
-   * If not the first iteration, copies `WAVECAR` and `CHGCAR` from the previous iteration.
+   * Create a new directory for each iteration (`opt{iteration}`).
+   * Copy the optimized structure and necessary VASP input files to the new directory.
+   * If not the first iteration, copy `WAVECAR` and `CHGCAR` from the previous iteration.
 3. **Run VASP Calculation** :
-   * Submits the VASP job and retrieves the job ID.
-   * Waits for the VASP job to complete.
+   * Submit the VASP job and retrieve the job ID.
+   * Wait for the VASP job to complete.
 4. **Generate New Dataset** :
-   * Generates a new dataset from the VASP output file `OUTCAR` by dpdata.
-   * Saves the dataset in the specified directory.
+   * Generate a new dataset from the VASP output file `OUTCAR` by dpdata.
+   * Save the dataset in the specified directory.
 5. **Fine-Tuning of Models** :
-   * Updates the fine-tuning configuration (`finetune1.json`) with new data paths and iteration-specific parameters.
-   * Submits the fine-tuning job and retrieves the job ID.
-   * Waits for the fine-tuning job to complete.
+   * Update the fine-tuning configuration (`finetune1.json`) with new data paths and iteration-specific parameters.
+   * Submit the fine-tuning job and retrieve the job ID.
+   * Wait for the fine-tuning job to complete.
 6. **Freezing the Model** :
-   * Freezes the fine-tuned model using DeepMD-kit.
+   * Freeze the fine-tuned model using DeePMD-kit.
 7. **Final Optimization Step** :
-   * After completing all iterations, runs a final optimization step.
-   * Creates a new directory (`optfinal`) and copies the final optimized structure.
-   * Modifies the `INCAR` file to set `NSW = 300`.
-   * Submits the final VASP job and waits for its completion.
+   * After completing all iterations, run a final optimization step.
+   * Create a new directory (`optfinal`) and copy the final optimized structure.
+   * Modify the `INCAR` file to set `NSW = 300`.
+   * Submit the final VASP job and wait for its completion.
 
 ## 1.4 Resuming from Checkpoints
 
@@ -159,14 +159,14 @@ freeze2
 
 ## 1.5 Notes for flowopt.ts
 
-* Ensure the VASP and DeepMD-kit executables are accessible in your environment.
+* Ensure the VASP and DeePMD-kit executables are accessible in your environment.
 * Customize the `INCAR`, `KPOINTS`, `POTCAR`, and submission scripts (`sub.vasp`, `sub.dp`) as needed for your specific system and requirements.
 * Adjust the polling interval in `wait_for_job_completion` if necessary.
 
 
 ## 2. flowts.py
 
-flowts.py script performs an iterative NEB calculation and fine-tuning workflow using ASE (Atomic Simulation Environment) and VASP (Vienna Ab initio Simulation Package) with DeepMD-kit. The workflow involves ase-CINEB calculations, running VASP-CINEB calculations, generating new datasets for finetune, and fine-tuning machine learning models iteratively. After completing the specified number of iterations, a final VASP-CINEB step is performed to get accurate transition states configuration and energy.
+`flowts.py` script performs an iterative NEB calculation and fine-tuning workflow using ASE (Atomic Simulation Environment) and VASP (Vienna Ab initio Simulation Package) with DeePMD-kit. The workflow involves ASE-CINEB calculations, running VASP-CINEB calculations, generating new datasets for finetune, and fine-tuning machine learning models iteratively. After completing the specified number of iterations, a final VASP-CINEB step is performed to get accurate transition states configuration and energy.
 
 ![Energy per ionic steps calculated by VASP and CLAM+VASP for CI-NEB calulation](../docs/ts_energy_change_comparison.png)
 ![Force per ionic steps calculated by VASP and CLAM+VASP for CI-NEB calulation](../docs/ts_force_change_comparison.png)
@@ -176,18 +176,18 @@ flowts.py script performs an iterative NEB calculation and fine-tuning workflow 
 ```
 .
 ├── flowts.py # Main script for the workflow
-├── POSCARis # initial structure for NEB calculation (POSCAR format)
-├── POSCARfs # final structure for NEB calculation (POSCAR format)
-├── OUTCARis # initial structure's opt OUTCAR
-├── OUTCARfs # final structure's opt OUTCAR
-├── frozen_model.pth # pretrained model
+├── POSCARis # Initial structure for NEB calculation (POSCAR format)
+├── POSCARfs # Final structure for NEB calculation (POSCAR format)
+├── OUTCARis # Initial structure's opt OUTCAR
+├── OUTCARfs # Final structure's opt OUTCAR
+├── frozen_model.pth # Pretrained model
 ├── utils
 │ ├── INCAR # VASP input file for CINEB NSW = 3
 │ ├── POTCAR # VASP pseudopotentials file
 │ ├── KPOINTS # VASP k-points file
-│ ├── sub.vasp # VASP submission script, slurm
+│ ├── sub.vasp # VASP submission script for slurm
 │ ├── finetune1.json # Fine-tuning configuration template
-│ └── sub.dp # DeepMD-kit submission script, slurm
+│ └── sub.dp # DeePMD-kit submission script for slurm
 └── record.txt # File to record the progress of the workflow for restart
 ```
 
@@ -205,24 +205,24 @@ This script supports the following command-line arguments:
 
 - `initial_structure` (type: `str`): Path to the initial structure (POSCAR format).
 - `final_structure` (type: `str`): Path to the final structure (POSCAR format).
-- `model_path` (type: `str`): Path to the DeepMD model, ex: frozen_model.pth_.
+- `model_path` (type: `str`): Path to the DeePMD model, ex: frozen_model.pth.
 - `initial_outcar` (type: `str`): Path to the initial OUTCAR file.
 - `final_outcar` (type: `str`): Path to the final OUTCAR file.
 - `--num_steps` (type: `int`, default: `1`): Number of loop steps to run.
 - `--n_images` (type: `int`, default: `4`): Number of intermediate images.
-- `--fmax` (type: `float`, default: `0.5`): Maximum force criteria for optimization by ase.
-- `--interpolation` (choices: `['linear', 'idpp']`, default: `linear`): Interpolation method for generating intermediate images by ase.
-- `--spring_constant` (type: `float`, default: `1.0`): Spring constant for ase ci-neb calculations.
-- `--steps_per_iteration` (type: `int`, default: `1000`): The number of training, i.e. "numb_steps" parameter in finetune1.json, steps to perform during each finetuning iteration. This value will be multiplied by the iteration number to determine the total number of training steps for each iteration. for example: if --steps_per_iteration 1000, numb_steps will be 1000, 2000, 3000, 4000 in finetune1, finetune2, finetune3, finetune4, respectively.
+- `--fmax` (type: `float`, default: `0.5`): Maximum force criteria for optimization by ASE.
+- `--interpolation` (choices: `['linear', 'idpp']`, default: `linear`): Interpolation method for generating intermediate images by ASE.
+- `--spring_constant` (type: `float`, default: `1.0`): Spring constant for ASE CI-NEB calculations.
+- `--steps_per_iteration` (type: `int`, default: `1000`): The number of training, i.e. "numb_steps" parameter in finetune1.json, steps to perform during each finetuning iteration. This value will be multiplied by the iteration number to determine the total number of training steps for each iteration. For example: if `--steps_per_iteration` is 1000, "numb_steps" will be 1000, 2000, 3000, 4000 in finetune1, finetune2, finetune3, and finetune4, respectively.
 - `--apply_constraint` (type: `bool`, default: `False`): Whether to apply constraints during interpolation.
-- `--skip_first_opt` (type: `bool`, default: `True`): Whether to skip the first ase ci-neb step. If set to `True`, the script will still to do first ase ci-neb step based on DP potential, but the obtained CONTCARs will not be used to the initial VASP ci-neb calculation. If set to `True`, the `POSCARis` and `POSCARfs` files will be used to generate first VASP calculation. Usually, it recommands to keep --skip_first_opt true to do VASP calculation of first step to get some dataset for finetune.
+- `--skip_first_opt` (type: `bool`, default: `True`): Whether to skip the first ASE CI-NEB step. If set to `True`, the script will still to do first ASE CI-NEB step based on DP potential, but the obtained CONTCARs will not be used to the initial VASP ci-neb calculation. If set to `True`, the `POSCARis` and `POSCARfs` files will be used to generate first VASP calculation. Usually, it recommands to keep `--skip_first_opt` `True` to do VASP calculation of first step to get some dataset for finetune.
 
 ### 2.2.2 Example Command
 
 To run the script, use the following command:
 
 ```sh
-python script_name.py initial_structure final_structure model_path initial_outcar final_outcar [--num_steps NUM] [--n_images NUM] [--fmax NUM] [--interpolation METHOD] [--spring_constant NUM] [--steps_per_iteration NUM] [--apply_constraint BOOL] [--skip_first_neb BOOL]
+python flowts.py initial_structure final_structure model_path initial_outcar final_outcar [--num_steps NUM] [--n_images NUM] [--fmax NUM] [--interpolation METHOD] [--spring_constant NUM] [--steps_per_iteration NUM] [--apply_constraint BOOL] [--skip_first_neb BOOL]
 ```
 ```sh
 nohup python ./flowts.py POSCARis POSCARfs ./frozen_model.pth OUTCARis OUTCARfs &
@@ -248,13 +248,13 @@ The script follows these main steps:
 
 1. **NEB Calculation (ASE)** :
    * Generates intermediate images using the initial and final structures.
-   * Optimizes the NEB path using DeepMD-kit models.
+   * Optimizes the NEB path using DeePMD-kit models.
    * Saves the optimized structures as `CONTCAR{n}`.
 2. **Preparation for VASP Calculation** :
    * Creates a new directory for each step (`ts{step}`).
    * Copies the optimized structures and necessary VASP input files to the new directory.
 3. **Run VASP NEB Calculation** :
-   * Generates the `POTCAR` file using VASPkit.
+   * Generates the `POTCAR` file using VASPKIT.
    * Submits the VASP job and retrieves the job ID.
    * Waits for the VASP job to complete.
 4. **Generate New Dataset** :
@@ -265,7 +265,7 @@ The script follows these main steps:
    * Submits the fine-tuning job and retrieves the job ID.
    * Waits for the fine-tuning job to complete.
 6. **Freezing the Model** :
-   * Freezes the fine-tuned model using DeepMD-kit.
+   * Freezes the fine-tuned model using DeePMD-kit.
 7. **Final NEB Calculation** :
    * After completing all steps, runs a final NEB calculation.
    * Creates a new directory (`tsfinal`) and copies the final optimized structures.
@@ -290,7 +290,7 @@ This section describes how to use `flowopt.py` based on the GemNet-OC pretrained
 
 You can find more details and download the model checkpoints from the [FairChem model checkpoints page](https://fair-chem.github.io/core/model_checkpoints.html).
 
-when you use optoc/flowopt.py, please download the FairChem model checkpoints, such as:[gnoc_oc22_oc20_all_s2ef.pt](https://dl.fbaipublicfiles.com/opencatalystproject/models/2022_09/oc22/s2ef/gnoc_oc22_oc20_all_s2ef.pt), and put it into utils/ directory.
+When you use `optoc/flowopt.py`, please download the FairChem model checkpoints, such as:[gnoc_oc22_oc20_all_s2ef.pt](https://dl.fbaipublicfiles.com/opencatalystproject/models/2022_09/oc22/s2ef/gnoc_oc22_oc20_all_s2ef.pt), and put it into `utils` directory.
 
 ## 4. flowts.py based on GemNet-OC Pretrained Model
 

@@ -10,7 +10,6 @@ from pymatgen.io.vasp import Poscar
 from tqdm import tqdm
 # from typing import Dict
 
-
 class PeriodicTableWeightsVisualizer:
     """ the class to visualize the periodic table weights
 
@@ -253,7 +252,3 @@ def calculate_element_weights_npy(self):
         ax.set_box_aspect([3, 1, 1])
         ax.view_init(elev=80, azim=270)
         plt.savefig("weight3d.png")
-
-
-
-
