@@ -89,7 +89,7 @@ model:
   qint_tags:
   - 1
   - 2
-  quad_interaction: true
+  quad_interaction: false 
   rbf:
     name: gaussian
   regress_forces: true
