@@ -1,6 +1,6 @@
 # postworkflow
 
-The purpose of `flowopt.py` and `flowts.py` is to reduce the number of ionic steps required for structure optimization and transition state (TS) calculations by using a "local fine-tuning" algorithm, thereby minimizing the computational cost of self-consistent field (SCF) steps. Our approach involves selectively incorporating a minimal amount of new DFT SCF data to fine-tune the model, enhancing its accuracy on the local potential energy surface (PES) specifically relevant to optimization or TS tasks. （）
+The purpose of `flowopt.py` and `flowts.py` is to reduce the number of ionic steps required for structure optimization and transition state (TS) calculations by using a "local fine-tuning" algorithm, thereby minimizing the computational cost of self-consistent field (SCF) steps. Our approach involves selectively incorporating a minimal amount of new DFT SCF data to fine-tune the model, enhancing its accuracy on the local potential energy surface (PES) specifically relevant to optimization or TS tasks. 
 
 ![Schematic representation of local fine-tuning on the PES. The bold black line represents the real PES, while the thin blue line indicates the uncertainty in the model-predicted PES.](../docs/Schematic.png)
 
@@ -35,9 +35,8 @@ The purpose of `flowopt.py` and `flowts.py` is to reduce the number of ionic ste
 - Python 3 (version > 3.10)
 - ASE (Atomic Simulation Environment, version > 3.22)
 - VASP (Vienna Ab initio Simulation Package)
-- DeePMD-kit (version > 3.0.0a1)
-- dpdata (version > 0.2.18)
-- VASPKIT
+- fairchem (version 1.0.0) or DeePMD-kit (version > 3.0.0a1)
+- dpdata (optional, version > 0.2.18)
 - SLURM (for job scheduling)
 
 ## 1. flowopt.py based on GemNet-OC Pretrained Model
@@ -48,8 +47,11 @@ When you use `./optoc/flowopt.py`, please download the FairChem model checkpoint
 
 `flowopt.py` script performs an iterative optimization and fine-tuning workflow using ASE (Atomic Simulation Environment), VASP (Vienna Ab initio Simulation Package), and [Gemnet-OC](https://github.com/FAIR-Chem/fairchem). The workflow involves optimizing atomic structures, running VASP calculations, generating new datasets for finetune, and fine-tuning machine learning models iteratively. After completing the specified number of iterations, a final VASP optimization step (optional) is performed to get accurate configuration and energy.
 
-![Energy per ionic steps calculated by VASP and CLAM+VASP for OPT calulation](../docs/opt_energy_change_comparison.png)
-![Force per ionic steps calculated by VASP and CLAM+VASP for CI-NEB calulation](../docs/opt_force_change_comparison.png)
+**<div style="display: flex; justify-content: space-between;">**
+<img src="../docs/opt_energy_change_comparison.png" alt="Energy per ionic steps calculated by VASP and CLAM+VASP for OPT calculation" width="47%">
+<img src="../docs/opt_force_change_comparison.png" alt="Force per ionic steps calculated by VASP and CLAM+VASP for CI-NEB calculation" width="45%">
+
+</div>
 
 ## 1.1 flowopt.py File Structure
 
@@ -57,8 +59,7 @@ When you use `./optoc/flowopt.py`, please download the FairChem model checkpoint
 .
 ├── flowopt.py # Main script for the workflow
 ├── POSCAR # Initial structure for opt
-├── frozen_model.pth # Pretrained model needed when --skip_first_opt false
-├── utils
+├── utils/
 │ ├── INCAR # VASP input file for OPT
 │ ├── POTCAR # VASP pseudopotentials file
 │ ├── KPOINTS # VASP k-points file
@@ -98,14 +99,14 @@ This will return a job number when the script runs in the background. You can fi
 
 This script supports the following command-line arguments:
 
-* `--num_iterations` (type: `int`, default: `4`): The number of iterations to run. Each iteration consists of optimization using ASE, DFT using VASP, and finetune using Gemnet-OC. Usually for simple system 1 is enough.
-* `--fixed_atoms` (type: `int`, default: `0`): The number of atoms to fix in position during the structure optimization step. The lowest atoms based on their z-coordinate will be fixed.
-* `--iffinal` (type: `bool`, default: `true`): Whether to perform the final DFT optimization step. This step is carried out after the last iteration and includes an additional structure optimization using VASP based on the final Structure. Usually, it is necessary to keep `--iffinal` `true` to get an accurate final energy and configuration. `false` is to just want a quick rough structure.
-* `--do_first_aseopt` (type: `bool`, default: `true`): Whether to do the first ASE optimization step based on pretrained model (i.e. `best_checkpoint.pt`). If set to `false`, the script will directly use the initial `POSCAR`file run first VASP calculation without performing the initial structure optimization by pretrained model. Usually, if the pretrained model includes similar structure of `POSCAR`, it recommands to use`true` to get faster result. If the `POSCAR` is a totally new system, it recommands to use`false` to do VASP optimization first to get some dataset for finetune.
-* `--fmax` (type: `float`, default: `0.2`): The maximum force criterion for structure optimization by ASE with pretrained model. The optimization will stop when the forces on all atoms are below this threshold or the ASE optimization step number reach 30 to aviod unreasonable optimization.
-* `--nsw` (type: `float`, default: `5`): The `NSW` parameter in INCAR file, this determines how many DFT structure optimization steps to do for each iteration. usually 5 is a good choose.
+* `--num_iterations` (type: int, default: 4): The number of iterations to run. Each iteration consists of structure optimization using ASE, DFT calculations using VASP, and fine-tuning with Gemnet-OC. For simple systems, 1 iteration is often sufficient.
+* `--fixed_atoms` (type: int, default: 0): The number of atoms to keep fixed during the structure optimization step. The atoms with the lowest z-coordinates will be fixed in place.
+  `--iffinal` (type: bool, default: true): Determines whether to perform a final DFT optimization step. This step is carried out after the last iteration and includes an additional VASP-based optimization for the final structure. It is generally recommended to keep `--iffinal` set to `true` to obtain accurate final energy and configuration values. Setting it to `false` allows a faster, rougher structure.
+  `--do_first_aseopt` (type: bool, default: true): Specifies whether to perform an initial ASE optimization step using the pretrained model (`utils/best_checkpoint.pt`). If set to `false`, the script will skip the initial optimization and directly use the initial POSCAR file for the first VASP calculation. When the pretrained model includes structures similar to POSCAR, setting this to `true` can help reach a near-minimum configuration more quickly. If POSCAR represents a completely new system, it is recommended to set this to `false` to start with VASP optimization and collect data for fine-tuning.
+* `--fmax` (type: float, default: 0.2): The maximum force criterion for structure optimization using ASE with the pretrained model. The optimization stops when the forces on all atoms are below this threshold or if the ASE optimization reaches 30 steps, preventing unreasonable results.
+* `--nsw` (type: int, default: 5): The `NSW` parameter in the INCAR file, which sets the number of DFT ionic optimization steps to perform in each iteration. Typically, a value of 5 is a good choice.
 
-If you want to rm all output files, use:
+If you want to remove all output files, use the following command:
 
 ```bash
 python ./flowopt.py --clean
@@ -130,12 +131,35 @@ I -.no.-> J(END)
 K --> J
 ```
 
+The script follows these main steps:
+
+1. **Optimization of Atomic Structures by ASE** :
+   * Optimize the atomic structure using pretrained or finetuned model by ASE.
+   * Save the optimized structure as `CONTCAR-ase-{iteration}`.
+2. **Preparation for VASP Calculation** :
+   * Create a new directory for each iteration (`opt{iteration}`).
+   * Copy the optimized structure and necessary VASP input files to the new directory.
+   * If not the first iteration, copy `WAVECAR` and `CHGCAR` from the previous iteration.
+3. **Run VASP Calculation** :
+   * Submit the VASP job and retrieve the job ID.
+   * Wait for the VASP job to complete.
+4. **Generate New Dataset** :
+   * Generate new dataset from the VASP output file `OUTCAR`, and add it to `./output_database.db`.
+5. **Fine-Tuning of Models** :
+   * Update the fine-tuning input file (`finetune1.yml`), use `./output_database.db` dataset.
+   * Submit the fine-tuning job and retrieve the job ID.
+   * Wait for the fine-tuning job to complete.
+6. **Final Optimization Step** :
+   * After completing all iterations, run a final ASE optimization step.
+   * Create a new directory (`optfinal`) and copy the final optimized structure in it.
+   * Modify the `INCAR` file to set `NSW = 300`.
+   * if `--iffinal true`Submit the final VASP job and wait for its completion.
+
 ## 2. flowts.py based on GemNet-OC Pretrained Model
 
 ## 3. flowopt.py
 
 `flowopt.py` script performs an iterative optimization and fine-tuning workflow using ASE (Atomic Simulation Environment) and VASP (Vienna Ab initio Simulation Package) with DeePMD-kit. The workflow involves optimizing atomic structures, running VASP calculations, generating new datasets for finetune, and fine-tuning machine learning models iteratively. After completing the specified number of iterations, a final VASP optimization step is performed to get accurate configuration and energy.
-
 
 ## 3.1 flowopt.py File Structure
 
@@ -390,3 +414,5 @@ This project is licensed under the LGPL-3.0 License.
 * dpdata: [https://github.com/deepmodeling/dpdata](https://github.com/deepmodeling/dpdata)
 * VASPKIT: [https://vaspkit.com/](https://vaspkit.com/)
 * SLURM: [https://slurm.schedmd.com/](https://slurm.schedmd.com/)
+  
+
