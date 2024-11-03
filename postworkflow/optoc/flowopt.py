@@ -120,20 +120,19 @@ def prepare_vasp_calculation(iteration, final=False, nsw=5):
     shutil.copy('./utils/POTCAR', f'{opt_dir}/POTCAR')
     shutil.copy('./utils/KPOINTS', f'{opt_dir}/KPOINTS')
     shutil.copy('./utils/sub.vasp', f'{opt_dir}/sub.vasp')
+    incar_path = f'{opt_dir}/INCAR'
+    with open(incar_path, 'r') as file:
+        lines = file.readlines()
+    with open(incar_path, 'w') as file:
+        for line in lines:
+            if 'NSW' not in line:
+                file.write(line)
+        file.write(f'NSW = {nsw}\n')
 
     # If this is not the first iteration, copy WAVECAR and CHGCAR from the previous iteration
     if iteration > 1 and not final:
-        incar_path = f'{opt_dir}/INCAR'
         prev_opt_dir = f'opt{iteration-1}'
         shutil.copy(f'{prev_opt_dir}/WAVECAR', f'{opt_dir}/WAVECAR')
-        shutil.copy(f'{prev_opt_dir}/CHGCAR', f'{opt_dir}/CHGCAR')
-        with open(incar_path, 'r') as file:
-            lines = file.readlines()
-        with open(incar_path, 'w') as file:
-            for line in lines:
-                if 'NSW' not in line:
-                    file.write(line)
-            file.write(f'NSW = {nsw}\n')
  
     # Modify INCAR file for the final calculation
     if final:
@@ -269,7 +268,7 @@ def main():
     parser.add_argument('--num_iterations', type=int, default=4, help='Number of iterations to run.')
     parser.add_argument('--fixed_atoms', type=int, default=0, help='Number of bottom atoms to fix in position.')
     parser.add_argument('--iffinal', type=str, default="true", help='Whether to perform the final optimization step.')
-    parser.add_argument('--do_first_aseopt', type=str, default="true", help='Whether to do the first ASE optimization step.')
+    parser.add_argument('--do_first_aseopt', type=str, default="false", help='Whether to do the first ASE optimization step.')
     parser.add_argument('--fmax', type=float, default=0.2, help='Maximum force criteria for optimization.')
     parser.add_argument('--nsw', type=int, default=5, help='set the NSW parameter in INCAR, i.e. the DFT step per iteration.')
     parser.add_argument('--clean', action='store_true', help='Clean up specified directories and files.')
