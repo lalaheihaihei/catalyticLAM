@@ -96,7 +96,7 @@ def optimize_structure(iteration, model_path, record_file, fixed_atoms, fmax, fi
     
     write_record(record_file, step)
 
-def prepare_vasp_calculation(iteration, final=False):
+def prepare_vasp_calculation(iteration, final=False, nsw=5):
     if final:
         opt_dir = 'optfinal'
         os.makedirs(opt_dir, exist_ok=True)
@@ -108,23 +108,36 @@ def prepare_vasp_calculation(iteration, final=False):
         os.makedirs(opt_dir, exist_ok=True)
 
         # Copy the optimized structure to the new directory as POSCAR
-        shutil.copy(f'CONTCAR-ase-{iteration}', f'{opt_dir}/POSCAR')
+        try:
+            # Try to copy the file CONTCAR-ase-{iteration} to the specified directory
+            shutil.copy(f'CONTCAR-ase-{iteration}', f'{opt_dir}/POSCAR')
+        except FileNotFoundError:
+            # If the file is not found, copy the POSCAR file instead, for --do_first_aseopt false.
+            shutil.copy('POSCAR', f'{opt_dir}/POSCAR')
 
     # Copy necessary VASP input files from the utils directory to the new directory
     shutil.copy('./utils/INCAR', f'{opt_dir}/INCAR')
+    shutil.copy('./utils/POTCAR', f'{opt_dir}/POTCAR')
     shutil.copy('./utils/KPOINTS', f'{opt_dir}/KPOINTS')
     shutil.copy('./utils/sub.vasp', f'{opt_dir}/sub.vasp')
+    incar_path = f'{opt_dir}/INCAR'
+    with open(incar_path, 'r') as file:
+        lines = file.readlines()
+    with open(incar_path, 'w') as file:
+        for line in lines:
+            if 'NSW' not in line:
+                file.write(line)
+        file.write(f'NSW = {nsw}\n')
 
     # If this is not the first iteration, copy WAVECAR and CHGCAR from the previous iteration
     if iteration > 1 and not final:
         prev_opt_dir = f'opt{iteration-1}'
         shutil.copy(f'{prev_opt_dir}/WAVECAR', f'{opt_dir}/WAVECAR')
-        shutil.copy(f'{prev_opt_dir}/CHGCAR', f'{opt_dir}/CHGCAR')
-    
+ 
     # Modify INCAR file for the final calculation
     if final:
         incar_path = f'{opt_dir}/INCAR'
-        prev_opt_dir = f'opt{iteration-1}'
+        prev_opt_dir = f'opt{iteration}'
         shutil.copy(f'{prev_opt_dir}/WAVECAR', f'{opt_dir}/WAVECAR')
         shutil.copy(f'{prev_opt_dir}/CHGCAR', f'{opt_dir}/CHGCAR')
 
@@ -138,7 +151,7 @@ def prepare_vasp_calculation(iteration, final=False):
     
     # Change to the new directory and generate the POTCAR file using vaspkit
     os.chdir(opt_dir)
-    os.system('echo -e "103\n" | vaspkit')
+    #os.system('echo -e "103\n" | vaspkit')
 
     # Submit the VASP job and retrieve the job ID
     result = subprocess.run(['sbatch', 'sub.vasp'], stdout=subprocess.PIPE)
@@ -204,8 +217,10 @@ def generate_new_dataset(iteration, record_file):
     
     write_record(record_file, step)
 
-def update_finetune_json(iteration, previous_finetune_file, steps_per_iteration):
+
+def finetune_model(iteration):
     finetune_dir = f'finetune{iteration}'
+    
     os.makedirs(finetune_dir, exist_ok=True)
 
     # Copy the finetune1.json and sub.dp files to the new finetune directory
@@ -213,12 +228,16 @@ def update_finetune_json(iteration, previous_finetune_file, steps_per_iteration)
     shutil.copy('./utils/base.yml', f'{finetune_dir}/base.yml')
     shutil.copy('./utils/main.py', f'{finetune_dir}/main.py')
     shutil.copy('./utils/sub.oc', f'{finetune_dir}/sub.oc')
-
-    finetune_file = f'{finetune_dir}/finetune1.yml'
-
-def finetune_model(iteration, previous_finetune_file, steps_per_iteration):
-    update_finetune_json(iteration, previous_finetune_file, steps_per_iteration)
-    finetune_dir = f'finetune{iteration}'
+    finetune_yml_path = f'{finetune_dir}/finetune1.yml'
+    with open(finetune_yml_path, 'r') as file:
+        lines = file.readlines()
+    with open(finetune_yml_path, 'w') as file:
+        eval_every_value = int(iteration) * 20  # Calculate the new eval_every value
+        for line in lines:
+            if 'eval_every' in line:
+                file.write(f'  eval_every: {eval_every_value}\n')  # Replace with the new value
+            else:
+                file.write(line)  # Write other lines as they are
 
     # Submit the finetuning job and retrieve the job ID
     os.chdir(finetune_dir)
@@ -240,19 +259,32 @@ def freeze(iteration, record_file):
     
     write_record(record_file, step)
 
+def clean():
+    # Remove directories and files as specified
+    os.system('rm -rf opt1 opt2 opt3 opt4 opt5 opt6 opt7 opt8 optfinal finetune* CONTCAR-ase-* *.png output_database.db nohup.out record.txt')
+
 def main():
     parser = argparse.ArgumentParser(description="Run iterative optimization and finetuning.")
     parser.add_argument('--num_iterations', type=int, default=4, help='Number of iterations to run.')
-    parser.add_argument('--steps_per_iteration', type=int, default=100, help='Number of steps per iteration.')
-    parser.add_argument('--fixed_atoms', type=int, default=0, help='Number of atoms to fix in position.')
-    parser.add_argument('--iffinal', type=bool, default=True, help='Whether to perform the final optimization step.')
-    parser.add_argument('--skip_first_opt', type=bool, default=False, help='Whether to skip the first optimization step.')
+    parser.add_argument('--fixed_atoms', type=int, default=0, help='Number of bottom atoms to fix in position.')
+    parser.add_argument('--iffinal', type=str, default="true", help='Whether to perform the final optimization step.')
+    parser.add_argument('--do_first_aseopt', type=str, default="false", help='Whether to do the first ASE optimization step.')
     parser.add_argument('--fmax', type=float, default=0.2, help='Maximum force criteria for optimization.')
+    parser.add_argument('--nsw', type=int, default=5, help='set the NSW parameter in INCAR, i.e. the DFT step per iteration.')
+    parser.add_argument('--clean', action='store_true', help='Clean up specified directories and files.')
     args = parser.parse_args()
-
+    # If the clean flag is set, call the clean function and exit
+    if args.clean:
+        clean()
+        return  # Exit after cleaning
+    
+    # conver str to bool
+    args.iffinal = args.iffinal.lower() == 'true'
+    args.do_first_aseopt = args.do_first_aseopt.lower() == 'true'
+    
     record_file = 'record.txt'
     num_iterations = args.num_iterations
-    steps_per_iteration = args.steps_per_iteration
+    nsw_value = args.nsw
     fixed_atoms = args.fixed_atoms
     fmax = args.fmax
 
@@ -268,34 +300,51 @@ def main():
             print(f"Error parsing the last step: {last_step}")
             return
     else:
-        model_path = "./utils/gnoc_oc22_oc20_all_s2ef.pt"
+        model_path = "./utils/best_checkpoint.pt"
 
     for i in range(start_iteration, num_iterations + 1):
-        if not (i == 1 and args.skip_first_opt):
-            # model_path = f'finetune{i-1}/frozen_model.pth'
+        iteration_start_time = time.time()
+        
+        if (i == 1 and args.do_first_aseopt):
+            print("First loop, and do ASE optimization based on pretrained model.")
             optimize_structure(i, model_path, record_file, fixed_atoms, fmax)
-        else:
-            # Directly copy the initial POSCAR to opt1 for VASP calculation
+        elif i == 1:
+            print("First loop, and directly do DFT calculation first.")
             os.makedirs(f'opt{i}', exist_ok=True)
             shutil.copy('POSCAR', f'opt{i}/POSCAR')
-            shutil.copy('POSCAR', f'./CONTCAR-ase-1')
-        job_id = prepare_vasp_calculation(i)
-        wait_for_job_completion(job_id, record_file, f'vaspopt{i}')
+        elif i != 1:
+            optimize_structure(i, model_path, record_file, fixed_atoms, fmax)
         
+        iteration_end_time = time.time()  # End timing the optimization
+        print(f"Iteration {i}-aseopt completed in {iteration_end_time - iteration_start_time:.2f} seconds.")
+        
+        # Prepare for VASP calculation
+        iteration_start_time = time.time()
+        job_id = prepare_vasp_calculation(i, final=False, nsw=nsw_value)
+        wait_for_job_completion(job_id, record_file, f'vaspopt{i}')
+        iteration_end_time = time.time()  # End timing the VASP calculation
+        print(f"Iteration {i}-vasp completed in {iteration_end_time - iteration_start_time:.2f} seconds.")
+        
+        # Generate new dataset and fine-tune model
+        iteration_start_time = time.time()
         generate_new_dataset(i, record_file)
-        previous_finetune_file = f'finetune{i-1}/finetune1.yml' if i > 1 else None
-        job_id = finetune_model(i, previous_finetune_file, steps_per_iteration)
+        job_id = finetune_model(i)
         wait_for_oc_job_checkpoint(job_id, record_file, f'finetune{i}', i)
-        #wait_for_job_completion(job_id, record_file, f'finetune{i}')
-        freeze(i, record_file)
+        freeze(i, record_file)  # for deepmd, not active for gemnet-oc
+
         # Update model path to use the newly generated model
         model_path = f'finetune{i}/checkpoint.pt'
+        iteration_end_time = time.time()  # End timing the fine-tuning
+        print(f"Iteration {i}-finetune completed in {iteration_end_time - iteration_start_time:.2f} seconds.")
 
     # Run the final optimization step if specified
     if args.iffinal:
+        iteration_start_time = time.time()
         optimize_structure(num_iterations, model_path, record_file, fixed_atoms, fmax, final=True)
-        job_id = prepare_vasp_calculation(num_iterations, final=True)
+        job_id = prepare_vasp_calculation(num_iterations, final=True, nsw=300)
         wait_for_job_completion(job_id, record_file, 'vaspopt-final')
+        iteration_end_time = time.time()  # End timing the final optimization
+        print(f"Iteration final completed in {iteration_end_time - iteration_start_time:.2f} seconds.")
 
 if __name__ == "__main__":
     main()

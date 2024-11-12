@@ -31,7 +31,7 @@ module load CUDA/12.3.2
 #python main.py --mode train --config-yml gemnet_oc.yml --seed 12334  --print-every 500 > out
 #python main.py --mode train --config-yml gemnet_oc.yml --seed 12334 --checkpoint /home/ljcgroup/wzh/fairchem/fairchem/fairchem/ceshi/checkpoints/2024-07-26-13-45-36/checkpoint.pt >  out
 # python main.py --mode train --config-yml gemnet_oc.yml --seed 12334 --checkpoint /home/ljcgroup/wzh/fairchem/fairchem/fairchem/ceshi/batch-4/checkpoints/2024-07-15-16-49-04/checkpoint.pt >  out 
-python main.py --mode train --config-yml finetune1.yml --checkpoint ../utils/gnoc_oc22_oc20_all_s2ef.pt > out
+python main.py --mode train --config-yml finetune1.yml --checkpoint ../utils/best_checkpoint.pt > out
 # 任务结束
 echo "Job $SLURM_JOB_ID done at " `date`
 
