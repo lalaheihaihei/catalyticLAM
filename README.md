@@ -4,6 +4,7 @@ Machine-Learning-Based Interatomic Potentials for Catalysis: a Universal Catalyt
 
 * [Paper](https://chemrxiv.org/engage/chemrxiv/article-details/66c56756a4e53c48760ee61c)
 
+0. [Pre-trained Model](#0-pre-trained-model)
 1. [Overview](#1-overview)
    - [1.1 Generation](#11-generation)
    - [1.2 VASP Workflow](#12-vasp-workflow)
@@ -25,6 +26,14 @@ Machine-Learning-Based Interatomic Potentials for Catalysis: a Universal Catalyt
 4. [License](#4-license)
 5. [Acknowledgements](#5-acknowledgements)
 6. [Citation](#6-citation)
+
+## 0. Pre-trained Model
+Our Pre-trained Model based on Gemnet-OC can obtained:
+Our Pre-trained Models based on GemNet-OC can be obtained in the following configurations saved in google driver:
+
+| Model Name | Model   | training strategy     | Download            | val force MAE |
+|--------------|----------|------------|---------------------|-------------------|
+| best_checkpoint_GemnetOC.pt | Gemnet-OC   | All        | [checkpoint](https://drive.google.com/file/d/17U-dW6PvADtQFePky64fsN0PgFmdYxrp/view?usp=drive_link)    | 0.0443         |
 
 ## 1. Overview
 
