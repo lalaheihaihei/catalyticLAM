@@ -33,7 +33,7 @@ Our Pre-trained Models based on GemNet-OC can be obtained in the following confi
 
 | Model Name | Model   | training strategy     | Download            | val force MAE |
 |--------------|----------|------------|---------------------|-------------------|
-| best_checkpoint_GemnetOC.pt | Gemnet-OC   | All        | [checkpoint](https://drive.google.com/file/d/17U-dW6PvADtQFePky64fsN0PgFmdYxrp/view?usp=drive_link)    | 0.0443         |
+| best_checkpoint_GemnetOC.pt | Gemnet-OC   | All        | [checkpoint](https://drive.google.com/file/d/17U-dW6PvADtQFePky64fsN0PgFmdYxrp/view?usp=sharing)    | 0.0443         |
 
 ## 1. Overview
 
