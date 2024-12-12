@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from ase.io import read
 from ase.visualize.plot import plot_atoms
+from matplotlib.ticker import FormatStrFormatter
 
 def extract_energies(oszicar_path):
     energies = []
@@ -45,26 +46,24 @@ def extract_finetune_time(out_path):
 def plot_structure(file_path, ax, title, rotation='0x,0y,0z'):
     if os.path.exists(file_path):
         atoms = read(file_path)
+        # Translate all atoms by 1/2 of the lattice vector in the x-direction
+        cell = atoms.get_cell()
+        translation = 0.1 * cell[0]  # 1/2 of the a-vector (x-direction)
+        atoms.translate(translation)
+        
+        # Wrap atoms back into the unit cell
+        atoms.wrap()
+
         plot_atoms(atoms, ax, rotation=rotation, show_unit_cell=2)
     ax.set_title(title)
     ax.axis('off')
 
 def main():
     folders = [
-        'Cu111_0-H2-d', 'Cu111_10-O2-d', 'Cu111_11-CHO-d', 
-        'Cu111_12-CH3O-d', 'Cu111_13-H2O2-d', 'Cu111_15-CH2O-d',
-        'Cu111_18-CHO-d', 'Cu111_19-HO2-d', 'Cu111_1-H-d',
-        'Cu111_24-CH2O-d', 'Cu111_25-CO-d', 'Cu111_26-CH4O-d',
-        'Cu111_2-O-d', 'Cu111_3-CH3-d', 'Cu111_40-CH2O2-d',
-        'Cu111_41-CHO2-d', 'Cu111_43-CH2O2-d', 'Cu111_49-CH3O2-d',
-        'Cu111_4-CH-d', 'Cu111_50-CO2-d', 'Cu111_5-H2O-d',
-        'Cu111_61-CH3O2-d', 'Cu111_67-CH2O2-d', 'Cu111_6-CH4-d',
-        'Cu111_70-CHO2-d', 'Cu111_72-CHO2-d', 'Cu111_77-CHO2-d',
-        'Cu111_78-CH4O2-d', 'Cu111_79-CO2-d', 'Cu111_7-CH2-d',
-        'Cu111_83-CH2O2-d', 'Cu111_87-CH3O2-d', 'Cu111_89-CH2O2-d',
-        'Cu111_8-HO-d', 'Cu111_99-CH4O2-d', 'Cu111_9-C-d'
+        '11', '12', '13', '14', '21', '71', '23', '24',
+    '31', '32', '33', '34', '41', '42', '43', '44',
+    '51', '52', '53', '54', '61', '62', '63', '64'
     ]
-    
     times_dict = {
         'opt1': [],
         'opt2': [],
@@ -91,16 +90,18 @@ def main():
     deltas_15 = []
     
     for idx, folder in enumerate(folders):
+        print(folder)
         all_energies = []
         all_forces = []
         steps = []
+        opt_lengths = []  # Record the length of energies for each opt step
 
         # Extract data from the iterative optimization folders (opt1, opt2, ...)
         for i in range(1, iterations + 1):
             oszicar_path = os.path.join(folder, f'opt{i}', 'OSZICAR')
             outcar_path = os.path.join(folder, f'opt{i}', 'OUTCAR')
-
             energies = extract_energies(oszicar_path)
+            print(energies)
             forces = extract_forces(outcar_path)
             time = extract_time(outcar_path)
             
@@ -109,6 +110,7 @@ def main():
             all_energies.extend(energies)
             all_forces.extend(forces)
             steps.extend([i] * len(energies))
+            opt_lengths.append(len(energies))  # Record the length of this step's energies
 
         # Include the final optimization data
         final_oszicar_path = os.path.join(folder, 'optfinal', 'OSZICAR')
@@ -124,52 +126,39 @@ def main():
         all_forces.extend(final_forces)
         steps.extend(['final'] * len(final_energies))
 
-        ## Extract comparison data from the optall folder
-        #all_oszicar_path = os.path.join(folder, 'optall', 'OSZICAR')
-        #all_outcar_path = os.path.join(folder, 'optall', 'OUTCAR')
-
-        #all_comparison_energies = extract_energies(all_oszicar_path)
-        #all_comparison_forces = extract_forces(all_outcar_path)
-        #all_comparison_steps = list(range(len(all_comparison_energies)))
-        #all_time = extract_time(all_outcar_path)
-
-        #times_dict['optall'].append(all_time)
 
         energy_row, energy_col = divmod(idx, 4)
         structure_row, structure_col = divmod(idx * 2, 8)
 
         # Plotting the energy change
         axs_energy[energy_row, energy_col].plot(range(len(all_energies)), all_energies, marker='o', linestyle='-', color='b', label='opt CLAM iterations')
-        #axs_energy[energy_row, energy_col].plot(all_comparison_steps, all_comparison_energies, marker='x', linestyle='--', color='g', label='opt DFT')
+        axs_energy[energy_row, energy_col].yaxis.set_major_formatter(FormatStrFormatter('%.2f'))  
+
         if len(all_energies) > 1:
             axs_energy[energy_row, energy_col].scatter(0, all_energies[0], color='black')
             delta_0 = all_energies[0] - all_energies[-1]
             deltas_0.append(delta_0)
             axs_energy[energy_row, energy_col].text(0, all_energies[0], f'ΔE={delta_0:.2f}eV', color='black')
-        else:
-            deltas_0.append(0.0)
-        if len(all_energies) > 5:
-            axs_energy[energy_row, energy_col].scatter(5, all_energies[5], color='red')
-            delta_5 = all_energies[5] - all_energies[-1]
+        # Use accumulated length for step positions
+        if len(opt_lengths) > 0:
+            axs_energy[energy_row, energy_col].scatter(opt_lengths[0], all_energies[opt_lengths[0]], color='red')
+            delta_5 = all_energies[opt_lengths[0]] - all_energies[-1]
             deltas_5.append(delta_5)
-            axs_energy[energy_row, energy_col].text(5, all_energies[5], f'ΔE={delta_5:.2f}eV', color='red')
-        else:
-            deltas_5.append(0.0)
-        if len(all_energies) > 10:
-            axs_energy[energy_row, energy_col].scatter(10, all_energies[10], color='orange')
-            delta_10 = all_energies[10] - all_energies[-1]
+            axs_energy[energy_row, energy_col].text(opt_lengths[0], all_energies[opt_lengths[0]], f'ΔE={delta_5:.2f}eV', color='red')
+        if len(opt_lengths) > 1:
+            step_10 = opt_lengths[0] + opt_lengths[1]
+            axs_energy[energy_row, energy_col].scatter(step_10, all_energies[step_10], color='orange')
+            delta_10 = all_energies[step_10] - all_energies[-1]
             deltas_10.append(delta_10)
-            axs_energy[energy_row, energy_col].text(10, all_energies[10], f'ΔE={delta_10:.2f}eV', color='orange')
-        else:
-            deltas_10.append(0.0)
-        if len(all_energies) > 15:
-            axs_energy[energy_row, energy_col].scatter(15, all_energies[15], color='purple')
-            delta_15 = all_energies[15] - all_energies[-1]
+            axs_energy[energy_row, energy_col].text(step_10, all_energies[step_10], f'ΔE={delta_10:.2f}eV', color='orange')
+        if len(opt_lengths) > 2:
+            step_15 = opt_lengths[0] + opt_lengths[1] + opt_lengths[2]
+            axs_energy[energy_row, energy_col].scatter(step_15, all_energies[step_15], color='purple')
+            delta_15 = all_energies[step_15] - all_energies[-1]
             deltas_15.append(delta_15)
-            axs_energy[energy_row, energy_col].text(15, all_energies[15], f'ΔE={delta_15:.2f}eV', color='purple')
-        else:
-            deltas_15.append(0.0)
- 
+            axs_energy[energy_row, energy_col].text(step_15, all_energies[step_15], f'ΔE={delta_15:.2f}eV', color='purple')
+
+
         # Extract finetune times
         finetune_times = []
         for i in range(1, 4):
@@ -212,7 +201,7 @@ def main():
     plt.show()
 
     # Define bin edges with a fixed interval of 0.05
-    bin_edges = np.arange(min(deltas_5 + deltas_10 + deltas_15), max(deltas_5 + deltas_10 + deltas_15) + 0.4, 0.05)
+    bin_edges = np.arange(min(deltas_0 + deltas_5 + deltas_10 + deltas_15), max(deltas_0 + deltas_5 + deltas_10 + deltas_15) + 0.4, 0.05)
     
     mae_0 = np.mean(np.abs(deltas_0))
     mae_5 = np.mean(np.abs(deltas_5))
@@ -223,7 +212,7 @@ def main():
     # Plot the distribution of energy differences with consistent bin edges
     fig, axs = plt.subplots(4, 1, figsize=(10, 20))
     
-    font_size = 18
+    font_size = 25 
 
     axs[0].hist(deltas_0, bins=bin_edges, alpha=0.5, label='ΔE (0th step)')
     axs[0].set_xlabel('Energy Difference (eV)', fontsize=font_size)
