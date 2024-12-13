@@ -28,12 +28,13 @@ Machine-Learning-Based Interatomic Potentials for Catalysis: a Universal Catalyt
 6. [Citation](#6-citation)
 
 ## 0. Pre-trained Model
-Our Pre-trained Model based on Gemnet-OC can obtained:
-Our Pre-trained Models based on GemNet-OC can be obtained in the following configurations saved in google driver:
+Our Pre-trained Models can be obtained in the following configurations saved in google driver:
 
-| Model Name | Model   | training strategy     | Download            | val force MAE |
-|--------------|----------|------------|---------------------|-------------------|
-| best_checkpoint_GemnetOC.pt | Gemnet-OC   | All        | [checkpoint](https://drive.google.com/file/d/17U-dW6PvADtQFePky64fsN0PgFmdYxrp/view?usp=sharing)    | 0.0443         |
+| Model Name | Model   | training strategy     | Download            | val force MAE(eV/A) on metal system | val energy MAE(eV) |
+|--------------|----------|------------|---------------------|-------------------|---------|
+| best_checkpoint_GemnetOC.pt | Gemnet-OC   | finetuned based on [GemNet-OC-S2EFS-OC20+OC22](https://fair-chem.github.io/core/model_checkpoints.html#open-catalyst-2022-oc22) 5 epoch     | [checkpoint](https://drive.google.com/file/d/17U-dW6PvADtQFePky64fsN0PgFmdYxrp/view?usp=sharing),[config](https://drive.google.com/file/d/1R-Wi7YJ8ddZsp_lPZ2QMriWrjXZ3sO1V/view?usp=sharing)    | 34.5    |  4.05   |
+| checkpoint_eqV2.pt | equiformerV2   | finetuned based on [eq2_121M_e4_f100_oc22_s2ef.pt](https://fair-chem.github.io/core/model_checkpoints.html#open-catalyst-2022-oc22) 2 epoch       | [checkpoint](https://drive.google.com/file/d/1Bjd0zz0Sb9RKtaRx3268E4wm6Y9e4ldP/view?usp=sharing),[config](https://drive.google.com/file/d/1R-Wi7YJ8ddZsp_lPZ2QMriWrjXZ3sO1V/view?usp=sharing)    | 26.0    |  32.5   |
+| model.ckpt-2000000.pt | DPA2 | finetuned based on [DPA2_medium_28_10M_beta4.pt](https://www.aissquare.com/models/detail?pageType=models&name=DPA-2.3.0-v3.0.0b4) 2000000 steps| [checkpoint](https://drive.google.com/file/d/1Bjd0zz0Sb9RKtaRx3268E4wm6Y9e4ldP/view?usp=sharing),[config](https://drive.google.com/file/d/1xNC0M-vJPtAH_l3cYbTa_JZ2ya-qNkW1/view?usp=sharing) | 154  | 484  |
 
 ## 1. Overview
 
