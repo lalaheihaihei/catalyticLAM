@@ -30,7 +30,7 @@ Machine-Learning-Based Interatomic Potentials for Catalysis: a Universal Catalyt
 ## 0. Pre-trained Model
 Our Pre-trained Models can be obtained in the following configurations saved in google driver:
 
-| Model Name | Model   | training strategy     | Download            | val force MAE(eV/A) on metal system | val energy MAE(eV) |
+| Model Name | Model   | training strategy     | Download            | val force MAE(meV/A) on metal system | val energy MAE(meV/atom) on metal system |
 |--------------|----------|------------|---------------------|-------------------|---------|
 | best_checkpoint_GemnetOC.pt | Gemnet-OC   | finetuned based on [GemNet-OC-S2EFS-OC20+OC22](https://fair-chem.github.io/core/model_checkpoints.html#open-catalyst-2022-oc22) 5 epoch     | [checkpoint](https://drive.google.com/file/d/17U-dW6PvADtQFePky64fsN0PgFmdYxrp/view?usp=sharing),[config](https://drive.google.com/file/d/1R-Wi7YJ8ddZsp_lPZ2QMriWrjXZ3sO1V/view?usp=sharing)    | 34.5    |  4.05   |
 | checkpoint_eqV2.pt | equiformerV2   | finetuned based on [eq2_121M_e4_f100_oc22_s2ef.pt](https://fair-chem.github.io/core/model_checkpoints.html#open-catalyst-2022-oc22) 2 epoch       | [checkpoint](https://drive.google.com/file/d/1Bjd0zz0Sb9RKtaRx3268E4wm6Y9e4ldP/view?usp=sharing),[config](https://drive.google.com/file/d/1YqFiCNIahgYKw8_mUmj-ESlWfxR4mYE2/view?usp=sharing)    | 26.0    |  32.5   |
