@@ -30,11 +30,11 @@ Machine-Learning-Based Interatomic Potentials for Catalysis: a Universal Catalyt
 ## 0. Pre-trained Model
 Our Pre-trained Models can be obtained in the following configurations saved in google driver:
 
-| Model   | training strategy     | Download            | val force MAE(meV/A) on metal system | val energy MAE(meV/atom) on metal system |
-|----------|------------|---------------------|-------------------|---------|
-| Gemnet-OC   | finetuned based on [GemNet-OC-S2EFS-OC20+OC22](https://fair-chem.github.io/core/model_checkpoints.html#open-catalyst-2022-oc22) 5 epoch     | [best_checkpoint_GemnetOC.pt](https://drive.google.com/file/d/17U-dW6PvADtQFePky64fsN0PgFmdYxrp/view?usp=sharing)<br>[config](https://drive.google.com/file/d/1R-Wi7YJ8ddZsp_lPZ2QMriWrjXZ3sO1V/view?usp=sharing)    | 34.5    |  4.05   |
-| equiformerV2   | finetuned based on [eq2_121M_e4_f100_oc22_s2ef.pt](https://fair-chem.github.io/core/model_checkpoints.html#open-catalyst-2022-oc22) 2 epoch       | [checkpoint_eqV2.pt](https://drive.google.com/file/d/1Bjd0zz0Sb9RKtaRx3268E4wm6Y9e4ldP/view?usp=sharing)<br>[config](https://drive.google.com/file/d/1YqFiCNIahgYKw8_mUmj-ESlWfxR4mYE2/view?usp=sharing)    | 26.0    |  32.5   |
-| DPA2 | finetuned based on [DPA2_medium_28_10M_beta4.pt](https://drive.google.com/file/d/1sQUDUZr0pP9U3KXJBwbZRwXf8_NU9Mct/view?usp=sharing) 2000000 steps| [model.ckpt-2000000.pt](https://drive.google.com/file/d/1Bjd0zz0Sb9RKtaRx3268E4wm6Y9e4ldP/view?usp=sharing)<br>[config](https://drive.google.com/file/d/1xNC0M-vJPtAH_l3cYbTa_JZ2ya-qNkW1/view?usp=sharing) | 77.8  | 14.3  |
+| Model   | training strategy     | Download            | val force MAE(meV/A) on metal system |val force MAE(meV/A) on qm9 | val force MAE(meV/A) on 2d system| val energy MAE(meV/atom) on metal system | val energy MAE(meV/atom) on qm9 |val energy MAE(meV/atom) on 2d system |
+|----------|------------|---------------------|-------------------|---------|---------|---------|---------|---------|
+| Gemnet-OC   | finetuned based on [GemNet-OC-S2EFS-OC20+OC22](https://fair-chem.github.io/catalysts/models.html) 5 epoch without quad_interaction | [best_checkpoint_GemnetOC.pt](https://drive.google.com/file/d/17U-dW6PvADtQFePky64fsN0PgFmdYxrp/view?usp=sharing)<br>[config](https://drive.google.com/file/d/1R-Wi7YJ8ddZsp_lPZ2QMriWrjXZ3sO1V/view?usp=sharing)    | 34.5 | 15.7| 42.0  |  3.9| 2.4| 7.0   |
+| Gemnet-OC   | finetuned based on [GemNet-OC-S2EFS-OC20+OC22](https://fair-chem.github.io/catalysts/models.html) 50 epoch with quad_interaction | [best_checkpoint_GemnetOC.pt](https://drive.google.com/file/d/17U-dW6PvADtQFePky64fsN0PgFmdYxrp/view?usp=sharing)<br>[config](https://drive.google.com/file/d/1R-Wi7YJ8ddZsp_lPZ2QMriWrjXZ3sO1V/view?usp=sharing)    | 28.5 | 21.5| 27.1  |  1.8 | 2.9| 3.2   |
+| DPA2 | finetuned based on [DPA2_medium_28_10M_beta4.pt](https://drive.google.com/file/d/1sQUDUZr0pP9U3KXJBwbZRwXf8_NU9Mct/view?usp=sharing) 10000000 steps| [model.ckpt-2000000.pt](https://drive.google.com/file/d/1Bjd0zz0Sb9RKtaRx3268E4wm6Y9e4ldP/view?usp=sharing)<br>[config](https://drive.google.com/file/d/1xNC0M-vJPtAH_l3cYbTa_JZ2ya-qNkW1/view?usp=sharing) | 72.2  | 78.0  | 84.5 | 5.8 | 7.7 | 5.5 | 
 
 ## 1. Overview
 
