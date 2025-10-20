@@ -31,11 +31,11 @@ Machine-Learning-Based Interatomic Potentials for Catalysis: a Universal Catalyt
 The CLAM Dataset (2025Q2 version) is divided into three subsets: Metals, 2D materials, and Molecules. All configurations are constructed with lattice constants a,b,c > 10 Angstrom. DFT calculations were performed using VASP with a plane-wave cutoff of 500 eV, the PBE functional, and the recommended VASP pseudopotentials. For transition-metal oxides, the DFT+U correction was applied following the same scheme as used in MPtraj and OC22 (for Co, Cr, Fe, Mn, Mo, Ni, V, and W). Spin polarization was included for systems containing Fe, Co, Ni, and Mn.
 | Split      | 2D      | Metal   | QM9     |
 |------------|---------|---------|---------|
-| Number of Training   | 183,215 | 378,004 | 596,160 |
-| Number of Validation | 10,180  | 20,996  | 33,120  |
-| Number of Test       | 10,178  | 21,000  | 33,120  | 
-| Download(lmdb format) | [2d-lmdb](https://drive.google.com/file/d/16g-MJOWPmZhX6If_HLgnjEMymYVx0Bjb/view?usp=drive_link)  | [Metal-lmdb](https://drive.google.com/file/d/1QnSUw04qKVgf1hqXFgoBTH2i3Va-HsKS/view?usp=drive_link)  | [qm-lmdb](https://drive.google.com/file/d/1IbdgSf5sG0Cn45oOPvQH4Q2O3RpWFlRS/view?usp=drive_link)  |
-| Download(npy format) | [2d-npy](https://drive.google.com/file/d/1lm-uIG872FWKqaeqwBRw9wEvCiDNi8Ew/view?usp=drive_link)  | [Metal-npy](https://drive.google.com/file/d/1RscvdWveaWKcT9NrzPMNJIvWmfzgeatd/view?usp=drive_link) | [qm-npy](https://drive.google.com/file/d/1wPn9LQuuh5hcfIUbKTyXTUsMCa7GnVKE/view?usp=drive_link) |
+| Number of Training   | 183,215 | 411,125 | 596,160 |
+| Number of Validation | 10,180  | 22,835  | 33,120  |
+| Number of Test       | 10,178  | 22,839  | 33,120  | 
+| Download(lmdb format) | [2d-lmdb](https://drive.google.com/file/d/16g-MJOWPmZhX6If_HLgnjEMymYVx0Bjb/view?usp=drive_link)  | [Metal-lmdb](https://drive.google.com/file/d/1xDzD9shpiagloKp2j6_FkfSqu88VSzTr/view?usp=drive_link)  | [qm-lmdb](https://drive.google.com/file/d/1IbdgSf5sG0Cn45oOPvQH4Q2O3RpWFlRS/view?usp=drive_link)  |
+| Download(npy format) | [2d-npy](https://drive.google.com/file/d/1lm-uIG872FWKqaeqwBRw9wEvCiDNi8Ew/view?usp=drive_link)  | [Metal-npy](https://drive.google.com/file/d/16_adOL0K5D_WYeqQHGiHR0A6iJUIqyKi/view?usp=drive_link) | [qm-npy](https://drive.google.com/file/d/1wPn9LQuuh5hcfIUbKTyXTUsMCa7GnVKE/view?usp=drive_link) |
 
 Pre-trained checkpoints and corresponding input files can be obtained in the following table saved in google driver:
 
