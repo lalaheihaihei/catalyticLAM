@@ -1,0 +1,79 @@
+{
+    "_comment1": " model parameters",
+    "model": {
+        "type_map":  ["H", "Li", "Be", "B", "C", "N", "O", "F", "Na", "Mg", "Al", "Si", "P", "S", "Cl", "K", "Ca", "Sc", "Ti", "V", "Cr", "Mn", "Fe", "Co", "Ni", "Cu", "Zn", "Ga", "Ge", "As", "Se", "Br", "Rb", "Sr", "Y", "Zr", "Nb", "Mo", "Tc", "Ru", "Rh", "Pd", "Ag", "Cd", "In", "Sn", "Sb", "Te", "I", "Cs", "Ba", "La", "Ce", "Pr", "Nd", "Pm", "Sm", "Eu", "Gd", "Tb", "Dy", "Ho", "Er", "Tm", "Yb", "Lu", "Hf", "Ta", "W", "Re", "Os", "Ir", "Pt", "Au", "Hg", "Tl", "Pb", "Bi"],
+	"descriptor": {
+            "type": "dpa1",
+	    "type_one_side": false,
+            "sel": 134,
+            "rcut_smth": 0.5,
+            "rcut": 6.0,
+            "neuron": [
+                25,
+                50,
+                100
+            ],
+            "resnet_dt": false,
+            "axis_neuron": 16,
+            "attn": 128,
+            "attn_layer": 2,
+            "attn_dotr": true,
+            "attn_mask": false,
+            "precision": "float64",
+            "_comment2": " that's all"},
+      "fitting_net": {
+        "neuron": [
+          120,
+          120,
+          120
+        ],
+        "resnet_dt": true,
+        "precision": "float64",
+        "seed": 1,
+        "_comment3": " that's all"
+      },
+      "_comment4": " that's all"
+    },
+  
+    "learning_rate": {
+      "type": "exp",
+      "decay_steps": 10,
+      "start_lr": 0.001,
+      "stop_lr": 0.0001,
+      "_comment5": "that's all"
+    },
+  
+    "loss": {
+      "type": "ener",
+      "start_pref_e": 0.02,
+      "limit_pref_e": 1,
+      "start_pref_f": 1000,
+      "limit_pref_f": 10,
+      "start_pref_v": 0,
+      "limit_pref_v": 0,
+      "_comment6": " that's all"
+    },
+  
+    "training": {
+      "training_data": {
+        "systems":[],
+        "batch_size": 1,
+        "_comment7": "that's all"
+      },
+      "validation_data": {
+        "systems": [],
+        "batch_size": 1,
+        "numb_btch": 1,
+        "_comment8": "that's all"
+      },
+      "numb_steps": 100,
+      "seed": 10,
+      "disp_file": "lcurve-finetune.out",
+      "disp_freq": 100,
+      "save_freq": 100,
+      "_comment9": "that's all"
+    },
+  
+    "_comment10": "that's all"
+  }
+  

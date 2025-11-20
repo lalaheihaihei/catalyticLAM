@@ -136,13 +136,13 @@ def update_finetune_json(iteration, previous_finetune_file, steps_per_iteration)
     finetune_dir = f'finetune{iteration}'
     os.makedirs(finetune_dir, exist_ok=True)
 
-    # Copy the finetune1.json and sub.dp files to the new finetune directory
-    shutil.copy('./utils/finetune1.json', f'{finetune_dir}/finetune1.json')
+    # Copy the finetune.json and sub.dp files to the new finetune directory
+    shutil.copy('./utils/finetune.json', f'{finetune_dir}/finetune.json')
     shutil.copy('./utils/sub.dp', f'{finetune_dir}/sub.dp')
 
-    finetune_file = f'{finetune_dir}/finetune1.json'
+    finetune_file = f'{finetune_dir}/finetune.json'
 
-    # Read the existing finetune1.json file and the previous one to append data paths
+    # Read the existing finetune.json file and the previous one to append data paths
     with open(finetune_file, 'r') as f:
         data = json.load(f)
     
@@ -159,7 +159,7 @@ def update_finetune_json(iteration, previous_finetune_file, steps_per_iteration)
     # Update numb_steps based on the current iteration
     data["training"]["numb_steps"] = steps_per_iteration * iteration
 
-    # Write the updated content back to the finetune1.json file
+    # Write the updated content back to the finetune.json file
     with open(finetune_file, 'w') as f:
         json.dump(data, f, indent=4)
 
@@ -230,7 +230,7 @@ def main():
         wait_for_job_completion(job_id, record_file, f'vaspopt{i}')
         
         generate_new_dataset(i, record_file)
-        previous_finetune_file = f'finetune{i-1}/finetune1.json' if i > 1 else None
+        previous_finetune_file = f'finetune{i-1}/finetune.json' if i > 1 else None
         job_id = finetune_model(i, previous_finetune_file, steps_per_iteration)
         wait_for_job_completion(job_id, record_file, f'finetune{i}')
         freeze(i, record_file)

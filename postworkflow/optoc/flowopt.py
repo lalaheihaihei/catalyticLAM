@@ -208,13 +208,13 @@ def update_finetune_json(iteration, previous_finetune_file, steps_per_iteration)
     finetune_dir = f'finetune{iteration}'
     os.makedirs(finetune_dir, exist_ok=True)
 
-    # Copy the finetune1.json and sub.dp files to the new finetune directory
-    shutil.copy('./utils/finetune1.yml', f'{finetune_dir}/finetune1.yml')
+    # Copy the finetune.json and sub.dp files to the new finetune directory
+    shutil.copy('./utils/finetune.yml', f'{finetune_dir}/finetune.yml')
     shutil.copy('./utils/base.yml', f'{finetune_dir}/base.yml')
     shutil.copy('./utils/main.py', f'{finetune_dir}/main.py')
     shutil.copy('./utils/sub.oc', f'{finetune_dir}/sub.oc')
 
-    finetune_file = f'{finetune_dir}/finetune1.yml'
+    finetune_file = f'{finetune_dir}/finetune.yml'
 
 def finetune_model(iteration, previous_finetune_file, steps_per_iteration):
     update_finetune_json(iteration, previous_finetune_file, steps_per_iteration)
@@ -283,7 +283,7 @@ def main():
         wait_for_job_completion(job_id, record_file, f'vaspopt{i}')
         
         generate_new_dataset(i, record_file)
-        previous_finetune_file = f'finetune{i-1}/finetune1.yml' if i > 1 else None
+        previous_finetune_file = f'finetune{i-1}/finetune.yml' if i > 1 else None
         job_id = finetune_model(i, previous_finetune_file, steps_per_iteration)
         wait_for_oc_job_checkpoint(job_id, record_file, f'finetune{i}', i)
         #wait_for_job_completion(job_id, record_file, f'finetune{i}')

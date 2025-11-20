@@ -18,10 +18,9 @@ Machine-Learning-Based Interatomic Potentials for Catalysis: a Universal Catalyt
    - [3.1 Generate Structures](#31-generate-structures)
    - [3.2 Run VASP Workflow](#32-run-vasp-workflow)
    - [3.3 Run Structure Optimization and Transition State Search](#33-run-structure-optimization-and-transition-state-search)
-   - [3.4 Run Reaction Network generation](#34-run-reaction-network-generation)
-   - [3.5 Construct Pretrained CLAM for Post Workflow](#35-construct-pretrained-clam-for-post-workflow)
-   - [3.6 Other Scripts](#36-other-scripts)
-   - [3.7 Initial Structures](#37-initial-structures)
+   - [3.4 Construct Pretrained CLAM for Post Workflow](#35-construct-pretrained-clam-for-post-workflow)
+   - [3.5 Other Scripts](#36-other-scripts)
+   - [3.6 Initial Structures](#37-initial-structures)
 4. [License](#4-license)
 5. [Acknowledgements](#5-acknowledgements)
 6. [Citation](#6-citation)
@@ -38,17 +37,17 @@ This section manages VASP tasks and workflows, as well as collects data for `dpd
 
 ### 1.3 Post Workflow
 
-This section is responsible for model-accelerated structure optimization, transition state search, and catalytic reaction network construction. The optimization and transition state search are based on a local fine-tune method, which involves a Labeling, Fine-tuning, and Inference loop to accelerate the optimization and MD process. It can also automatically construct reaction networks to generate possible intermediates and transition state structures.
+This section is responsible for model-accelerated structure optimization, transition state search. The optimization and transition state search are based on a local fine-tune method, which involves a Labeling, Fine-tuning, and Inference loop to accelerate the optimization and MD process. It can also automatically construct reaction networks to generate possible intermediates and transition state structures.
 
 ### 1.4 Pretrained CLAM for Post Workflow
 
-This section contains the pretrained CLAM model for the post workflow, including its training, fine-tuning, and checkpoint files.
+This section contains the pretrained CLAM model for the post workflow, including its fine-tuning, and checkpoint files.
 
 ### 1.5 Scripts
 
 This section contains some useful scripts to generate cluster structures and convert the format of files.
 
-### 1.6 Initial Structures
+### 1.6 Structure_db
 
 This section contains the initial structure files and POSCAR files for VASP optimization and MD calculations to generate datasets.
 
@@ -146,42 +145,16 @@ nohup python ./flowts.py POSCARis POSCARfs ./frozen_model.pth OUTCARis OUTCARfs 
 
 Detailed usages are seen in [README.md](./postworkflow/README.md).
 
-### 3.4 Run Reaction Network generation
+### 3.4 Construct Pretrained Model for Post Workflow
 
-Navigate to the [postworkflow/RNET](./postworkflow/RNET) directory, prepare input files, and run the relevant scripts:
-
-- `RNet.py`:  Genarate  reaction network diagram.
-- `MakeSlab.py`: Construct all possible structures for intermediats adsorption on metal surfaces.
-- `plot_all.py`: Plot the energy changes and energy differences MAE.
-
-```
-cd postworkflow/RNET
-python RNet.py 1 2 --layout spring
-python MakeSlab.py --element Pt --max-index 1
-```
-
-Detailed usages are seen in [README.md](./postworkflow/RNET/README.md).
-
-### 3.5 Construct Pretrained CLAM for Post Workflow
-
-Navigate to the [train](./train) directory, edit the input files, and run the training or fine-tuning jobs.
+Navigate to the [train](./train) directory, edit the input files, and run the fine-tuning jobs.
 Details of CLAM are in [README.md](./train/README.md)
-
-```
-dp --pt train input.json > out
-dp --pt train --finetune model.ckpt.10000000.pt --model-branch <head> finetune.json > out (At present, the head name is only supported for oc22, qm and metal)
-```
-
-```
-python main.py --mode train --config-yml finetune1.yml --print-every 1000 >> out
-python main.py --mode train --config-yml finetune1.yml --checkpoint gnoc_oc22_oc20_all_s2ef.pt --print-every 1000 >> out
-```
 
 Detailed usages are seen in [README.md](./train/README.md).
 
 More information please refer to [Deepmd-kit official website](https://github.com/deepmodeling/deepmd-kit) and [fairchem official website](https://github.com/FAIR-Chem/fairchem).
 
-### 3.6 Other Scripts
+### 3.5 Other Scripts
 
 Navigate to the [scripts](./scripts) directory and run the appropriate script to generate the cluster structures or convert file formats.
 
@@ -195,7 +168,7 @@ Navigate to the [scripts](./scripts) directory and run the appropriate script to
 
 More details are seen in [README.md](./scripts/README.md).
 
-### 3.7 Initial structures
+### 3.6 Structure_db
 
 Navigate to the [structure_db](./structure_db) directory, you can find compressed files, which containing the initial structures.
 

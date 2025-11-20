@@ -170,10 +170,10 @@ def update_finetune_json(step, previous_finetune_file, steps_per_iteration):
     finetune_dir = f'finetune{step}'
     os.makedirs(finetune_dir, exist_ok=True)
 
-    shutil.copy('./utils/finetune1.json', f'{finetune_dir}/finetune1.json')
+    shutil.copy('./utils/finetune.json', f'{finetune_dir}/finetune.json')
     shutil.copy('./utils/sub.dp', f'{finetune_dir}/sub.dp')
 
-    finetune_file = f'{finetune_dir}/finetune1.json'
+    finetune_file = f'{finetune_dir}/finetune.json'
 
     with open(finetune_file, 'r') as f:
         data = json.load(f)
@@ -260,7 +260,7 @@ def main():
         wait_for_job_completion(job_id, record_file, f'vaspopt{step}')
         
         generate_new_dataset(args.n_images, ts_dir)
-        previous_finetune_file = f'finetune{step-1}/finetune1.json' if step > 1 else None
+        previous_finetune_file = f'finetune{step-1}/finetune.json' if step > 1 else None
         job_id = finetune_model(step, previous_finetune_file, args.steps_per_iteration)
         wait_for_job_completion(job_id, record_file, f'finetune{step}')
 
