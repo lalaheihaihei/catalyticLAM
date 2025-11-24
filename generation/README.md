@@ -17,7 +17,7 @@ This section is responsible for generating structures, including bulk and slab s
 - Python 3 (version > 3.10)
 - ASE (Atomic Simulation Environment, version > 3.22)
 - Pymatgen (version > 2023.3.23)
-- MP-API (version > 0.41.2)
+- MP-API (version > 0.43.0)
 - Numpy (version > 1.22.3)
 
 ## 1. element_list.json
@@ -92,7 +92,7 @@ This script supports the following command-line arguments:
 - `--molecule-type` (type: `str`, default: `NH3`): Type of molecules or adsorbates to adsorb on the slab surface. It should be noted that the selected `molecule-type` must be defined in the [molecule.json](./molecule.json) file.
 - `--up-down` (type: `str`, default: `UUD`): Indicator of where to adsorb molecules or adsorbates on the slab surface. There are five choices, which are `U`, `D` , `UD`, `UUD` and `UUUUDDDD`. `U` represents the molecules or adsorbates adsorbed on the upper surface of slab (i.e. up), whereas `D` for the adsorption on the bottom surface (i.e. down). `UD` for both surfaces, `UUD` for two up and one down, `UUUUDDDD` for `type3` to generate different molecules or adsorbates combination on top and bottom surface. It is worth noting that for the type `UUUUDDDD`, there are $C(n, 4)$ combinations of adsorbates on each metal or alloy surface, where *n* is the number of adsorbates in corresponding `reactions` defined in [material.json](./material.json).
 - `--max-index` (type: `int`, default: `2`): The maximum Miller index to consider for slab generation.
-- `--min-slab-size` (type: `float`, default: `8.0`): The minimum size of the generating slab.
+- `--min-slab-size` (type: `float`, default: `8.0`): The minimum atomic layer thickness of the generating slab.
 - `--min-vacuum-size` (type: `float`, default: `15.0`): The minimum size of the vacuum layer of slab.
 - `--min-lw` (type: `float`, default: `10.0`): The value defines the minimum length of the vectors *a*, and *b* in the generating slab structures.
 - `--distance` (type: `float`, default: `2.0`): This value means the distance between adsorbates and slab surface.

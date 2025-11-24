@@ -103,7 +103,21 @@
     {"name": "Ni3Mo", "mp_id": "mp-11506", "ads": ["H", "C", "O", "N", "S", "CO", "H2", "O2", "H2O", "CO2", "CH4", "NH3", "CH3", "HCO", "COH", "H2S"]},
     {"name": "RuIr", "mp_id": "mp-862620", "ads": ["H", "C", "O", "N", "CO", "H2", "O2", "H2O", "CO2", "CH4", "NO", "NH3", "OH", "OOH",  "CH3", "CH3O", "NO3", "CH3OH"]},
     {"name": "RhIr", "mp_id": "mp-1184794", "ads": ["H", "C", "O", "N", "CO", "H2", "O2", "H2O", "CO2", "CH4", "NO", "NH3", "CH3", "CH3O", "HCOH", "H2CO", "HCHO", "CH3OH"]},
-    {"name": "MgAl", "mp_id": "mp-1094116", "ads": ["H", "C", "O", "N", "S", "CO", "H2", "O2", "H2O", "CO2", "CH4", "CH3", "CH3O", "H2S", "C2H6"]}
+    {"name": "MgAl", "mp_id": "mp-1094116", "ads": ["H", "C", "O", "N", "S", "CO", "H2", "O2", "H2O", "CO2", "CH4", "CH3", "CH3O", "H2S", "C2H6"]},
+    {"name": "Sc", "mp_id": "mp-67", "ads": ["H", "C", "O", "N", "CO", "H2", "H2O", "CO2", "CH4", "NO", "NH3", "CH3", "CH2", "CH", "NH2", "NH"]},
+    {"name": "Ti", "mp_id": "mp-46", "ads": ["H", "C", "O", "N", "CO", "H2", "H2O", "CO2", "CH4", "NO", "NH3", "CH3", "CH2", "CH", "NH2", "NH"]},
+    {"name": "V", "mp_id": "mp-146", "ads": ["H", "C", "O", "N", "CO", "H2", "H2O", "CO2", "CH4", "NO", "NH3", "CH3", "CH2", "CH", "NH2", "NH"]},
+    {"name": "Cr", "mp_id": "mp-90", "ads": ["H", "C", "O", "N", "CO", "H2", "H2O", "CO2", "CH4", "NO", "NH3", "CH3", "CH2", "CH", "NH2", "NH"]},
+    {"name": "Mn", "mp_id": "mp-1055908", "ads": ["H", "C", "O", "N", "CO", "H2", "H2O", "CO2", "CH4", "NO", "NH3", "CH3", "CH2", "CH", "NH2", "NH"]},
+    {"name": "Y", "mp_id": "mp-112", "ads": ["H", "C", "O", "N", "CO", "H2", "H2O", "CO2", "CH4", "NO", "NH3", "CH3", "CH2", "CH", "NH2", "NH"]},
+    {"name": "Zr", "mp_id": "mp-131", "ads": ["H", "C", "O", "N", "CO", "H2", "H2O", "CO2", "CH4", "NO", "NH3", "CH3", "CH2", "CH", "NH2", "NH"]},
+    {"name": "Nb", "mp_id": "mp-75", "ads": ["H", "C", "O", "N", "CO", "H2", "H2O", "CO2", "CH4", "NO", "NH3", "CH3", "CH2", "CH", "NH2", "NH"]},
+    {"name": "Mo", "mp_id": "mp-129", "ads": ["H", "C", "O", "N", "CO", "H2", "H2O", "CO2", "CH4", "NO", "NH3", "CH3", "CH2", "CH", "NH2", "NH"]},
+    {"name": "Hf", "mp_id": "mp-103", "ads": ["H", "C", "O", "N", "CO", "H2", "H2O", "CO2", "CH4", "NO", "NH3", "CH3", "CH2", "CH", "NH2", "NH"]},
+    {"name": "Ta", "mp_id": "mp-50", "ads": ["H", "C", "O", "N", "CO", "H2", "H2O", "CO2", "CH4", "NO", "NH3", "CH3", "CH2", "CH", "NH2", "NH"]},
+    {"name": "W", "mp_id": "mp-91", "ads": ["H", "C", "O", "N", "CO", "H2", "H2O", "CO2", "CH4", "NO", "NH3", "CH3", "CH2", "CH", "NH2", "NH"]},
+    {"name": "Re", "mp_id": "mp-8", "ads": ["H", "C", "O", "N", "CO", "H2", "H2O", "CO2", "CH4", "NO", "NH3", "CH3", "CH2", "CH", "NH2", "NH"]},
+    {"name": "Os", "mp_id": "mp-49", "ads": ["H", "C", "O", "N", "CO", "H2", "H2O", "CO2", "CH4", "NO", "NH3", "CH3", "CH2", "CH", "NH2", "NH"]}
   ],
 
   "type2": [

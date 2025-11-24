@@ -4,6 +4,7 @@ Machine-Learning-Based Interatomic Potentials for Catalysis: a Universal Catalyt
 
 * [Paper](https://chemrxiv.org/engage/chemrxiv/article-details/66c56756a4e53c48760ee61c)
 
+0. [Dataset and Pre-trained Model](#0-dataset-and-pre-trained-model)
 1. [Overview](#1-overview)
    - [1.1 Generation](#11-generation)
    - [1.2 VASP Workflow](#12-vasp-workflow)
@@ -24,6 +25,24 @@ Machine-Learning-Based Interatomic Potentials for Catalysis: a Universal Catalyt
 4. [License](#4-license)
 5. [Acknowledgements](#5-acknowledgements)
 6. [Citation](#6-citation)
+
+## 0. Dataset and Pre-trained Models
+The CLAM Dataset (2025Q2 version) is divided into three subsets: Metals, 2D materials, and Molecules. All configurations are constructed with lattice constants a,b,c > 10 Angstrom. DFT calculations were performed using VASP with a plane-wave cutoff of 500 eV, the PBE functional, and the recommended VASP pseudopotentials. For transition-metal oxides, the DFT+U correction was applied following the same scheme as used in MPtraj and OC22 (for Co, Cr, Fe, Mn, Mo, Ni, V, and W). Spin polarization was included for systems containing Fe, Co, Ni, and Mn.
+| Split      | 2D      | Metal   | QM9     |
+|------------|---------|---------|---------|
+| Number of Training   | 183,215 | 411,125 | 596,160 |
+| Number of Validation | 10,180  | 22,835  | 33,120  |
+| Number of Test       | 10,178  | 22,839  | 33,120  | 
+| Download(lmdb format) | [2d-lmdb](https://drive.google.com/file/d/16g-MJOWPmZhX6If_HLgnjEMymYVx0Bjb/view?usp=drive_link)  | [Metal-lmdb](https://drive.google.com/file/d/1xDzD9shpiagloKp2j6_FkfSqu88VSzTr/view?usp=drive_link)  | [qm-lmdb](https://drive.google.com/file/d/1IbdgSf5sG0Cn45oOPvQH4Q2O3RpWFlRS/view?usp=drive_link)  |
+| Download(npy format) | [2d-npy](https://drive.google.com/file/d/1lm-uIG872FWKqaeqwBRw9wEvCiDNi8Ew/view?usp=drive_link)  | [Metal-npy](https://drive.google.com/file/d/16_adOL0K5D_WYeqQHGiHR0A6iJUIqyKi/view?usp=drive_link) | [qm-npy](https://drive.google.com/file/d/1wPn9LQuuh5hcfIUbKTyXTUsMCa7GnVKE/view?usp=drive_link) |
+
+Pre-trained checkpoints and corresponding input files can be obtained in the following table saved in google driver:
+
+| Model   | training strategy     | Download            | val force MAE(meV/A) on metal system |val force MAE(meV/A) on qm9 | val force MAE(meV/A) on 2d system| val energy MAE(meV/atom) on metal system | val energy MAE(meV/atom) on qm9 |val energy MAE(meV/atom) on 2d system |
+|----------|------------|---------------------|-------------------|---------|---------|---------|---------|---------|
+| Gemnet-OC (fairchem 1.0.0) | Finetuned based on [GemNet-OC-S2EFS-OC20+OC22](https://fair-chem.github.io/catalysts/models.html) for 5 epoch without quad_interaction | [checkpoint](https://drive.google.com/file/d/17U-dW6PvADtQFePky64fsN0PgFmdYxrp/view?usp=drive_link)<br>[config](https://drive.google.com/file/d/1R-Wi7YJ8ddZsp_lPZ2QMriWrjXZ3sO1V/view?usp=drive_link)    | 34.5 | 15.7| 42.0  |  3.9| 2.4| 7.0   |
+| Gemnet-OC (fairchem 1.0.0) | Finetuned based on [GemNet-OC-S2EFS-OC20+OC22](https://fair-chem.github.io/catalysts/models.html) for 50 epoch with quad_interaction | [checkpoint](https://drive.google.com/file/d/1-eDLr-ZMnMXLxdfPmFugzdZrFXQc5dwt/view?usp=drive_link)<br>[config](https://drive.google.com/file/d/16aNrEzUTzPbQ9HCykNMUiDLEnJeBzLAD/view?usp=drive_link)    | 28.5 | 21.5| 27.1  |  1.8 | 2.9| 3.2   |
+| DPA2 (DeePMD-v3.0.0b4) | Finetuned based on [DPA2_medium_28_10M_beta4.pt](https://www.aissquare.com/models/detail?pageType=models&name=DPA-2.3.0-v3.0.0b4) for 10000000 steps| [model.ckpt](https://drive.google.com/file/d/1dyPteWsJr4wXCFn1dB3cq0XoUhSyZiGA/view?usp=drive_link)<br>[config](https://drive.google.com/file/d/1i04b0IFnjW7PX5GCWhVnaqR58v9r_0qs/view?usp=drive_link) | 72.2  | 78.0  | 84.5 | 5.8 | 7.7 | 5.5 | 
 
 ## 1. Overview
 

@@ -1,7 +1,7 @@
 #!/bin/bash
-#SBATCH -n 64 
+#SBATCH -n 96 
 #SBATCH -N 1
-#SBATCH -p 64cores
+#SBATCH -p intel96 
 
 # 打印任务信息
 echo "Starting job $SLURM_JOB_ID at " `date`

@@ -1,6 +1,6 @@
 import os
 import matplotlib.pyplot as plt
-
+from mpl_toolkits.axes_grid1.inset_locator import inset_axes
 def extract_energies(oszicar_path):
     energies = []
     if os.path.exists(oszicar_path):
@@ -22,7 +22,7 @@ def extract_forces(outcar_path):
     return forces
 
 def main():
-    iterations = 5  # Default number of iterations
+    iterations = 10  # Default number of iterations
     all_energies = []
     all_forces = []
     steps = []
@@ -69,6 +69,16 @@ def main():
     plt.title('Energy Change Over Steps')
     plt.legend()
     plt.grid(True)
+    # Add inset for energy plot with specified xlim and ylim
+    ax_inset = inset_axes(plt.gca(), width="50%", height="50%", loc="right")
+    ax_inset.plot(range(len(all_energies)), all_energies, 'bo-')
+    ax_inset.plot(all_comparison_steps, all_comparison_energies, 'gx--')
+    ax_inset.set_xlim(0, len(all_energies))  # Specify xlim for inset
+    energy_min, energy_max = min(all_energies), max(all_energies)
+    margin = (energy_max - energy_min) * 0.1  # 10% margin
+    ax_inset.set_ylim(energy_min - margin, energy_max + 0.5*margin)
+    ax_inset.tick_params(axis='both', which='major', labelsize=8)  # Adjust tick label size
+    ax_inset.grid(True)
     plt.savefig('opt_energy_change_comparison.png')
     plt.show()
 
@@ -81,6 +91,17 @@ def main():
     plt.title('Max Force Change Over Steps')
     plt.legend()
     plt.grid(True)
+    # Add inset for force plot with specified xlim and ylim
+    ax_inset = inset_axes(plt.gca(), width="50%", height="50%", loc="right")
+    ax_inset.plot(range(len(all_forces)), all_forces, 'ro-')
+    ax_inset.plot(all_comparison_steps, all_comparison_forces, 'mx--')
+    ax_inset.set_xlim(0, len(all_forces))  # Specify xlim for inset
+    force_min, force_max = min(all_forces), max(all_forces)
+    margin = (force_max - force_min) * 0.1  # 10% margin
+    ax_inset.set_ylim(force_min - margin, force_max + 0.5*margin)
+    ax_inset.tick_params(axis='both', which='major', labelsize=8)  # Adjust tick label size
+    ax_inset.grid(True)
+
     plt.savefig('opt_force_change_comparison.png')
     plt.show()
 

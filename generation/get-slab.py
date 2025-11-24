@@ -203,13 +203,13 @@ class SlabGenerator:
     
                 min_newx1 = min_z_atom.x + slab.lattice.matrix[1][0]/2
                 min_newy1 = min_z_atom.y + slab.lattice.matrix[1][1]/2
-                min_newz1 = min_z_atom.z + slab.lattice.matrix[1][2]/2
+                min_newz1 = min_z_atom.z + slab.lattice.matrix[1][2]/2 - z_span1
                 min_newx2 = min_newx1 + slab.lattice.matrix[0][0]/2
                 min_newy2 = min_newy1 + slab.lattice.matrix[0][1]/2
-                min_newz2 = min_newz1 + slab.lattice.matrix[0][2]/2
+                min_newz2 = min_newz1 + slab.lattice.matrix[0][2]/2 + z_span1 -z_span2
                 min_newx3 = min_z_atom.x + slab.lattice.matrix[0][0]/2
                 min_newy3 = min_z_atom.y + slab.lattice.matrix[0][1]/2
-                min_newz3 = min_z_atom.z + slab.lattice.matrix[0][2]/2
+                min_newz3 = min_z_atom.z + slab.lattice.matrix[0][2]/2 - z_span3
                 
                 min_new1 = (min_newx1, min_newy1, min_newz1)
                 min_new2 = (min_newx2, min_newy2, min_newz2)

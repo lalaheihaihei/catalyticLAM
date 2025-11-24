@@ -24,26 +24,18 @@ def read_last_step(record_file):
         lines = f.readlines()
     return lines[-1].strip() if lines else None
 
-
 def tag_atoms(slab):
-    def is_metal(atom):   # Check if atom is a metal element
-        if atom.symbol not in ['H', 'C', 'N', 'O', 'S', 'Cl', 'Br', 'I', 'F']: # commen non-metal elements in absorbtion
-            return False
-        else:
-            return False
-        
-    tags = [1 if is_metal(i) else 2 for i in slab]  
+    tags = [1 if atom.symbol not in ['H', 'C', 'N', 'O', 'S', 'Cl', 'Br', 'I', 'F'] else 2 for atom in slab]
     slab.set_tags(tags)
     return slab
 
-
-def neb_calculation(initial_structure, final_structure, checkpoint_path, n_images=5, fmax=0.02, interpolation='linear', spring_constant=1.0):
+def neb_calculation(initial_structure, final_structure, checkpoint_path, fixed_atoms, n_images=5, fmax=0.02, interpolation='linear', spring_constant=1.0):
     initial = read(initial_structure)
     final = read(final_structure)
 
     z_positions = initial.positions[:, 2]
     sorted_indices = z_positions.argsort()
-    fixed_indices = sorted_indices[:48]
+    fixed_indices = sorted_indices[:fixed_atoms]
 
     initial = tag_atoms(initial)
     final = tag_atoms(final)
@@ -238,13 +230,18 @@ def freeze(iteration, record_file):
     step = f'freeze{iteration}'
     write_record(record_file, step)
 
+def clean():
+    # Remove directories and files as specified
+    os.system('rm -rf ts1 ts2 ts3 ts4 ts5 ts6 ts7 ts8 tsfinal finetune* CONTCAR* POSCAR0* *.png output_database.db nohup.out is fs record.txt')
+
 def main():
     parser = argparse.ArgumentParser(description="Run iterative optimization and finetuning.")
-    parser.add_argument('initial_structure', type=str, help='Path to the initial structure (POSCAR format).')
-    parser.add_argument('final_structure', type=str, help='Path to the final structure (POSCAR format).')
-    parser.add_argument('model_path', type=str, help='Path to the OCP model checkpoint.')
-    parser.add_argument('initial_outcar', type=str, help='Path to the initial OUTCAR file.')
-    parser.add_argument('final_outcar', type=str, help='Path to the final OUTCAR file.')
+    parser.add_argument('--initial_structure', type=str, default='POSCARis', help='Path to the initial structure (POSCAR format).')
+    parser.add_argument('--final_structure', type=str, default='POSCARfs', help='Path to the final structure (POSCAR format).')
+    parser.add_argument('--model_path', type=str, default='./utils/best_checkpoint.pt', help='Path to the OCP model checkpoint.')
+    parser.add_argument('--initial_outcar', type=str, default='OUTCARis', help='Path to the initial OUTCAR file.')
+    parser.add_argument('--final_outcar', type=str, default='OUTCARfs', help='Path to the final OUTCAR file.')
+    parser.add_argument('--fixed_atoms', type=int, default=48, help='Fixed Atoms.')
     parser.add_argument('--num_steps', type=int, default=1, help='Number of steps to run.')
     parser.add_argument('--n_images', type=int, default=4, help='Number of intermediate images.')
     parser.add_argument('--fmax', type=float, default=0.5, help='Maximum force criteria for optimization.')
@@ -253,7 +250,12 @@ def main():
     parser.add_argument('--epoch_per_iteration', type=int, default=30, help='Number of steps per iteration.')
     parser.add_argument('--apply_constraint', type=bool, default=False, help='Whether to apply constraints during interpolation.')
     parser.add_argument('--skip_first_neb', action='store_true', help='Whether to skip the first ase cineb step.')
+    parser.add_argument('--clean', action='store_true', help='Clean up specified directories and files.')
     args = parser.parse_args()
+    # If the clean flag is set, call the clean function and exit
+    if args.clean:
+        clean()
+        return  # Exit after cleaning
         
     record_file = 'record.txt'
     last_step = read_last_step(record_file)
@@ -292,6 +294,7 @@ def main():
                 args.initial_structure,
                 args.final_structure,
                 args.model_path,
+                args.fixed_atoms,
                 args.n_images,
                 10.0,
                 args.interpolation,
@@ -301,6 +304,7 @@ def main():
                 args.initial_structure,
                 args.final_structure,
                 args.model_path,
+                args.fixed_atoms,
                 args.n_images,
                 args.fmax,
                 args.interpolation,
@@ -315,6 +319,7 @@ def main():
             args.initial_structure,
             args.final_structure,
             args.model_path,
+            args.fixed_atoms,
             args.n_images,
             args.fmax,
             args.interpolation,
@@ -336,6 +341,7 @@ def main():
         args.initial_structure,
         args.final_structure,
         args.model_path,
+        args.fixed_atoms,
         args.n_images,
         args.fmax,
         args.interpolation,
