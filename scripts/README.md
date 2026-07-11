@@ -9,6 +9,7 @@ This section contains some useful scripts to generate cluster structures and con
 - `sim_model.py`: For deleting the unnecessary keys in checkpoint files (oc22).
 - `cal_nframes.py`: Calculate the number of frames in a dataset with dp (deepmd-kit) format.
 - `make_test.py`: Make a dataset test with lmdb format.
+- `dataset/convert_vasp_dataset.py`: Convert VASP AIMD OUTCAR files to reproducible DeepMD NPY and extxyz datasets with CSV audit records.
 
 ## Usage
 
