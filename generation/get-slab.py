@@ -78,13 +78,17 @@ class SlabGenerator:
         # Find the top and bottom atoms of slab
         min_z_atom = min(slab, key=lambda atom: atom.z)
         max_z_atom = max(slab, key=lambda atom: atom.z)
-        # Check molecule database for the specified molecule type
-        if molecule_type in molecule_database:
-            species, coords = molecule_database[molecule_type]
-            adsorbate = Molecule(species, coords)  # Create Molecule object
-        else:
-            print(f"Molecule type {molecule_type} not found in database. Using default CO molecule.")
-            adsorbate = Molecule(["C", "O"], [(0, 0, 0), (0, 0, -1.3)])
+        # Fail fast instead of silently generating a CO structure with the
+        # requested molecule name.
+        if molecule_type not in molecule_database:
+            available = ", ".join(sorted(molecule_database))
+            raise ValueError(
+                f"Unknown molecule '{molecule_type}'. "
+                f"Available molecules: {available}"
+            )
+
+        species, coords = molecule_database[molecule_type]
+        adsorbate = Molecule(species, coords)  # Create Molecule object
         
         # Calculate the The span of the molecule in the Z direction, to adjast the adsorption distance
         z_coords = [coord[2] for coord in adsorbate.cart_coords]
@@ -328,6 +332,33 @@ def read_json_file(file_path):
     with open(file_path, 'r') as file:
         return json.load(file)
 
+
+def validate_material_adsorbates(material_ids):
+    """Validate all adsorbates before generating any structures."""
+    unknown = set()
+    unresolved_reactions = set()
+
+    for material in material_ids:
+        adsorbates = material.get("ads", [])
+        if isinstance(adsorbates, str):
+            unresolved_reactions.add(adsorbates)
+            continue
+
+        unknown.update(
+            adsorbate
+            for adsorbate in adsorbates
+            if adsorbate not in molecule_database
+        )
+
+    if unresolved_reactions:
+        raise ValueError(
+            "Unresolved reaction names in material definitions: "
+            f"{sorted(unresolved_reactions)}"
+        )
+
+    if unknown:
+        raise ValueError(f"Undefined adsorbates: {sorted(unknown)}")
+
 molecule_database = read_json_file('molecule.json')
 material_db = read_json_file('material.json')
 
@@ -379,6 +410,7 @@ if __name__ == "__main__":
     up_down = args.up_down
 
     material_ids = material_db.get(args.type, [])
+    validate_material_adsorbates(material_ids)
 
     slab_generator = SlabGenerator(api_key, enable_plotting)
     slab_generator.run(material_ids=material_ids, molecule_type=args.molecule_type, up_down=args.up_down,
