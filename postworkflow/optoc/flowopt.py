@@ -223,21 +223,17 @@ def finetune_model(iteration):
     
     os.makedirs(finetune_dir, exist_ok=True)
 
-    # Copy the finetune1.json and sub.dp files to the new finetune directory
-    shutil.copy('./utils/finetune1.yml', f'{finetune_dir}/finetune1.yml')
+    # Copy the finetune.json and sub.dp files to the new finetune directory
+    shutil.copy('./utils/finetune.yml', f'{finetune_dir}/finetune.yml')
     shutil.copy('./utils/base.yml', f'{finetune_dir}/base.yml')
     shutil.copy('./utils/main.py', f'{finetune_dir}/main.py')
     shutil.copy('./utils/sub.oc', f'{finetune_dir}/sub.oc')
-    finetune_yml_path = f'{finetune_dir}/finetune1.yml'
-    with open(finetune_yml_path, 'r') as file:
-        lines = file.readlines()
-    with open(finetune_yml_path, 'w') as file:
-        eval_every_value = int(iteration) * 20  # Calculate the new eval_every value
-        for line in lines:
-            if 'eval_every' in line:
-                file.write(f'  eval_every: {eval_every_value}\n')  # Replace with the new value
-            else:
-                file.write(line)  # Write other lines as they are
+
+    finetune_file = f'{finetune_dir}/finetune.yml'
+
+def finetune_model(iteration, previous_finetune_file, steps_per_iteration):
+    update_finetune_json(iteration, previous_finetune_file, steps_per_iteration)
+    finetune_dir = f'finetune{iteration}'
 
     # Submit the finetuning job and retrieve the job ID
     os.chdir(finetune_dir)
@@ -328,7 +324,8 @@ def main():
         # Generate new dataset and fine-tune model
         iteration_start_time = time.time()
         generate_new_dataset(i, record_file)
-        job_id = finetune_model(i)
+        previous_finetune_file = f'finetune{i-1}/finetune.yml' if i > 1 else None
+        job_id = finetune_model(i, previous_finetune_file, steps_per_iteration)
         wait_for_oc_job_checkpoint(job_id, record_file, f'finetune{i}', i)
         freeze(i, record_file)  # for deepmd, not active for gemnet-oc
 

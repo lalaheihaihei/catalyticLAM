@@ -212,7 +212,7 @@ def update_finetune_json(iteration, epoch_per_iteration):
     finetune_dir = f'finetune{iteration}'
     os.makedirs(finetune_dir, exist_ok=True)
 
-    for file in ['finetune1.yml', 'base.yml', 'main.py', 'sub.oc']:
+    for file in ['finetune.yml', 'main.py', 'sub.oc']:
         shutil.copy(f'./utils/{file}', f'{finetune_dir}/{file}')
 
 def finetune_model(iteration, epoch_per_iteration):

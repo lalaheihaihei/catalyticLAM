@@ -54,14 +54,7 @@ python xyz2pos.py --input_dir XYZ
 # --padding reprensts the distance of the atoms from the box boundary in three directions, default is '5.0'
 ```
 
-5. sim_model.py
-
-```
-python sim_model.py
-# You should revise the path of checkpoint files and specify the keys you want to delete by yourself.
-```
-
-6. cal_nframes.py
+5. cal_nframes.py
 
 ```
 python cal_nframes.py --dataset "dataset path"
@@ -69,7 +62,7 @@ return the number of frames in a dataset
 # --dataset represents the path to the dataset
 ```
 
-7. make_test.py
+6. make_test.py
 
 ```
 python make_test.py --checkpoint "checkpoint path" --dataset "dataset path" 
